@@ -1,0 +1,35 @@
+<%= form_with(model: [:admin, @theme], local: true, class: "form") do |f| %>
+  <% if @theme.errors.any? %>
+    <div class="alert alert-danger">
+      <h4><%= pluralize(@theme.errors.count, "erreur") %> empêche(nt) l'enregistrement :</h4>
+      <ul>
+        <% @theme.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :name, "Nom du thème" %>
+    <%= f.text_field :name, class: "form-control", placeholder: "Ex: Risque électrique" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :description, "Description" %>
+    <%= f.text_area :description, class: "form-control", rows: 3, placeholder: "Description du thème..." %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :color, "Couleur" %>
+    <div style="display: flex; gap: 1rem; align-items: center;">
+      <%= f.color_field :color, class: "form-control", style: "width: 100px; height: 45px; cursor: pointer;" %>
+      <small class="form-text">Choisissez une couleur pour identifier le thème</small>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <%= f.submit "Enregistrer", class: "btn btn-primary" %>
+    <%= link_to "Annuler", admin_themes_path, class: "btn btn-outline" %>
+  </div>
+<% end %>

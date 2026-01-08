@@ -1,0 +1,76 @@
+<div class="container">
+  <div class="page-header">
+    <h1 class="page-title">Questions - <%= @quiz.title %></h1>
+    <div style="display: flex; gap: 0.5rem;">
+      <%= link_to "Ajouter une question", new_admin_quiz_question_path(@quiz), class: "btn btn-primary" %>
+      <%= link_to "📥 Importer CSV", import_admin_quiz_questions_path(@quiz), class: "btn btn-secondary" %>
+      <% if @quiz.questions.any? %>
+        <%= link_to "📤 Exporter CSV", export_admin_quiz_questions_path(@quiz), class: "btn btn-outline" %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom: 1.5rem;">
+    <div class="card-body">
+      <strong>Quiz :</strong> <%= @quiz.title %> 
+      <span class="badge badge-info" style="margin-left: 1rem;"><%= @quiz.questions.count %> questions</span>
+      <%= link_to "Retour au quiz", admin_quiz_path(@quiz), class: "btn btn-sm btn-outline", style: "margin-left: 1rem;" %>
+    </div>
+  </div>
+
+  <% if @questions.any? %>
+    <% @questions.order(:position).each_with_index do |question, index| %>
+      <div class="card" style="margin-bottom: 1rem;">
+        <div class="card-body">
+          <div style="display: flex; justify-content: space-between; align-items: start;">
+            <div style="flex: 1;">
+              <h4 style="margin-bottom: 0.5rem;">Question <%= index + 1 %></h4>
+              <p style="margin: 0.5rem 0; font-size: 1.1rem;"><%= question.question_text %></p>
+              
+              <div style="display: flex; gap: 1rem; margin: 1rem 0;">
+                <span class="badge badge-info">Niveau <%= question.difficulty_level %></span>
+                <span class="badge" style="background-color: <%= question.theme.color %>; color: white;"><%= question.theme.name %></span>
+                <% if question.multiple_correct_answers? %>
+                  <span class="badge badge-warning">Réponses multiples</span>
+                <% end %>
+                <% if question.randomize_answers? %>
+                  <span class="badge badge-secondary">Ordre aléatoire</span>
+                <% end %>
+              </div>
+
+              <% if question.image_url.present? %>
+                <div style="margin: 1rem 0;">
+                  <img src="<%= question.image_url %>" alt="Image question" style="max-width: 300px; border-radius: var(--border-radius);">
+                </div>
+              <% end %>
+
+              <div style="margin-top: 1rem;">
+                <strong>Réponses :</strong>
+                <ul style="margin-top: 0.5rem; list-style: none; padding-left: 0;">
+                  <% question.answers.each do |answer| %>
+                    <li style="padding: 0.5rem; margin: 0.25rem 0; background: <%= answer.is_correct? ? '#d1fae5' : '#f3f4f6' %>; border-radius: 4px;">
+                      <%= answer.is_correct? ? '✓' : '✗' %>
+                      <%= answer.answer_text %>
+                    </li>
+                  <% end %>
+                </ul>
+              </div>
+            </div>
+
+            <div style="margin-left: 1rem;">
+              <%= link_to "Modifier", edit_admin_quiz_question_path(@quiz, question), class: "btn btn-sm btn-outline" %>
+              <%= link_to "Supprimer", admin_quiz_question_path(@quiz, question), data: { turbo_method: :delete, turbo_confirm: "Êtes-vous sûr ?" }, class: "btn btn-sm btn-danger" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="card">
+      <div class="card-body" style="text-align: center; padding: 3rem;">
+        <p style="color: var(--gray-600); margin-bottom: 1rem;">Aucune question pour ce quiz</p>
+        <%= link_to "Créer la première question", new_admin_quiz_question_path(@quiz), class: "btn btn-primary" %>
+      </div>
+    </div>
+  <% end %>
+</div>

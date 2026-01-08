@@ -1,0 +1,42 @@
+<div class="container">
+  <div style="text-align: center; padding: 4rem 0;">
+    <h1 style="font-size: 3rem; font-weight: 700; margin-bottom: 1rem; color: var(--primary-color);">
+      Plateforme de Formation
+    </h1>
+    <p style="font-size: 1.25rem; color: var(--gray-600); margin-bottom: 2rem;">
+      Système de quiz adaptatif pour l'apprentissage et l'évaluation
+    </p>
+    
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+      <% if user_signed_in? %>
+        <%= link_to "Accéder au tableau de bord", dashboard_path, class: "btn btn-primary" %>
+        <%= link_to "Se déconnecter", destroy_user_session_path, data: { turbo_method: :delete }, class: "btn bg-danger" %>
+      <% else %>
+        <%= link_to "Se connecter", new_user_session_path, class: "btn btn-primary" %>
+        <%= link_to "S'inscrire", new_user_registration_path, class: "btn btn-outline" %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="dashboard-grid" style="margin-top: 3rem;">
+    <div class="card">
+      <h3 style="color: var(--primary-color); margin-bottom: 1rem;">📚 Cours</h3>
+      <p>Accédez à une bibliothèque de cours structurés et organisés par thématiques.</p>
+    </div>
+    
+    <div class="card">
+      <h3 style="color: var(--secondary-color); margin-bottom: 1rem;">✅ Quiz</h3>
+      <p>Testez vos connaissances avec des quiz simples ou adaptatifs de type.</p>
+    </div>
+    
+    <div class="card">
+      <h3 style="color: var(--warning-color); margin-bottom: 1rem;">📊 Statistiques</h3>
+      <p>Suivez votre progression et analysez vos résultats en détail.</p>
+    </div>
+    
+    <div class="card">
+      <h3 style="color: var(--danger-color); margin-bottom: 1rem;">🏆 Certificats</h3>
+      <p>Obtenez des certificats officiels après validation de vos compétences.</p>
+    </div>
+  </div>
+</div>

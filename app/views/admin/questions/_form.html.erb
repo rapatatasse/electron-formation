@@ -1,0 +1,108 @@
+<%= form_with(model: [:admin, @quiz, @question], local: true, class: "form") do |f| %>
+  <% if @question.errors.any? %>
+    <div class="alert alert-danger">
+      <h4><%= pluralize(@question.errors.count, "erreur") %> empêche(nt) l'enregistrement :</h4>
+      <ul>
+        <% @question.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :question_text, "Texte de la question" %>
+    <%= f.text_area :question_text, class: "form-control", rows: 3, placeholder: "Posez votre question..." %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :theme_id, "Thème" %>
+    <%= f.collection_select :theme_id, Theme.all, :id, :name, { prompt: "Sélectionnez un thème" }, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :image_url, "URL de l'image (optionnel)" %>
+    <%= f.text_field :image_url, class: "form-control", placeholder: "https://..." %>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group" style="flex: 1;">
+      <%= f.label :difficulty_level, "Niveau de difficulté" %>
+      <%= f.number_field :difficulty_level, class: "form-control", min: 1, max: 100, placeholder: "1-100" %>
+      <small class="form-text">1 = facile, 100 = difficile</small>
+    </div>
+
+    <div class="form-group" style="flex: 1; margin-left: 1rem;">
+      <%= f.label :position, "Position" %>
+      <%= f.number_field :position, class: "form-control", placeholder: "1" %>
+      <small class="form-text">Ordre d'affichage</small>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div style="display: flex; gap: 2rem;">
+      <div>
+        <%= f.check_box :multiple_correct_answers, style: "width: auto; margin-right: 0.5rem;" %>
+        <%= f.label :multiple_correct_answers, "Plusieurs réponses correctes", style: "font-weight: normal;" %>
+      </div>
+
+      <div>
+        <%= f.check_box :randomize_answers, style: "width: auto; margin-right: 0.5rem;" %>
+        <%= f.label :randomize_answers, "Ordre aléatoire des réponses", style: "font-weight: normal;" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin: 1.5rem 0;">
+    <div class="card-header">
+      Réponses
+    </div>
+    <div class="card-body">
+      <div id="answers">
+        <%= f.fields_for :answers do |answer_form| %>
+          <div class="answer-field" style="display: flex; gap: 1rem; margin-bottom: 1rem; align-items: start;">
+            <div style="flex: 1;">
+              <%= answer_form.text_field :answer_text, class: "form-control", placeholder: "Texte de la réponse" %>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <%= answer_form.check_box :is_correct, style: "width: auto; margin: 0;" %>
+              <%= answer_form.label :correct, "Correcte", style: "margin: 0; font-weight: normal; white-space: nowrap;" %>
+            </div>
+            <%= answer_form.hidden_field :_destroy %>
+            <button type="button" class="btn btn-sm btn-danger" onclick="this.previousElementSibling.value='1'; this.closest('.answer-field').style.display='none';">×</button>
+          </div>
+        <% end %>
+      </div>
+      
+      <button type="button" class="btn btn-outline btn-sm" onclick="addAnswer()">+ Ajouter une réponse</button>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <%= f.submit "Enregistrer", class: "btn btn-primary" %>
+    <%= link_to "Annuler", admin_quiz_questions_path(@quiz), class: "btn btn-outline" %>
+  </div>
+<% end %>
+
+<script>
+let answerIndex = <%= @question.answers.size %>;
+
+function addAnswer() {
+  const answersDiv = document.getElementById('answers');
+  const newAnswer = document.createElement('div');
+  newAnswer.className = 'answer-field';
+  newAnswer.style.cssText = 'display: flex; gap: 1rem; margin-bottom: 1rem; align-items: start;';
+  newAnswer.innerHTML = `
+    <div style="flex: 1;">
+      <input type="text" name="question[answers_attributes][${answerIndex}][answer_text]" class="form-control" placeholder="Texte de la réponse">
+    </div>
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <input type="checkbox" name="question[answers_attributes][${answerIndex}][is_correct]" value="1" style="width: auto; margin: 0;">
+      <label style="margin: 0; font-weight: normal; white-space: nowrap;">Correcte</label>
+    </div>
+    <button type="button" class="btn btn-sm btn-danger" onclick="this.closest('.answer-field').remove();">×</button>
+  `;
+  answersDiv.appendChild(newAnswer);
+  answerIndex++;
+}
+</script>

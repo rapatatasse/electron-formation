@@ -1,0 +1,68 @@
+<div class="container">
+  <div class="page-header">
+    <h1 class="page-title">Importer des questions (CSV) - <%= @quiz.title %></h1>
+    <%= link_to "← Retour", admin_quiz_questions_path(@quiz), class: "btn btn-outline" %>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <div style="margin-bottom: 2rem; padding: 1rem; background: var(--info-color); color: white; border-radius: var(--border-radius);">
+        <strong>ℹ️ Instructions :</strong>
+        <ul style="margin: 0.5rem 0 0 1.5rem;">
+          <li>Le fichier doit être au format CSV (séparateur : virgule ou point-virgule)</li>
+          <li>La première ligne doit contenir les en-têtes de colonnes</li>
+          <li>Colonnes requises : question_text, theme_name, difficulty_level</li>
+          <li>Colonnes optionnelles : image_url, position, multiple_correct_answers, randomize_answers</li>
+          <li>Réponses : answer_1 à answer_4 avec correct_1 à correct_4 (oui/non)</li>
+          <li>Les thèmes doivent exister dans la base de données</li>
+        </ul>
+      </div>
+
+      <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+        <%= link_to "📥 Télécharger le modèle CSV", download_template_admin_quiz_questions_path(@quiz), class: "btn btn-secondary" %>
+        <%= link_to "📤 Exporter les questions actuelles", export_admin_quiz_questions_path(@quiz), class: "btn btn-outline" %>
+      </div>
+
+      <%= form_with(url: process_import_admin_quiz_questions_path(@quiz), method: :post, multipart: true, local: true) do |f| %>
+        <div class="form-group">
+          <%= f.label :file, "Sélectionner le fichier CSV" %>
+          <%= f.file_field :file, accept: ".csv", class: "form-control", required: true %>
+        </div>
+
+        <div class="form-actions">
+          <%= f.submit "Importer les questions", class: "btn btn-primary" %>
+          <%= link_to "Annuler", admin_quiz_questions_path(@quiz), class: "btn btn-outline" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top: 2rem;">
+    <div class="card-header">
+      Exemple de fichier CSV
+    </div>
+    <div class="card-body">
+      <pre style="background: var(--gray-50); padding: 1rem; border-radius: 4px; overflow-x: auto; font-size: 0.85rem;">question_text;theme_name;image_url;difficulty_level;position;multiple_correct_answers;randomize_answers;answer_1;correct_1;answer_2;correct_2;answer_3;correct_3;answer_4;correct_4
+Quelle est la tension du réseau domestique en France ?;Risque electrique;;30;1;non;non;230V;oui;110V;non;400V;non;12V;non
+Quels équipements de protection sont obligatoires ?;Risque mecanique;;50;2;oui;non;Gants;oui;Lunettes;oui;Casquette;non;Chaussures de sécurité;oui</pre>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top: 2rem;">
+    <div class="card-header">
+      Thèmes disponibles
+    </div>
+    <div class="card-body">
+      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+        <% Theme.all.each do |theme| %>
+          <span class="badge" style="background-color: <%= theme.color %>; color: white; padding: 0.5rem 1rem;">
+            <%= theme.name %>
+          </span>
+        <% end %>
+      </div>
+      <p style="margin-top: 1rem; color: var(--gray-600);">
+        <small>Utilisez exactement ces noms de thèmes dans votre fichier CSV</small>
+      </p>
+    </div>
+  </div>
+</div>

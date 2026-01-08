@@ -1,0 +1,70 @@
+<%= form_with(model: [:admin, quiz], local: true, class: "form") do |f| %>
+  <% if quiz.errors.any? %>
+    <div class="alert alert-danger">
+      <h4><%= pluralize(quiz.errors.count, "erreur") %> empêche(nt) l'enregistrement :</h4>
+      <ul>
+        <% quiz.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :title, "Titre du quiz" %>
+    <%= f.text_field :title, class: "form-control", placeholder: "Ex: Quiz de sécurité électrique" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :description, "Description" %>
+    <%= f.text_area :description, class: "form-control", rows: 3, placeholder: "Description du quiz..." %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :quiz_type, "Type de quiz" %>
+    <%= f.select :quiz_type, 
+        options_for_select([["Simple", "simple"], ["Adaptatif", "adaptive"]], quiz.quiz_type), 
+        {}, 
+        class: "form-control" %>
+    <small class="form-text">Le quiz adaptatif ajuste la difficulté selon les réponses de l'apprenant</small>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group" style="flex: 1;">
+      <%= f.label :time_limit, "Durée limite (minutes)" %>
+      <%= f.number_field :time_limit, class: "form-control", placeholder: "Ex: 30", min: 1 %>
+      <small class="form-text">Laisser vide pour aucune limite</small>
+    </div>
+
+    <div class="form-group" style="flex: 1; margin-left: 1rem;">
+      <%= f.label :passing_score, "Score minimum (%)" %>
+      <%= f.number_field :passing_score, class: "form-control", placeholder: "Ex: 70", min: 0, max: 100 %>
+      <small class="form-text">Score requis pour réussir</small>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :max_attempts, "Nombre maximum de tentatives" %>
+    <%= f.number_field :max_attempts, class: "form-control", placeholder: "Ex: 3", min: 1 %>
+    <small class="form-text">Laisser vide pour tentatives illimitées</small>
+  </div>
+
+  <div class="form-group">
+    <div style="display: flex; gap: 2rem;">
+      <div>
+        <%= f.check_box :randomize_questions, style: "width: auto; margin-right: 0.5rem;" %>
+        <%= f.label :randomize_questions, "Ordre aléatoire des questions", style: "font-weight: normal;" %>
+      </div>
+
+      <div>
+        <%= f.check_box :active, style: "width: auto; margin-right: 0.5rem;" %>
+        <%= f.label :active, "Quiz actif", style: "font-weight: normal;" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <%= f.submit quiz.new_record? ? "Créer le quiz" : "Mettre à jour", class: "btn btn-primary" %>
+    <%= link_to "Annuler", admin_quizzes_path, class: "btn btn-outline" %>
+  </div>
+<% end %>

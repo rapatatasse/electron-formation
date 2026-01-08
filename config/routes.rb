@@ -1,14 +1,57 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  devise_for :users
+  devise_scope :user do
+    get '/users/sign_out', to: 'devise/sessions#destroy'
+  end
+  
+  root to: "home#index"
+  get "dashboard", to: "home#dashboard"
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  namespace :admin do
+    get "dashboard", to: "dashboard#index"
+    resources :users do
+      collection do
+        get :import
+        post :process_import
+        get :download_template
+      end
+    end
+    resources :courses
+    resources :themes
+    resources :quizzes do
+      resources :questions do
+        collection do
+          get :import
+          post :process_import
+          get :export
+          get :download_template
+        end
+      end
+      member do
+        get :assign_users
+        post :update_assignments
+      end
+    end
+  end
+
+  namespace :formateur do
+    get "dashboard", to: "dashboard#index"
+    resources :quizzes, only: [:index, :show] do
+      resources :questions, only: [:index, :show]
+    end
+  end
+
+  namespace :apprenant do
+    get "dashboard", to: "dashboard#index"
+    resources :quiz_attempts, only: [:index, :show, :new, :create] do
+      member do
+        post :submit_answer
+        post :complete
+      end
+    end
+  end
+
   get "up" => "rails/health#show", as: :rails_health_check
-
-  # Render dynamic PWA files from app/views/pwa/*
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-
-  # Defines the root path route ("/")
-  # root "posts#index"
 end

@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="page-header">
+    <h1 class="page-title">Gestion des thèmes</h1>
+    <%= link_to "Nouveau thème", new_admin_theme_path, class: "btn btn-primary" %>
+  </div>
+
+  <div class="card">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Description</th>
+          <th>Couleur</th>
+          <th>Questions</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @themes.each do |theme| %>
+          <tr>
+            <td>
+              <strong><%= theme.name %></strong>
+            </td>
+            <td><%= truncate(theme.description, length: 80) %></td>
+            <td>
+              <span style="display: inline-block; width: 30px; height: 30px; background-color: <%= theme.color %>; border-radius: 4px; border: 1px solid var(--gray-300);"></span>
+              <code style="margin-left: 0.5rem;"><%= theme.color %></code>
+            </td>
+            <td><%= theme.questions.count %></td>
+            <td>
+              <div class="actions">
+                <%= link_to "Modifier", edit_admin_theme_path(theme), class: "btn btn-sm btn-outline" %>
+                <%= link_to "Supprimer", admin_theme_path(theme), data: { turbo_method: :delete, turbo_confirm: "Êtes-vous sûr ?" }, class: "btn btn-sm btn-danger" %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

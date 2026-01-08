@@ -1,0 +1,130 @@
+<div class="container">
+  <div class="page-header">
+    <h1 class="page-title">Mes quiz assignés</h1>
+    <%= link_to "← Retour au tableau de bord", apprenant_dashboard_path, class: "btn btn-outline" %>
+  </div>
+
+  <div class="dashboard-grid" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
+    <% current_user.assigned_quizzes.active.each do |quiz| %>
+      <div class="card">
+        <div class="card-body">
+          <h3 style="margin-bottom: 0.5rem;"><%= quiz.title %></h3>
+          
+          <% if quiz.adaptive? %>
+            <span class="badge badge-warning">Adaptatif</span>
+          <% else %>
+            <span class="badge badge-info">Simple</span>
+          <% end %>
+
+          <% if quiz.description.present? %>
+            <p style="margin: 1rem 0; color: var(--gray-600);"><%= truncate(quiz.description, length: 100) %></p>
+          <% end %>
+
+          <div style="margin: 1rem 0; padding: 1rem 0; border-top: 1px solid var(--gray-200); border-bottom: 1px solid var(--gray-200);">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span>Questions :</span>
+              <strong><%= quiz.questions.count %></strong>
+            </div>
+            <% if quiz.time_limit %>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                <span>Durée :</span>
+                <strong><%= quiz.time_limit %> min</strong>
+              </div>
+            <% end %>
+            <% if quiz.passing_score %>
+              <div style="display: flex; justify-content: space-between;">
+                <span>Score minimum :</span>
+                <strong><%= quiz.passing_score %>%</strong>
+              </div>
+            <% end %>
+          </div>
+
+          <% assignment = current_user.quiz_assignments.find_by(quiz: quiz) %>
+          <% user_attempts = quiz.quiz_attempts.where(user: current_user) %>
+          
+          <% if assignment&.due_date %>
+            <div style="margin-bottom: 1rem; padding: 0.5rem; background: var(--warning-color); color: white; border-radius: 4px; font-size: 0.875rem;">
+              📅 Échéance: <%= l(assignment.due_date, format: :short) %>
+            </div>
+          <% end %>
+          
+          <% if user_attempts.any? %>
+            <div style="margin-bottom: 1rem;">
+              <small style="color: var(--gray-600);">
+                Tentatives : <%= user_attempts.count %>
+                <% if quiz.max_attempts %>
+                  / <%= quiz.max_attempts %>
+                <% end %>
+              </small>
+              <% best_score = user_attempts.completed.maximum(:score) %>
+              <% if best_score %>
+                <div style="margin-top: 0.25rem;">
+                  <small>Meilleur score : <strong><%= best_score %>%</strong></small>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+
+          <% if assignment&.completed? %>
+            <%= link_to "Voir les résultats", apprenant_quiz_attempts_path(quiz_id: quiz.id), class: "btn btn-secondary btn-block" %>
+          <% else %>
+            <% can_attempt = quiz.max_attempts.nil? || user_attempts.count < quiz.max_attempts %>
+            <% if can_attempt %>
+              <%= link_to "Commencer le quiz", new_apprenant_quiz_attempt_path(quiz_id: quiz.id), class: "btn btn-primary btn-block" %>
+            <% else %>
+              <button class="btn btn-secondary btn-block" disabled>Nombre de tentatives atteint</button>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <% if current_user.quiz_attempts.any? %>
+    <div class="card" style="margin-top: 2rem;">
+      <div class="card-header">
+        Mes tentatives récentes
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Quiz</th>
+            <th>Date</th>
+            <th>Score</th>
+            <th>Statut</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% current_user.quiz_attempts.order(created_at: :desc).limit(10).each do |attempt| %>
+            <tr>
+              <td><%= attempt.quiz.title %></td>
+              <td><%= l(attempt.started_at, format: :short) %></td>
+              <td>
+                <% if attempt.completed? %>
+                  <strong><%= attempt.score %>%</strong>
+                <% else %>
+                  <span class="badge badge-warning">En cours</span>
+                <% end %>
+              </td>
+              <td>
+                <% if attempt.completed? %>
+                  <% if attempt.passed? %>
+                    <span class="badge badge-success">Réussi</span>
+                  <% else %>
+                    <span class="badge badge-danger">Échoué</span>
+                  <% end %>
+                <% else %>
+                  <span class="badge badge-info">En cours</span>
+                <% end %>
+              </td>
+              <td>
+                <%= link_to "Voir", apprenant_quiz_attempt_path(attempt), class: "btn btn-sm btn-outline" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+</div>

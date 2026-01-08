@@ -1,0 +1,214 @@
+<div class="container">
+  <div class="page-header">
+    <h1 class="page-title"><%= @attempt.quiz.title %></h1>
+  </div>
+
+  <% if @attempt.completed? %>
+    <!-- Résultats du quiz -->
+    <div class="card" style="margin-bottom: 1.5rem;">
+      <div class="card-body" style="text-align: center;">
+        <h2 style="margin-bottom: 1rem;">
+          <% if @attempt.passed? %>
+            🎉 Félicitations !
+          <% else %>
+            Résultat
+          <% end %>
+        </h2>
+        
+        <div style="font-size: 3rem; font-weight: bold; color: <%= @attempt.passed? ? 'var(--secondary-color)' : 'var(--danger-color)' %>; margin: 1rem 0;">
+          <%= @attempt.score %>%
+        </div>
+
+        <div style="display: flex; justify-content: center; gap: 2rem; margin: 1.5rem 0;">
+          <div>
+            <div style="font-size: 2rem; font-weight: bold;"><%= @attempt.correct_answers_count %></div>
+            <div style="color: var(--gray-600);">Bonnes réponses</div>
+          </div>
+          <div>
+            <div style="font-size: 2rem; font-weight: bold;"><%= @attempt.total_questions %></div>
+            <div style="color: var(--gray-600);">Questions</div>
+          </div>
+        </div>
+
+        <% if @attempt.quiz.passing_score %>
+          <div style="margin-top: 1rem;">
+            <% if @attempt.passed? %>
+              <span class="badge badge-success" style="font-size: 1rem; padding: 0.5rem 1rem;">Quiz réussi ✓</span>
+            <% else %>
+              <span class="badge badge-danger" style="font-size: 1rem; padding: 0.5rem 1rem;">Score minimum requis : <%= @attempt.quiz.passing_score %>%</span>
+            <% end %>
+          </div>
+        <% end %>
+
+        <% if @attempt.quiz.adaptive? && @attempt.final_level %>
+          <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--gray-200);">
+            <strong>Niveau :</strong>
+            <div style="font-size: 2rem; font-weight: bold; color: var(--primary-color); margin-top: 0.5rem;">
+              <%= @attempt.final_level %> / 100
+            </div>
+          </div>
+        <% end %>
+
+        <div style="margin-top: 2rem;">
+          <%= link_to "Retour aux quiz", apprenant_quiz_attempts_path, class: "btn btn-primary" %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Détail des réponses -->
+    <div class="card">
+      <div class="card-header">
+        Détail des réponses
+      </div>
+      <div class="card-body">
+        <% @attempt.attempt_answers.includes(:question, :answers).each_with_index do |attempt_answer, index| %>
+          <div style="padding: 1.5rem; border: 2px solid <%= attempt_answer.correct? ? 'var(--secondary-color)' : 'var(--danger-color)' %>; border-radius: var(--border-radius); margin-bottom: 1rem; background: <%= attempt_answer.correct? ? '#d1fae5' : '#fee2e2' %>;">
+            <div style="display: flex; justify-content: between; align-items: start; margin-bottom: 1rem;">
+              <div style="flex: 1;">
+                <strong>Question <%= index + 1 %> :</strong>
+                <p style="margin: 0.5rem 0; font-size: 1.1rem;"><%= attempt_answer.question.question_text %></p>
+              </div>
+              <div>
+                <% if attempt_answer.is_correct? %>
+                  <span class="badge badge-success">✓ Correct</span>
+                <% else %>
+                  <span class="badge badge-danger">✗ Incorrect</span>
+                <% end %>
+              </div>
+            </div>
+
+            <% if attempt_answer.question.image_url.present? %>
+              <div style="margin: 1rem 0;">
+                <img src="<%= attempt_answer.question.image_url %>" alt="Image question" style="max-width: 300px; border-radius: var(--border-radius);">
+              </div>
+            <% end %>
+
+            <div style="margin-top: 1rem;">
+              <strong>Votre réponse :</strong>
+              <div style="margin-top: 0.5rem;">
+                <% attempt_answer.answers.each do |answer| %>
+                  <div style="padding: 0.5rem; margin: 0.25rem 0; background: white; border-radius: 4px; border: 2px solid var(--primary-color);">
+                    <%= answer.answer_text %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+
+            <% unless attempt_answer.is_correct? %>
+              <div style="margin-top: 1rem;">
+                <strong>Bonne(s) réponse(s) :</strong>
+                <div style="margin-top: 0.5rem;">
+                  <% attempt_answer.question.answers.correct.each do |answer| %>
+                    <div style="padding: 0.5rem; margin: 0.25rem 0; background: white; border-radius: 4px; border: 2px solid var(--secondary-color);">
+                      ✓ <%= answer.answer_text %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+  <% else %>
+    <!-- Quiz en cours -->
+    <div class="card">
+      <div class="card-body">
+        <% current_question = @attempt.next_question %>
+        
+        <% if current_question %>
+          <div style="margin-bottom: 2rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+              <span class="badge badge-info">Question <%= @attempt.attempt_answers.count + 1 %> / <%= @attempt.total_questions %></span>
+              
+              <% if @attempt.quiz.time_limit && @attempt.started_at %>
+                <div id="timer" style="font-weight: bold; color: var(--danger-color);">
+                  Temps restant : <span id="time-remaining"></span>
+                </div>
+              <% end %>
+            </div>
+
+            <div style="width: 100%; height: 8px; background: var(--gray-200); border-radius: 4px; margin-bottom: 2rem;">
+              <div style="width: <%= (@attempt.attempt_answers.count.to_f / @attempt.total_questions * 100).round %>%; height: 100%; background: var(--primary-color); border-radius: 4px; transition: width 0.3s;"></div>
+            </div>
+          </div>
+
+          <h3 style="margin-bottom: 1.5rem;"><%= current_question.question_text %></h3>
+
+          <% if current_question.image_url.present? %>
+            <div style="margin: 1.5rem 0;">
+              <img src="<%= current_question.image_url %>" alt="Image question" style="max-width: 100%; border-radius: var(--border-radius);">
+            </div>
+          <% end %>
+
+          <%= form_with(url: submit_answer_apprenant_quiz_attempt_path(@attempt), method: :post, local: true) do |f| %>
+            <%= f.hidden_field :question_id, value: current_question.id %>
+            
+            <div style="margin: 2rem 0;">
+              <% answers = current_question.randomize_answers? ? current_question.answers.shuffle : current_question.answers %>
+              <% answers.each do |answer| %>
+                <label style="display: block; padding: 1rem; margin: 0.5rem 0; border: 2px solid var(--gray-300); border-radius: var(--border-radius); cursor: pointer; transition: all 0.2s;" 
+                       onmouseover="this.style.borderColor='var(--primary-color)'; this.style.background='var(--gray-50)';" 
+                       onmouseout="this.style.borderColor='var(--gray-300)'; this.style.background='white';">
+                  <% if current_question.multiple_correct_answers? %>
+                    <%= check_box_tag 'answer_ids[]', answer.id, false, style: "margin-right: 0.75rem;" %>
+                  <% else %>
+                    <%= radio_button_tag 'answer_ids[]', answer.id, false, style: "margin-right: 0.75rem;" %>
+                  <% end %>
+                  <%= answer.answer_text %>
+                </label>
+              <% end %>
+            </div>
+
+            <%= f.submit "Valider la réponse", class: "btn btn-primary btn-block" %>
+          <% end %>
+
+        <% else %>
+          <!-- Toutes les questions répondues -->
+          <div style="text-align: center; padding: 2rem;">
+            <h3 style="margin-bottom: 1rem;">Toutes les questions ont été répondues !</h3>
+            <p style="color: var(--gray-600); margin-bottom: 2rem;">Cliquez sur le bouton ci-dessous pour terminer le quiz et voir vos résultats.</p>
+            
+            <%= form_with(url: complete_apprenant_quiz_attempt_path(@attempt), method: :post, local: true) do |f| %>
+              <%= f.submit "Terminer le quiz", class: "btn btn-primary", style: "font-size: 1.2rem; padding: 1rem 2rem;" %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <% if @attempt.quiz.time_limit && @attempt.started_at %>
+      <script>
+        const startTime = new Date('<%= @attempt.started_at.iso8601 %>');
+        const timeLimit = <%= @attempt.quiz.time_limit %> * 60 * 1000; // en millisecondes
+        const endTime = new Date(startTime.getTime() + timeLimit);
+
+        function updateTimer() {
+          const now = new Date();
+          const remaining = endTime - now;
+
+          if (remaining <= 0) {
+            document.getElementById('time-remaining').textContent = 'Temps écoulé !';
+            // Auto-submit le formulaire
+            const form = document.querySelector('form');
+            if (form) {
+              alert('Le temps est écoulé ! Le quiz va être soumis automatiquement.');
+              window.location.href = '<%= complete_apprenant_quiz_attempt_path(@attempt) %>';
+            }
+            return;
+          }
+
+          const minutes = Math.floor(remaining / 60000);
+          const seconds = Math.floor((remaining % 60000) / 1000);
+          document.getElementById('time-remaining').textContent = 
+            `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+          setTimeout(updateTimer, 1000);
+        }
+
+        updateTimer();
+      </script>
+    <% end %>
+  <% end %>
+</div>

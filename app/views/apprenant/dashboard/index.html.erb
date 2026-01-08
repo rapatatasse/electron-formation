@@ -1,0 +1,118 @@
+<div class="container">
+  <div class="page-header">
+    <h1 class="page-title">Tableau de bord Apprenant</h1>
+      <div class="stat-card">
+      <h3><%= current_user.first_name %> <%= current_user.last_name %></h3>
+      <p><%= current_user.email %></p>
+    </div>
+  </div>
+
+  <div class="dashboard-grid">
+    <div class="stat-card">
+      <h3><%= @total_attempts %></h3>
+      <p>Quiz passés</p>
+    </div>
+    
+    <div class="stat-card" style="background: linear-gradient(135deg, var(--secondary-color), #059669);">
+      <h3><%= @passed_attempts %></h3>
+      <p>Quiz réussis</p>
+    </div>
+    
+    <div class="stat-card" style="background: linear-gradient(135deg, var(--warning-color), #d97706);">
+      <h3><%= @total_attempts > 0 ? (@passed_attempts.to_f / @total_attempts * 100).round : 0 %>%</h3>
+      <p>Taux de réussite</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      Quiz assignés (<%= @assignments.count %>)
+    </div>
+    <div class="card-body">
+      <% if @assignments.any? %>
+        <div style="display: grid; gap: 1rem;">
+          <% @assignments.each do |quiz_id, assignment| %>
+            <% quiz = assignment.quiz %>
+            <div style="border: 1px solid var(--gray-200); border-radius: var(--border-radius); padding: 1.5rem;">
+              <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+                <h3 style="margin: 0;"><%= quiz.title %></h3>
+                <% if assignment.completed? %>
+                  <span class="badge badge-success">✓ Complété</span>
+                <% elsif assignment.due_date && assignment.due_date < Date.today %>
+                  <span class="badge badge-danger">⚠️ Échéance dépassée</span>
+                <% elsif assignment.due_date %>
+                  <span class="badge badge-warning">📅 Échéance: <%= l(assignment.due_date, format: :short) %></span>
+                <% end %>
+              </div>
+              
+              <p style="color: var(--gray-600); margin-bottom: 1rem;"><%= quiz.description %></p>
+              
+              <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                <span class="badge badge-info"><%= quiz.questions.count %> questions</span>
+                <% if quiz.passing_score %>
+                  <span style="color: var(--gray-600);">Seuil: <%= quiz.passing_score %>%</span>
+                <% end %>
+                <% if quiz.time_limit %>
+                  <span style="color: var(--gray-600);">⏱️ <%= quiz.time_limit %> min</span>
+                <% end %>
+                <% if quiz.max_attempts %>
+                  <span style="color: var(--gray-600);">Max: <%= quiz.max_attempts %> tentatives</span>
+                <% end %>
+                
+                <% if assignment.completed? %>
+                  <%= link_to "Voir les résultats", apprenant_quiz_attempts_path(quiz_id: quiz.id), class: "btn btn-sm btn-outline", style: "margin-left: auto;" %>
+                <% else %>
+                  <%= link_to "Commencer le quiz", new_apprenant_quiz_attempt_path(quiz_id: quiz.id), class: "btn btn-sm btn-primary", style: "margin-left: auto;" %>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p style="text-align: center; color: var(--gray-600); padding: 2rem;">
+          Aucun quiz ne vous a été assigné pour le moment.
+        </p>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      Mes dernières tentatives
+    </div>
+    <div class="card-body">
+      <% if @my_attempts.any? %>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Quiz</th>
+              <th>Score</th>
+              <th>Statut</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @my_attempts.each do |attempt| %>
+              <tr>
+                <td><%= attempt.quiz.title %></td>
+                <td><strong><%= attempt.score %>%</strong></td>
+                <td>
+                  <% if attempt.passed? %>
+                    <span class="badge badge-success">Réussi</span>
+                  <% else %>
+                    <span class="badge badge-danger">Échoué</span>
+                  <% end %>
+                </td>
+                <td><%= l(attempt.created_at, format: :short) %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <p style="text-align: center; color: var(--gray-600); padding: 2rem;">
+          Vous n'avez pas encore passé de quiz.
+        </p>
+      <% end %>
+    </div>
+  </div>
+</div>

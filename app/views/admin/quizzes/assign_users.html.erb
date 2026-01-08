@@ -1,0 +1,132 @@
+<div class="container">
+  <div class="page-header">
+    <h1 class="page-title">Assigner des apprenants - <%= @quiz.title %></h1>
+    <%= link_to "← Retour au quiz", admin_quiz_path(@quiz), class: "btn btn-outline" %>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <%= form_with(url: update_assignments_admin_quiz_path(@quiz), method: :post, local: true) do |f| %>
+        
+        <div style="margin-bottom: 1.5rem; padding: 1rem; background: var(--gray-50); border-radius: var(--border-radius);">
+          <div style="display: flex; gap: 1rem; align-items: end; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 200px;">
+              <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Filtrer par session</label>
+              <select id="session-filter" class="form-control" onchange="filterBySession()">
+                <option value="">Toutes les sessions</option>
+                <% @sessions.each do |session| %>
+                  <option value="<%= session %>"><%= session %></option>
+                <% end %>
+              </select>
+            </div>
+            
+            <div style="flex: 1; min-width: 200px;">
+              <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Rechercher</label>
+              <input type="text" id="search-input" class="form-control" placeholder="Nom, prénom, email..." onkeyup="filterUsers()">
+            </div>
+
+            <div>
+              <button type="button" class="btn btn-outline" onclick="selectAll()">Tout sélectionner</button>
+              <button type="button" class="btn btn-outline" onclick="deselectAll()">Tout désélectionner</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+          <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Date limite (optionnel)</label>
+          <%= f.date_field :due_date, class: "form-control", style: "max-width: 300px;" %>
+        </div>
+
+        <div style="max-height: 500px; overflow-y: auto; border: 1px solid var(--gray-200); border-radius: var(--border-radius); padding: 1rem;">
+          <div id="users-list">
+            <% @apprenants.each do |apprenant| %>
+              <label class="user-item" data-session="<%= apprenant.session %>" data-search="<%= "#{apprenant.full_name} #{apprenant.email}".downcase %>" style="display: flex; align-items: center; padding: 0.75rem; margin: 0.25rem 0; border: 1px solid var(--gray-200); border-radius: 4px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='var(--gray-50)'" onmouseout="this.style.background='white'">
+                <%= check_box_tag 'user_ids[]', apprenant.id, @assigned_user_ids.include?(apprenant.id), style: "margin-right: 1rem; width: auto;" %>
+                <div style="flex: 1;">
+                  <strong><%= apprenant.full_name %></strong>
+                  <br>
+                  <small style="color: var(--gray-600);"><%= apprenant.email %></small>
+                </div>
+                <% if apprenant.session.present? %>
+                  <span class="badge badge-info"><%= apprenant.session %></span>
+                <% end %>
+              </label>
+            <% end %>
+          </div>
+        </div>
+
+        <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--gray-200);">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span id="selected-count" style="color: var(--gray-600);">
+              <%= @assigned_user_ids.count %> apprenant(s) sélectionné(s)
+            </span>
+            <%= f.submit "Enregistrer les assignations", class: "btn btn-primary" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+function filterBySession() {
+  const sessionFilter = document.getElementById('session-filter').value;
+  const searchInput = document.getElementById('search-input').value.toLowerCase();
+  filterUsers();
+}
+
+function filterUsers() {
+  const sessionFilter = document.getElementById('session-filter').value;
+  const searchInput = document.getElementById('search-input').value.toLowerCase();
+  const userItems = document.querySelectorAll('.user-item');
+  
+  let visibleCount = 0;
+  
+  userItems.forEach(item => {
+    const session = item.dataset.session || '';
+    const searchText = item.dataset.search;
+    
+    const sessionMatch = !sessionFilter || session === sessionFilter;
+    const searchMatch = !searchInput || searchText.includes(searchInput);
+    
+    if (sessionMatch && searchMatch) {
+      item.style.display = 'flex';
+      visibleCount++;
+    } else {
+      item.style.display = 'none';
+    }
+  });
+  
+  updateSelectedCount();
+}
+
+function selectAll() {
+  const visibleCheckboxes = Array.from(document.querySelectorAll('.user-item'))
+    .filter(item => item.style.display !== 'none')
+    .map(item => item.querySelector('input[type="checkbox"]'));
+  
+  visibleCheckboxes.forEach(cb => cb.checked = true);
+  updateSelectedCount();
+}
+
+function deselectAll() {
+  const visibleCheckboxes = Array.from(document.querySelectorAll('.user-item'))
+    .filter(item => item.style.display !== 'none')
+    .map(item => item.querySelector('input[type="checkbox"]'));
+  
+  visibleCheckboxes.forEach(cb => cb.checked = false);
+  updateSelectedCount();
+}
+
+function updateSelectedCount() {
+  const checkedCount = document.querySelectorAll('input[name="user_ids[]"]:checked').length;
+  document.getElementById('selected-count').textContent = `${checkedCount} apprenant(s) sélectionné(s)`;
+}
+
+// Mettre à jour le compteur quand on coche/décoche
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('input[name="user_ids[]"]').forEach(checkbox => {
+    checkbox.addEventListener('change', updateSelectedCount);
+  });
+});
+</script>

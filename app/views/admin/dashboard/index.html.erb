@@ -1,0 +1,84 @@
+<div class="container">
+  <div class="page-header">
+    <h1 class="page-title">Tableau de bord Admin</h1>
+  </div>
+
+  <div class="dashboard-grid">
+    <div class="stat-card">
+      <h3><%= @users_count %></h3>
+      <p>Utilisateurs</p>
+    </div>
+    
+    <div class="stat-card" style="background: linear-gradient(135deg, var(--secondary-color), #059669);">
+      <h3><%= @courses_count %></h3>
+      <p>Cours</p>
+    </div>
+    
+    <div class="stat-card" style="background: linear-gradient(135deg, var(--warning-color), #d97706);">
+      <h3><%= @quizzes_count %></h3>
+      <p>Quiz</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      Actions rapides
+    </div>
+    <div class="card-body">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+        <%= link_to admin_users_path, class: "btn btn-primary", style: "text-align: center;" do %>
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">👥</div>
+          <div>Gérer les utilisateurs</div>
+        <% end %>
+        
+        <%= link_to import_admin_users_path, class: "btn btn-secondary", style: "text-align: center;" do %>
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">📥</div>
+          <div>Importer des apprenants (CSV)</div>
+        <% end %>
+        
+        <%= link_to admin_quizzes_path, class: "btn btn-primary", style: "text-align: center;" do %>
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">📝</div>
+          <div>Gérer les quiz</div>
+        <% end %>
+        
+        <%= link_to admin_courses_path, class: "btn btn-primary", style: "text-align: center;" do %>
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">📚</div>
+          <div>Gérer les cours</div>
+        <% end %>
+        
+        <%= link_to admin_themes_path, class: "btn btn-primary", style: "text-align: center;" do %>
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">🎨</div>
+          <div>Gérer les thèmes</div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      Derniers utilisateurs inscrits
+    </div>
+    <div class="card-body">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Rôle</th>
+            <th>Inscrit le</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @recent_users.each do |user| %>
+            <tr>
+              <td><%= user.full_name %></td>
+              <td><%= user.email %></td>
+              <td><span class="badge badge-info"><%= user.role %></span></td>
+              <td><%= l(user.created_at, format: :short) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

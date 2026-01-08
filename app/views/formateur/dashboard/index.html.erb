@@ -1,0 +1,59 @@
+<div class="container">
+  <div class="page-header">
+    <h1 class="page-title">Tableau de bord Formateur</h1>
+    <%= link_to "Créer un quiz", new_formateur_quiz_path, class: "btn btn-primary" %>
+  </div>
+
+  <div class="dashboard-grid">
+    <div class="stat-card">
+      <h3><%= @total_quizzes %></h3>
+      <p>Quiz créés</p>
+    </div>
+    
+    <div class="stat-card" style="background: linear-gradient(135deg, var(--secondary-color), #059669);">
+      <h3><%= @total_attempts %></h3>
+      <p>Tentatives totales</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      Mes derniers quiz
+    </div>
+    <div class="card-body">
+      <% if @my_quizzes.any? %>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Titre</th>
+              <th>Type</th>
+              <th>Questions</th>
+              <th>Tentatives</th>
+              <th>Créé le</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @my_quizzes.each do |quiz| %>
+              <tr>
+                <td><%= quiz.title %></td>
+                <td><span class="badge badge-info"><%= quiz.quiz_type %></span></td>
+                <td><%= quiz.questions_count %></td>
+                <td><%= quiz.attempts_count %></td>
+                <td><%= l(quiz.created_at, format: :short) %></td>
+                <td>
+                  <%= link_to "Voir", formateur_quiz_path(quiz), class: "btn btn-sm btn-outline" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+        <%= link_to "Voir tous mes quiz", formateur_quizzes_path, class: "btn btn-outline mt-2" %>
+      <% else %>
+        <p style="text-align: center; color: var(--gray-600); padding: 2rem;">
+          Vous n'avez pas encore créé de quiz.
+        </p>
+      <% end %>
+    </div>
+  </div>
+</div>

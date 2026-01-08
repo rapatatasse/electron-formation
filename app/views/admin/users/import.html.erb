@@ -1,0 +1,48 @@
+<div class="container">
+  <div class="page-header">
+    <h1 class="page-title">Importer des apprenants (CSV)</h1>
+    <%= link_to "← Retour", admin_users_path, class: "btn btn-outline" %>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <div style="margin-bottom: 2rem; padding: 1rem; background: var(--info-color); color: white; border-radius: var(--border-radius);">
+        <strong>ℹ️ Instructions :</strong>
+        <ul style="margin: 0.5rem 0 0 1.5rem;">
+          <li>Le fichier doit être au format CSV (séparateur : virgule ou point-virgule)</li>
+          <li>La première ligne doit contenir les en-têtes de colonnes</li>
+          <li>Les colonnes requises : email, first_name (ou prenom), last_name (ou nom)</li>
+          <li>Les colonnes optionnelles : phone, session, role, locale</li>
+        </ul>
+      </div>
+
+      <div style="margin-bottom: 2rem;">
+        <%= link_to "📥 Télécharger le modèle CSV", download_template_admin_users_path, class: "btn btn-secondary" %>
+      </div>
+
+      <%= form_with(url: process_import_admin_users_path, method: :post, multipart: true, local: true) do |f| %>
+        <div class="form-group">
+          <%= f.label :file, "Sélectionner le fichier CSV" %>
+          <%= f.file_field :file, accept: ".csv", class: "form-control", required: true %>
+        </div>
+
+        <div class="form-actions">
+          <%= f.submit "Importer les apprenants", class: "btn btn-primary" %>
+          <%= link_to "Annuler", admin_users_path, class: "btn btn-outline" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top: 2rem;">
+    <div class="card-header">
+      Exemple de fichier CSV
+    </div>
+    <div class="card-body">
+      <pre style="background: var(--gray-50); padding: 1rem; border-radius: 4px; overflow-x: auto;">email;first_name;last_name;phone;session;role;locale
+jean.dupont@formation.com;Jean;Dupont;0123456789;2024-A;apprenant;fr
+marie.martin@formation.com;Marie;Martin;0123456788;2024-A;apprenant;fr
+paul.bernard@formation.com;Paul;Bernard;0123456787;2024-B;apprenant;fr</pre>
+    </div>
+  </div>
+</div>

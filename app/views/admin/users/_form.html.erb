@@ -1,0 +1,55 @@
+<%= form_with(model: [:admin, user], local: true) do |f| %>
+  <% if user.errors.any? %>
+    <div class="alert">
+      <h4><%= pluralize(user.errors.count, "erreur") %> empêche(nt) l'enregistrement :</h4>
+      <ul>
+        <% user.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :first_name, "Prénom", class: "form-label" %>
+    <%= f.text_field :first_name, class: "form-control", required: true %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :last_name, "Nom", class: "form-label" %>
+    <%= f.text_field :last_name, class: "form-control", required: true %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :email, "Email", class: "form-label" %>
+    <%= f.email_field :email, class: "form-control", required: true %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :phone, "Téléphone", class: "form-label" %>
+    <%= f.text_field :phone, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :role, "Rôle", class: "form-label" %>
+    <%= f.select :role, User.roles.keys.map { |r| [r.humanize, r] }, {}, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :locale, "Langue", class: "form-label" %>
+    <%= f.select :locale, [['Français', 'fr'], ['English', 'en'], ['Español', 'es']], {}, class: "form-control" %>
+  </div>
+
+  <% unless user.persisted? %>
+    <div class="form-group">
+      <%= f.label :password, "Mot de passe", class: "form-label" %>
+      <%= f.password_field :password, class: "form-control" %>
+      <small style="color: var(--gray-600);">Laissez vide pour générer automatiquement</small>
+    </div>
+  <% end %>
+
+  <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+    <%= f.submit user.persisted? ? "Mettre à jour" : "Créer", class: "btn btn-primary" %>
+    <%= link_to "Annuler", admin_users_path, class: "btn btn-outline" %>
+  </div>
+<% end %>

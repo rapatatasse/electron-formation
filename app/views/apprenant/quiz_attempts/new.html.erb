@@ -1,0 +1,70 @@
+<div class="container">
+  <div class="page-header">
+    <h1 class="page-title"><%= @quiz.title %></h1>
+    <%= link_to "← Retour au tableau de bord", apprenant_dashboard_path, class: "btn btn-outline" %>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <% if @quiz.description.present? %>
+        <p style="font-size: 1.1rem; margin-bottom: 1.5rem;"><%= @quiz.description %></p>
+      <% end %>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+        <div style="padding: 1rem; background: var(--gray-50); border-radius: var(--border-radius);">
+          <div style="font-size: 0.875rem; color: var(--gray-600);">Questions</div>
+          <div style="font-size: 1.5rem; font-weight: bold;"><%= @quiz.questions.count %></div>
+        </div>
+
+        <% if @quiz.time_limit %>
+          <div style="padding: 1rem; background: var(--gray-50); border-radius: var(--border-radius);">
+            <div style="font-size: 0.875rem; color: var(--gray-600);">Durée limite</div>
+            <div style="font-size: 1.5rem; font-weight: bold;">⏱️ <%= @quiz.time_limit %> min</div>
+          </div>
+        <% end %>
+
+        <% if @quiz.passing_score %>
+          <div style="padding: 1rem; background: var(--gray-50); border-radius: var(--border-radius);">
+            <div style="font-size: 0.875rem; color: var(--gray-600);">Score minimum</div>
+            <div style="font-size: 1.5rem; font-weight: bold;"><%= @quiz.passing_score %>%</div>
+          </div>
+        <% end %>
+
+        <% if @quiz.max_attempts %>
+          <div style="padding: 1rem; background: var(--gray-50); border-radius: var(--border-radius);">
+            <div style="font-size: 0.875rem; color: var(--gray-600);">Tentatives</div>
+            <div style="font-size: 1.5rem; font-weight: bold;"><%= @attempts_count + 1 %> / <%= @quiz.max_attempts %></div>
+          </div>
+        <% end %>
+      </div>
+
+      <% if @assignment.due_date %>
+        <div style="padding: 1rem; background: var(--warning-color); color: white; border-radius: var(--border-radius); margin-bottom: 2rem;">
+          <strong>📅 Date limite :</strong> <%= l(@assignment.due_date, format: :long) %>
+          <% if @assignment.due_date < Date.today %>
+            <span style="margin-left: 1rem;">⚠️ Échéance dépassée</span>
+          <% end %>
+        </div>
+      <% end %>
+
+      <div style="padding: 1.5rem; background: var(--info-color); color: white; border-radius: var(--border-radius); margin-bottom: 2rem;">
+        <h3 style="margin: 0 0 0.5rem 0;">Instructions :</h3>
+        <ul style="margin: 0; padding-left: 1.5rem;">
+          <li>Lisez attentivement chaque question</li>
+          <li>Sélectionnez la ou les réponses correctes</li>
+          <% if @quiz.time_limit %>
+            <li>Vous disposez de <%= @quiz.time_limit %> minutes pour compléter le quiz</li>
+          <% end %>
+          <li>Une fois une réponse soumise, vous ne pourrez pas la modifier</li>
+          <li>Cliquez sur "Terminer le quiz" lorsque vous avez répondu à toutes les questions</li>
+        </ul>
+      </div>
+
+      <%= form_with(url: apprenant_quiz_attempts_path(quiz_id: @quiz.id), method: :post, local: true) do |f| %>
+        <div style="text-align: center;">
+          <%= f.submit "Commencer le quiz", class: "btn btn-primary", style: "font-size: 1.2rem; padding: 1rem 2rem;" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,58 @@
+<div class="container">
+  <div class="page-header">
+    <h1 class="page-title">Gestion des Quiz</h1>
+    <div>
+      <%= link_to "Nouveau quiz", new_admin_quiz_path, class: "btn btn-primary" %>
+    </div>
+  </div>
+
+  <div class="card">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Titre</th>
+          <th>Type</th>
+          <th>Questions</th>
+          <th>Assignations</th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @quizzes.each do |quiz| %>
+          <tr>
+            <td>
+              <strong><%= quiz.title %></strong>
+              <% if quiz.description.present? %>
+                <br><small style="color: var(--gray-600);"><%= truncate(quiz.description, length: 60) %></small>
+              <% end %>
+            </td>
+            <td>
+              <% if quiz.adaptive? %>
+                <span class="badge badge-warning">Adaptatif</span>
+              <% else %>
+                <span class="badge badge-info">Simple</span>
+              <% end %>
+            </td>
+            <td><%= quiz.questions.count %></td>
+            <td><%= quiz.quiz_assignments.count %> apprenants</td>
+            <td>
+              <% if quiz.active? %>
+                <span class="badge badge-success">Actif</span>
+              <% else %>
+                <span class="badge badge-secondary">Inactif</span>
+              <% end %>
+            </td>
+            <td>
+              <%= link_to "Voir", admin_quiz_path(quiz), class: "btn btn-sm btn-outline" %>
+              <%= link_to "Modifier", edit_admin_quiz_path(quiz), class: "btn btn-sm btn-outline" %>
+              <%= link_to "Questions", admin_quiz_questions_path(quiz), class: "btn btn-sm btn-primary" %>
+              <%= link_to "Assigner", assign_users_admin_quiz_path(quiz), class: "btn btn-sm btn-secondary" %>
+              <%= link_to "Supprimer", admin_quiz_path(quiz), method: :delete, data: { turbo_method: :delete, turbo_confirm: "Êtes-vous sûr ?" }, class: "btn btn-sm btn-danger" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
