@@ -1,0 +1,1343 @@
+// Fonction helper pour gérer les chemins des assets Rails
+function assetUrl(path) {
+    // Les images sont dans app/assets/images/exercices/
+    // Rails les sert depuis /assets/exercices/
+    // Utiliser window.location.origin pour éviter les conflits avec <base href>
+    const url = `${window.location.origin}/assets/exercices/${path}`;
+    console.log('🔗 assetUrl:', path, '->', url);
+    return url;
+}
+
+const IMAGES_CONFIG = {
+    
+    "Image31.png": [
+        {
+            "name": "31_touret.png",
+            "x": 59,
+            "y": 40,
+            "type": "image",
+            "rotation": 0
+        },
+                {
+            "name": "32_touret.png",
+            "x": 10,
+            "y": 50,
+            "type": "image",
+            "rotation": 0
+        },
+        {
+            "name": "HommeH2.png",
+            "x": 67,
+            "y": 40,
+            "type": "image",
+            "rotation": 0
+        },
+        {
+            "name": "HommeH1.png",
+            "x": 80,
+            "y": 30,
+            "type": "image",
+            "rotation": 0
+        },
+        {
+            "name": "HommeNH.png",
+            "x": 25,
+            "y": 75,
+            "type": "image",
+            "rotation": 0
+        }
+
+    ],
+    "Image30.png": [
+        {
+        "name": "Camion.png",
+        "x": 0,
+        "y": 25,
+        "type": "image",
+        "rotation": 0
+        },
+        {
+            "name": "31_touret.png",
+            "x": 80,
+            "y": 50,
+            "type": "image",
+            "rotation": 0
+        },
+                {
+            "name": "32_touret.png",
+            "x": 10,
+            "y": 50,
+            "type": "image",
+            "rotation": 0
+        },
+        {
+            "name": "HommeH2.png",
+            "x": 89,
+            "y": 55,
+            "type": "image",
+            "rotation": 0
+        },
+        {
+            "name": "HommeH1.png",
+            "x": 40,
+            "y": 60,
+            "type": "image",
+            "rotation": 0
+        },
+        {
+            "name": "HommeNH.png",
+            "x": 10,
+            "y": 65,
+            "type": "image",
+            "rotation": 0
+        }
+
+    ],
+    "Image32.png": [
+        {
+            "name": "32_Iso_Droite.png",
+            "x": 28,
+            "y": 26,
+            "type": "image",
+            "rotation": -15,
+            
+        },
+        {
+            "name": "32_Iso_Gauche.png",
+            "x": 54,
+            "y": 26,
+            "type": "image",
+            "rotation": 15
+        },
+        {
+            "name": "connecteur1",
+            "x1": 0,
+            "x2": 29,
+            "y1": 44,
+            "y2": 40,
+            "fixed": false,
+            "pending": 5,
+            "type": "connecteur",
+            "color": "#f16a10ff"
+        },
+        {
+            "name": "connecteur2",
+            "x1": 31,
+            "x2": 69,
+            "y1": 40,
+            "y2": 40,
+            "fixed": false,
+            "pending": 25,
+            "type": "connecteur",
+            "color": "#f16a10ff"
+        },
+        {
+            "name": "connecteur3",
+            "x1": 72,
+            "x2": 120,
+            "y1": 40,
+            "y2": 40,
+            "fixed": true,
+            "pending": 5,
+            "type": "connecteur",
+            "color": "#FF0000"
+        }
+    ],
+     "Image33.png": [
+      
+        {
+            "name": "connecteur1",
+            "x1": 0,
+            "x2": 28,
+            "y1": 45,
+            "y2": 41,
+            "fixed": true,
+            "pending": 5,
+            "type": "connecteur",
+            "color": "#7a7979ff"
+        },
+        {
+            "name": "connecteur2",
+            "x1": 31,
+            "x2": 70,
+            "y1": 42,
+            "y2": 42,
+            "fixed": false,
+            "pending": 25,
+            "type": "connecteur",
+            "color": "#f16a10ff"
+        },
+        {
+            "name": "connecteur3",
+            "x1": 73,
+            "x2": 120,
+            "y1": 41,
+            "y2": 41,
+            "fixed": true,
+            "pending": 5,
+            "type": "connecteur",
+            "color": "#706f6fff"
+        }
+    ],
+         "Image34.png": [
+
+
+        {
+            "name": "connecteur1",
+            "x1": 64,
+            "x2": 120,
+            "y1": 19,
+            "y2": 20,
+            "fixed": false,
+            "pending": 25,
+            "type": "connecteur",
+            "color": "#c75407ff"
+        },
+                {
+            "name": "connecteur2",
+            "x1": 61,
+            "x2": 120,
+            "y1": 23,
+            "y2": 25,
+            "fixed": false,
+            "pending": 25,
+            "type": "connecteur",
+            "color": "#f16a10ff"
+        },
+        {
+            "name": "poulie.png",
+            "namebout" : "crochet.png",
+            "NbPoint": 4,
+            "x1": 50,
+            "x2": 60,
+            "x3": 70,
+            "x4": 80,
+            "y1": 95,
+            "y2": 95,
+            "y3": 95,
+            "y4": 95,
+            "fixed": false,
+            "pending": 25,
+            "type": "connecteurmultiple",
+            "color": "#2e85f8ff"
+        },
+                {
+            "name": "34DoubleISO.png",
+            "x": 2,
+            "y": 9,
+            "type": "image",
+            "rotation": 0
+        },
+
+        {
+            "name": "Terre roulante.png",
+            "x": 60,
+            "y": 95,
+            "type": "image",
+            "rotation": 0
+        },
+
+    ],
+    // Ajoutez ici d'autres configurations pour Image31.png, Image32.png, etc.
+};
+
+/**
+ * Logique métier pour les fonds d'écran >= 30
+ * Gère le positionnement automatique des images avec coordonnées
+ */
+
+class BusinessLogicManager {
+    constructor(dragDropManager) {
+        this.dragDropManager = dragDropManager;
+        this.currentBackgroundIndex = dragDropManager.currentBackgroundIndex;
+        this.backgroundArea = dragDropManager.backgroundArea;
+        this.backgroundImage = dragDropManager.backgroundImage;
+        this.backgroundScale = dragDropManager.backgroundScale;
+        this.positionedImages = [];
+        
+        // Stockage des connecteurs multiples pour mise à jour
+        this.connecteursMultiples = [];
+        
+        // Variables pour les connecteurs décrochés
+        this.droppedConnectors = new Map(); // Stocke l'état des connecteurs décrochés (nom -> 'start' ou 'end')
+
+        // Initialisation du gestionnaire de décrochage connecteur
+        this.connecteurDecrochageManager = new ConnecteurDecrochageManager(this.backgroundArea, this.droppedConnectors);
+
+       
+    }
+    /**
+     * Vérifie si le fond actuel nécessite la logique métier spéciale
+     */
+    requiresBusinessLogic() {
+        return this.currentBackgroundIndex >= 30;
+    }
+
+    /**
+     * Initialise la logique métier pour le fond actuel
+     */
+    async init() {
+        if (!this.requiresBusinessLogic()) {
+            console.log('📋 Logique métier standard (fond < 30)');
+            return;
+        }
+
+        console.log(`📋 Logique métier activée pour fond ${this.currentBackgroundIndex}`);
+        await this.loadPositionedImages();
+    }
+
+    /**
+     * Charge les images depuis ImagesPourFond avec positionnement automatique
+     * Lit les coordonnées depuis la configuration IMAGES_CONFIG
+     */
+    async loadPositionedImages() {
+        const folderName = 'ImagesPourFond';
+        const backgroundFileName = `Image${this.currentBackgroundIndex}.png`;
+        
+        console.log(`🔍 Recherche de configuration pour: ${backgroundFileName}`);
+
+        // Vérifier si ce fond a une configuration
+        if (!IMAGES_CONFIG[backgroundFileName]) {
+            console.log(`ℹ️ Pas de configuration pour ${backgroundFileName}`);
+            return;
+        }
+
+        const imageConfigs = IMAGES_CONFIG[backgroundFileName];
+        console.log(`📋 ${imageConfigs.length} image(s) configurée(s) pour ce fond`);
+
+        const foundImages = [];
+
+        // Charger chaque élément défini dans la configuration
+        for (const config of imageConfigs) {
+            if (config.type === 'connecteur') {
+                // C'est un connecteur
+                foundImages.push({
+                    type: 'connecteur',
+                    name: config.name,
+                    x1: config.x1,
+                    y1: config.y1,
+                    x2: config.x2,
+                    y2: config.y2,
+                    pending: config.pending || 0,
+                    color: config.color, // transmet la couleur
+                    fixed: config.fixed // transmet la propriété fixed
+                });
+                console.log(`✅ Connecteur: ${config.name} (${config.x1}%,${config.y1}%) → (${config.x2}%,${config.y2}%), pente:${config.pending}%`);
+            } else if (config.type === 'connecteurmultiple') {
+                // C'est un connecteur multiple avec plusieurs points et images
+                const points = [];
+                for (let i = 1; i <= config.NbPoint; i++) {
+                    points.push({
+                        x: config[`x${i}`],
+                        y: config[`y${i}`]
+                    });
+                }
+                foundImages.push({
+                    type: 'connecteurmultiple',
+                    name: config.name,
+                    namebout: config.namebout, // Image pour les extrémités
+                    imagePath: `${folderName}/${config.name}`, // Image pour le milieu
+                    imagePathBout: config.namebout ? `${folderName}/${config.namebout}` : null, // Image pour les bouts
+                    nbPoint: config.NbPoint,
+                    points: points,
+                    pending: config.pending || 0,
+                    color: config.color,
+                    fixed: config.fixed
+                });
+                console.log(`✅ Connecteur Multiple: ${config.name} (milieu) / ${config.namebout || config.name} (bouts) avec ${config.NbPoint} points`);
+            } else {
+                // C'est une image
+                const imagePath = `${folderName}/${config.name}`;
+                
+                // Vérifier que l'image existe
+                if (await this.imageExists(imagePath)) {
+                    foundImages.push({
+                        type: 'image',
+                        path: imagePath,
+                        x: config.x,
+                        y: config.y,
+                        rotation: config.rotation
+                    });
+                    const rotationInfo = config.rotation !== undefined ? `, rotation:${config.rotation}°` : '';
+                    console.log(`✅ Image trouvée: ${config.name} (x:${config.x}%, y:${config.y}%${rotationInfo})`);
+                } else {
+                    console.log(`⚠️ Image non trouvée: ${config.name}`);
+                }
+            }
+        }
+
+        console.log(`📊 Total: ${foundImages.length} image(s) chargée(s)`);
+
+        // Attendre que l'image de fond soit chargée et que l'échelle soit calculée
+        await this.waitForBackgroundLoad();
+
+        // Placer les éléments sur le fond
+        for (const elementData of foundImages) {
+            if (elementData.type === 'connecteur') {
+                this.drawConnecteur(elementData);
+            } else if (elementData.type === 'connecteurmultiple') {
+                this.drawConnecteurMultiple(elementData);
+            } else {
+                this.placeImageOnBackground(elementData);
+            }
+        }
+    }
+
+    /**
+     * Vérifie si une image existe
+     */
+    async imageExists(imagePath) {
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.onload = () => resolve(true);
+            img.onerror = () => resolve(false);
+            img.src = imagePath;
+        });
+    }
+
+    /**
+     * Attend que l'image de fond soit chargée et que l'échelle soit calculée
+     */
+    async waitForBackgroundLoad() {
+        return new Promise((resolve) => {
+            if (this.backgroundImage.complete && this.dragDropManager.backgroundScale !== 1) {
+                resolve();
+            } else {
+                const checkInterval = setInterval(() => {
+                    if (this.backgroundImage.complete && this.dragDropManager.backgroundScale !== 1) {
+                        clearInterval(checkInterval);
+                        // Mettre à jour l'échelle locale
+                        this.backgroundScale = this.dragDropManager.backgroundScale;
+                        resolve();
+                    }
+                }, 100);
+            }
+        });
+    }
+
+    /**
+     * Place une image sur le fond avec les coordonnées spécifiées en pourcentage
+     * Les coordonnées (x, y) sont des pourcentages de la largeur et hauteur de l'image de fond
+     */
+    placeImageOnBackground(imageData) {
+        const img = document.createElement('img');
+        img.src = imageData.path;
+        img.classList.add('positioned-image');
+        img.classList.add('draggable-image'); // Rendre l'image draggable
+        img.draggable = true;
+        
+        // Marquer comme image de zone 1 pour permettre l'attachement des images zone 2
+        img.dataset.originalZone = '1';
+        img.dataset.imageId = `img_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        img.dataset.isOriginal = 'false'; // Marquer comme copie (ne pas la supprimer au reset)
+        
+        // Attendre que l'image soit chargée pour la positionner
+        img.onload = () => {
+            // Récupérer l'échelle actuelle
+            const scale = this.dragDropManager.backgroundScale;
+            
+            // Récupérer les dimensions de l'image de fond
+            const bgRect = this.backgroundImage.getBoundingClientRect();
+            const areaRect = this.backgroundArea.getBoundingClientRect();
+            
+            // Calculer la position en pourcentage de la taille de l'image de fond affichée
+            const percentX = imageData.x / 100; // Convertir en décimal (30 -> 0.30)
+            const percentY = imageData.y / 100; // Convertir en décimal (20 -> 0.20)
+            
+            // Calculer la position en pixels basée sur les dimensions affichées de l'image de fond
+            const offsetX = bgRect.width * percentX;
+            const offsetY = bgRect.height * percentY;
+            
+            // Calculer la position absolue dans la zone de fond
+            const absoluteX = (bgRect.left - areaRect.left) + offsetX;
+            const absoluteY = (bgRect.top - areaRect.top) + offsetY;
+            
+            // Mettre à l'échelle l'image elle-même proportionnellement au fond
+            const naturalWidth = img.naturalWidth;
+            const naturalHeight = img.naturalHeight;
+            const scaledWidth = naturalWidth * scale;
+            const scaledHeight = naturalHeight * scale;
+            
+            // Stocker les dimensions naturelles pour le drag
+            img.dataset.naturalWidth = naturalWidth;
+            img.dataset.naturalHeight = naturalHeight;
+            
+            // Positionner l'image
+            img.style.position = 'absolute';
+            img.style.left = `${absoluteX}px`;
+            img.style.top = `${absoluteY}px`;
+            img.style.width = `${scaledWidth}px`;
+            img.style.height = `${scaledHeight}px`;
+            img.style.zIndex = '10';
+            img.style.pointerEvents = 'auto'; // Rendre l'image interactive
+            
+            // Appliquer la rotation si spécifiée (APRÈS les dimensions)
+            if (imageData.rotation !== undefined) {
+                img.style.transform = `rotate(${imageData.rotation}deg)`;
+                img.style.transformOrigin = 'center center';
+            }
+            console.log(`📍 Image positionnée (draggable): ${imageData.path}`);
+            console.log(`   Pourcentages: (${imageData.x}%, ${imageData.y}%)`);
+            console.log(`   Dimensions fond affichées: ${bgRect.width.toFixed(2)}x${bgRect.height.toFixed(2)}px`);
+            console.log(`   Offset calculé: (${offsetX.toFixed(2)}, ${offsetY.toFixed(2)})`);
+            console.log(`   Position absolue: (${absoluteX.toFixed(2)}, ${absoluteY.toFixed(2)})`);
+            console.log(`   Échelle image: ${scale.toFixed(4)}`);
+            console.log(`   🔄 Rotation: ${imageData.rotation}°`);
+            
+            // Ajouter les event listeners de drag
+            this.dragDropManager.setupImageEventListeners(img);
+            
+            // Ajouter l'image à la zone de fond
+            this.backgroundArea.appendChild(img);
+            this.positionedImages.push(img);
+            
+            // Ajouter à la liste des images du dragDropManager
+            this.dragDropManager.images.push(img);
+        };
+    }
+
+    /**
+     * Dessine un connecteur (câble) avec une courbe caténaire
+     */
+    drawConnecteur(connecteurData) {
+        const bgRect = this.backgroundImage.getBoundingClientRect();
+        const areaRect = this.backgroundArea.getBoundingClientRect();
+        
+        // Convertir les pourcentages en pixels
+        const x1Percent = connecteurData.x1 / 100;
+        const y1Percent = connecteurData.y1 / 100;
+        const x2Percent = connecteurData.x2 / 100;
+        const y2Percent = connecteurData.y2 / 100;
+        
+        let x1 = (bgRect.left - areaRect.left) + (bgRect.width * x1Percent);
+        let y1 = (bgRect.top - areaRect.top) + (bgRect.height * y1Percent);
+        let x2 = (bgRect.left - areaRect.left) + (bgRect.width * x2Percent);
+        let y2 = (bgRect.top - areaRect.top) + (bgRect.height * y2Percent);
+        // Stocker les coordonnées pixels pour l'animation de décrochage
+        connecteurData.x1Pixel = x1;
+        connecteurData.y1Pixel = y1;
+        connecteurData.x2Pixel = x2;
+        connecteurData.y2Pixel = y2;
+        console.log(`[DEBUG] Coordonnées connecteur ${connecteurData.name} : x1=${x1}, y1=${y1}, x2=${x2}, y2=${y2}`);
+        
+        // Sauvegarder les positions originales pour l'animation
+        const x1Original = x1;
+        const y1Original = y1;
+        const x2Original = x2;
+        const y2Original = y2;
+        
+        // Calculer la longueur originale du câble
+        const originalLength = Math.sqrt(Math.pow(x2Original - x1Original, 2) + Math.pow(y2Original - y1Original, 2));
+        
+        // Vérifier si ce connecteur est décroché et quelle extrémité
+        const droppedEnd = this.droppedConnectors.get(connecteurData.name);
+        if (droppedEnd && !connecteurData.fixed) {
+            if (droppedEnd === 'start') {
+                // La boule de départ est tombée, elle pend depuis la fin
+                x1 = x2Original; // Même position X que la fin
+                y1 = y2Original + originalLength; // Tombe depuis la fin
+            } else if (droppedEnd === 'end') {
+                // La boule de fin est tombée, elle pend depuis le départ
+                x2 = x1Original; // Même position X que le départ
+                y2 = y1Original + originalLength; // Tombe depuis le départ
+            }
+        }
+        
+        // Créer un SVG pour dessiner le connecteur
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        
+        // IMPORTANT : Attacher les données du connecteur au SVG pour la détection VAT
+        svg.__connecteurData = connecteurData;
+        
+        // Ajout à la liste globale pour la détection VAT
+        if (!window.businessLogicManager.positionedImages) window.businessLogicManager.positionedImages = [];
+        window.businessLogicManager.positionedImages.push(svg);
+        console.log('[DEBUG positionedImages ajout]', window.businessLogicManager.positionedImages.length);
+        svg.style.position = 'absolute';
+        svg.style.top = '0';
+        svg.style.left = '0';
+        svg.style.width = '100%';
+        svg.style.height = '100%';
+        svg.style.pointerEvents = 'none';
+        svg.style.zIndex = '15'; // Au-dessus des images positionnées (10) pour que les boules soient cliquables
+        
+        // Calculer la pente (sag) du câble en pixels
+        let distance = Math.abs(x2 - x1);
+        let pendingPercent = connecteurData.pending / 100;
+        let sag = distance * pendingPercent;
+        
+        // Si le câble est décroché, utiliser une pente minimale pour qu'il pende droit
+        if (droppedEnd && !connecteurData.fixed) {
+            distance = Math.abs(y2 - y1);
+            pendingPercent = 0.05; // Très légère courbe pour simuler le poids
+            sag = distance * pendingPercent;
+        }
+        
+        // Point de contrôle pour la courbe quadratique (milieu + pente)
+        const midX = (x1 + x2) / 2;
+        const midY = (y1 + y2) / 2 + sag;
+        
+        // Créer le chemin du câble (courbe quadratique)
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        const d = `M ${x1} ${y1} Q ${midX} ${midY} ${x2} ${y2}`;
+        path.setAttribute('d', d);
+         // Utiliser la couleur personnalisée ou la couleur par défaut
+        const cableColor = connecteurData.color || '#4CAF50';
+        path.setAttribute('stroke', cableColor);
+        path.setAttribute('stroke-width', '3');
+        path.setAttribute('fill', 'none');
+        path.setAttribute('stroke-linecap', 'round');
+        
+        // Créer les boules aux extrémités
+        const circle1 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle1.setAttribute('cx', x1);
+        circle1.setAttribute('cy', y1);
+        circle1.setAttribute('r', '8'); // Grosse boule au début
+        circle1.setAttribute('fill', cableColor);
+        
+        const circle2 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle2.setAttribute('cx', x2);
+        circle2.setAttribute('cy', y2);
+        circle2.setAttribute('r', '8'); // Grosse boule à la fin
+        circle2.setAttribute('fill', cableColor);
+        
+        // Cercle 1 : clic simple pour décrocher
+        circle1.style.cursor = 'pointer';
+        circle1.style.pointerEvents = 'auto';
+        circle1.setAttribute('class', 'connector-handle');
+        circle1.setAttribute('data-fixed', connecteurData.fixed ? 'true' : 'false');
+        // Utiliser pointerdown pour unifier souris et tactile
+        circle1.addEventListener('pointerdown', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            // Bloquer les clics pendant une animation de décrochage
+            if (connecteurData.isAnimating) return;
+            const isFixed = e.currentTarget.getAttribute('data-fixed') === 'true';
+            const alreadyDropped = this.droppedConnectors.get(connecteurData.name);
+            // Bloquer si ce cercle est déjà décroché
+            if (isFixed || alreadyDropped === 'start') return;
+            this.droppedConnectors.set(connecteurData.name, 'start');
+            const vats = Array.from(document.querySelectorAll('.draggable-image[data-original-zone="2"]')).map(img => {
+                const rect = img.getBoundingClientRect();
+                const bgRect = this.backgroundArea.getBoundingClientRect();
+                return {
+                    img,
+                    x: rect.left + rect.width / 2 - bgRect.left,
+                    y: rect.top + rect.height / 2 - bgRect.top
+                };
+            });
+            this.connecteurDecrochageManager.decrocherAvecVat(connecteurData, path, circle1, 'start', vats);
+            console.log(`🔓 Connecteur décroché (départ): ${connecteurData.name}`);
+        });
+
+        circle2.style.cursor = 'pointer';
+        circle2.style.pointerEvents = 'auto';
+        circle2.setAttribute('class', 'connector-handle');
+        circle2.setAttribute('data-fixed', connecteurData.fixed ? 'true' : 'false');
+        // Utiliser pointerdown pour unifier souris et tactile
+        circle2.addEventListener('pointerdown', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            // Bloquer les clics pendant une animation de décrochage
+            if (connecteurData.isAnimating) return;
+            const isFixed = e.currentTarget.getAttribute('data-fixed') === 'true';
+            const alreadyDropped = this.droppedConnectors.get(connecteurData.name);
+            // Bloquer si ce cercle est déjà décroché
+            if (isFixed || alreadyDropped === 'end') return;
+            this.droppedConnectors.set(connecteurData.name, 'end');
+            const vats = Array.from(document.querySelectorAll('.draggable-image[data-original-zone="2"]')).map(img => {
+                const rect = img.getBoundingClientRect();
+                const bgRect = this.backgroundArea.getBoundingClientRect();
+                return {
+                    img,
+                    x: rect.left + rect.width / 2 - bgRect.left,
+                    y: rect.top + rect.height / 2 - bgRect.top
+                };
+            });
+            this.connecteurDecrochageManager.decrocherAvecVat(connecteurData, path, circle2, 'end', vats);
+            console.log(`🔓 Connecteur décroché (fin): ${connecteurData.name}`);
+        });
+        
+        // NOUVEAU : Point d'accroche au milieu du connecteur pour les VATs
+        // Calculer le point sur la courbe à t=0.5 (formule de Bézier quadratique)
+        const t = 0.5;
+        const controlX = (x1 + x2) / 2;
+        const controlY = (y1 + y2) / 2 + sag;
+        const attachMidX = (1 - t) * (1 - t) * x1 + 2 * (1 - t) * t * controlX + t * t * x2;
+        const attachMidY = (1 - t) * (1 - t) * y1 + 2 * (1 - t) * t * controlY + t * t * y2;
+        
+        const attachPoint = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        attachPoint.setAttribute('cx', attachMidX);
+        attachPoint.setAttribute('cy', attachMidY);
+        attachPoint.setAttribute('r', '6');
+        attachPoint.setAttribute('fill', 'transparent');
+        attachPoint.setAttribute('stroke', cableColor);
+        attachPoint.setAttribute('stroke-width', '2');
+        attachPoint.setAttribute('class', 'vat-attach-point');
+        attachPoint.style.pointerEvents = 'none'; // Ne pas interférer avec le drag
+        
+        // Stocker les coordonnées du point d'accroche dans connecteurData
+        connecteurData.attachPoint = {
+            x: attachMidX,
+            y: attachMidY,
+            element: attachPoint
+        };
+        svg.__connecteurData = connecteurData;
+        
+        // Ajouter les éléments au SVG
+        svg.appendChild(path);
+        svg.appendChild(circle1);
+        svg.appendChild(circle2);
+        svg.appendChild(attachPoint);
+        
+        // Ajouter le SVG à la zone de fond
+        this.backgroundArea.appendChild(svg);
+        this.positionedImages.push(svg);
+        
+        console.log(`🔌 Connecteur dessiné: ${connecteurData.name}`);
+        console.log(`   De (${connecteurData.x1}%, ${connecteurData.y1}%) à (${connecteurData.x2}%, ${connecteurData.y2}%)`);
+        console.log(`   Pente: ${connecteurData.pending}%`);
+    }
+
+    /**
+     * Dessine un connecteur multiple avec plusieurs points reliés par des images
+     * Les images peuvent être déplacées et les connecteurs suivent
+     */
+    drawConnecteurMultiple(connecteurData) {
+        const bgRect = this.backgroundImage.getBoundingClientRect();
+        const areaRect = this.backgroundArea.getBoundingClientRect();
+        const scale = this.dragDropManager.backgroundScale;
+        
+        // Convertir les points en pixels
+        const pointsPixel = connecteurData.points.map(point => ({
+            x: (bgRect.left - areaRect.left) + (bgRect.width * (point.x / 100)),
+            y: (bgRect.top - areaRect.top) + (bgRect.height * (point.y / 100))
+        }));
+        
+        // Créer un conteneur pour ce connecteur multiple
+        const container = document.createElement('div');
+        container.classList.add('connecteur-multiple-container');
+        container.dataset.connecteurName = connecteurData.name;
+        container.style.position = 'absolute';
+        container.style.top = '0';
+        container.style.left = '0';
+        container.style.width = '100%';
+        container.style.height = '100%';
+        container.style.pointerEvents = 'none';
+        container.style.zIndex = '12';
+        
+        // Créer le SVG pour les lignes de connexion
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.style.position = 'absolute';
+        svg.style.top = '0';
+        svg.style.left = '0';
+        svg.style.width = '100%';
+        svg.style.height = '100%';
+        svg.style.pointerEvents = 'none';
+        svg.style.zIndex = '11';
+        
+        const cableColor = connecteurData.color || '#4CAF50';
+        
+        // Stocker les références aux images et aux paths pour mise à jour
+        const imageElements = [];
+        const pathElements = [];
+        
+        // Créer les paths entre chaque paire de points consécutifs
+        for (let i = 0; i < pointsPixel.length - 1; i++) {
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('stroke', cableColor);
+            path.setAttribute('stroke-width', '3');
+            path.setAttribute('fill', 'none');
+            path.setAttribute('stroke-linecap', 'round');
+            path.dataset.segmentIndex = i;
+            svg.appendChild(path);
+            pathElements.push(path);
+        }
+        
+        container.appendChild(svg);
+        
+        // Créer une image à chaque point
+        for (let i = 0; i < pointsPixel.length; i++) {
+            const point = pointsPixel[i];
+            const img = document.createElement('img');
+            
+            // Utiliser l'image des bouts pour le premier et dernier point, sinon l'image du milieu
+            const isExtremity = (i === 0 || i === pointsPixel.length - 1);
+            const imageSrc = (isExtremity && connecteurData.imagePathBout) 
+                ? connecteurData.imagePathBout 
+                : connecteurData.imagePath;
+            img.src = imageSrc;
+            img.dataset.isExtremity = isExtremity ? 'true' : 'false';
+            img.classList.add('positioned-image', 'draggable-image', 'connecteur-multiple-point');
+            img.draggable = true;
+            img.dataset.originalZone = '2'; // Zone 2 pour pouvoir s'attacher aux objets zone1
+            img.dataset.imageId = `multipoint_${connecteurData.name}_${i}_${Date.now()}`;
+            img.dataset.isOriginal = 'false';
+            img.dataset.connecteurName = connecteurData.name;
+            img.dataset.pointIndex = i;
+            img.dataset.isConnecteurMultiplePoint = 'true'; // Marqueur spécial
+            
+            img.onload = () => {
+                const naturalWidth = img.naturalWidth;
+                const naturalHeight = img.naturalHeight;
+                const scaledWidth = naturalWidth * scale;
+                const scaledHeight = naturalHeight * scale;
+                
+                img.dataset.naturalWidth = naturalWidth;
+                img.dataset.naturalHeight = naturalHeight;
+                
+                img.style.position = 'absolute';
+                img.style.left = `${point.x - scaledWidth / 2}px`;
+                img.style.top = `${point.y - scaledHeight / 2}px`;
+                img.style.width = `${scaledWidth}px`;
+                img.style.height = `${scaledHeight}px`;
+                img.style.zIndex = '13';
+                img.style.pointerEvents = 'auto';
+                img.style.cursor = 'grab';
+                
+                // Stocker la position centrale pour le calcul des connecteurs
+                img.dataset.centerX = point.x;
+                img.dataset.centerY = point.y;
+                
+                // Ajouter les event listeners de drag
+                this.dragDropManager.setupImageEventListeners(img);
+                
+                // Ajouter un listener pour mettre à jour les connecteurs lors du déplacement
+                this.setupConnecteurMultipleDragListener(img, connecteurData, imageElements, pathElements);
+                
+                this.dragDropManager.images.push(img);
+            };
+            
+            container.appendChild(img);
+            imageElements.push(img);
+        }
+        
+        // Stocker les données pour mise à jour
+        connecteurData.imageElements = imageElements;
+        connecteurData.pathElements = pathElements;
+        connecteurData.svg = svg;
+        connecteurData.container = container;
+        
+        this.backgroundArea.appendChild(container);
+        this.positionedImages.push(container);
+        
+        // Mettre à jour les paths après un court délai pour que les images soient chargées
+        setTimeout(() => {
+            this.updateConnecteurMultiplePaths(connecteurData, imageElements, pathElements);
+        }, 100);
+        
+        console.log(`🔗 Connecteur Multiple dessiné: ${connecteurData.name} avec ${connecteurData.nbPoint} points`);
+        
+        // Stocker ce connecteur multiple pour mise à jour globale
+        this.connecteursMultiples.push(connecteurData);
+    }
+
+    /**
+     * Met à jour tous les connecteurs multiples (appelé depuis script.js lors du drag)
+     */
+    updateAllConnecteursMultiples() {
+        for (const connecteurData of this.connecteursMultiples) {
+            if (connecteurData.imageElements && connecteurData.pathElements) {
+                // Mettre à jour les positions centrales de chaque image
+                for (const img of connecteurData.imageElements) {
+                    const rect = img.getBoundingClientRect();
+                    const areaRect = this.backgroundArea.getBoundingClientRect();
+                    img.dataset.centerX = (rect.left - areaRect.left) + rect.width / 2;
+                    img.dataset.centerY = (rect.top - areaRect.top) + rect.height / 2;
+                }
+                // Mettre à jour les paths
+                this.updateConnecteurMultiplePaths(connecteurData, connecteurData.imageElements, connecteurData.pathElements);
+            }
+        }
+    }
+
+    /**
+     * Configure le listener de drag pour mettre à jour les connecteurs multiples
+     */
+    setupConnecteurMultipleDragListener(img, connecteurData, imageElements, pathElements) {
+        // Observer les changements de position de l'image
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.type === 'attributes' && (mutation.attributeName === 'style')) {
+                    // Mettre à jour la position centrale
+                    const rect = img.getBoundingClientRect();
+                    const areaRect = this.backgroundArea.getBoundingClientRect();
+                    img.dataset.centerX = (rect.left - areaRect.left) + rect.width / 2;
+                    img.dataset.centerY = (rect.top - areaRect.top) + rect.height / 2;
+                    
+                    // Mettre à jour les paths
+                    this.updateConnecteurMultiplePaths(connecteurData, imageElements, pathElements);
+                }
+            });
+        });
+        
+        observer.observe(img, { attributes: true, attributeFilter: ['style'] });
+        
+        // Stocker l'observer pour pouvoir le déconnecter plus tard si nécessaire
+        img.__connecteurObserver = observer;
+    }
+
+    /**
+     * Met à jour les paths du connecteur multiple en fonction des positions des images
+     */
+    updateConnecteurMultiplePaths(connecteurData, imageElements, pathElements) {
+        const pending = connecteurData.pending || 0;
+        
+        for (let i = 0; i < pathElements.length; i++) {
+            const path = pathElements[i];
+            const img1 = imageElements[i];
+            const img2 = imageElements[i + 1];
+            
+            if (!img1 || !img2) continue;
+            
+            const x1 = parseFloat(img1.dataset.centerX) || 0;
+            const y1 = parseFloat(img1.dataset.centerY) || 0;
+            const x2 = parseFloat(img2.dataset.centerX) || 0;
+            const y2 = parseFloat(img2.dataset.centerY) || 0;
+            
+            // Calculer la courbe avec pente
+            const distance = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+            const sag = distance * (pending / 100);
+            const midX = (x1 + x2) / 2;
+            const midY = (y1 + y2) / 2 + sag;
+            
+            const d = `M ${x1} ${y1} Q ${midX} ${midY} ${x2} ${y2}`;
+            path.setAttribute('d', d);
+        }
+    }
+
+    /**
+     * Anime la chute d'un connecteur
+     */
+    animateConnectorDrop(connecteurData, path, fallingCircle, anchorX, anchorY, fallingXStart, fallingYStart, cableLength, whichEnd) {
+        const duration = 1500; // 1.5 secondes
+        const startTime = performance.now();
+        
+        // Position finale : la boule pend verticalement depuis l'ancre
+        const fallingXEnd = anchorX;
+        const fallingYEnd = anchorY + cableLength;
+        
+        const animate = (currentTime) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            
+            // Fonction d'easing pour un mouvement naturel (ease-out)
+            const easeOut = 1 - Math.pow(1 - progress, 3);
+            
+            // Interpoler la position de la boule qui tombe
+            const currentFallingX = fallingXStart + (fallingXEnd - fallingXStart) * easeOut;
+            const currentFallingY = fallingYStart + (fallingYEnd - fallingYStart) * easeOut;
+            
+            // Calculer la courbe avec une légère pente
+            const distance = Math.abs(currentFallingY - anchorY);
+            const sag = distance * 0.05; // Légère courbe
+            const midX = (anchorX + currentFallingX) / 2;
+            const midY = (anchorY + currentFallingY) / 2 + sag;
+            
+            // Mettre à jour le chemin selon quelle extrémité tombe
+            let d;
+            if (whichEnd === 'start') {
+                // La boule de départ tombe, elle devient la fin du chemin
+                d = `M ${anchorX} ${anchorY} Q ${midX} ${midY} ${currentFallingX} ${currentFallingY}`;
+            } else {
+                // La boule de fin tombe, elle reste la fin du chemin
+                d = `M ${anchorX} ${anchorY} Q ${midX} ${midY} ${currentFallingX} ${currentFallingY}`;
+            }
+            path.setAttribute('d', d);
+            
+            // Mettre à jour la position de la boule qui tombe
+            fallingCircle.setAttribute('cx', currentFallingX);
+            fallingCircle.setAttribute('cy', currentFallingY);
+            
+            // Continuer l'animation si pas terminée
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            }
+        };
+        
+        requestAnimationFrame(animate);
+    }
+
+    /**
+     * Recalcule les positions des images lors d'un redimensionnement
+     */
+    recalculatePositions() {
+        if (!this.requiresBusinessLogic()) {
+            return;
+        }
+
+        // Supprimer les anciennes images
+        this.positionedImages.forEach(img => img.remove());
+        this.positionedImages = [];
+
+        // Recharger les images avec les nouvelles positions
+        this.loadPositionedImages();
+    }
+
+    /**
+     * Redessine un connecteur avec un VAT accroché
+     * Le câble est divisé en deux segments : origine1 -> VAT -> origine2
+     */
+    redrawConnectorWithVat(connecteurData, svg) {
+        // Récupérer les éléments SVG existants
+        const path = svg.querySelector('path');
+        const circles = svg.querySelectorAll('circle');
+        
+        if (!path || !connecteurData.vatAccroche) return;
+        
+        const { x1Pixel, y1Pixel, x2Pixel, y2Pixel, pending, vatAccroche } = connecteurData;
+        const { x: vatX, y: vatY } = vatAccroche;
+        
+        // Calculer les deux segments avec courbes
+        // Segment 1 : origine1 -> VAT
+        const dist1 = Math.abs(vatX - x1Pixel);
+        const sag1 = dist1 * (pending / 100);
+        const midX1 = (x1Pixel + vatX) / 2;
+        const midY1 = (y1Pixel + vatY) / 2 + sag1;
+        
+        // Segment 2 : VAT -> origine2
+        const dist2 = Math.abs(x2Pixel - vatX);
+        const sag2 = dist2 * (pending / 100);
+        const midX2 = (vatX + x2Pixel) / 2;
+        const midY2 = (vatY + y2Pixel) / 2 + sag2;
+        
+        // Créer le chemin complet : origine1 -> VAT -> origine2
+        const d = `M ${x1Pixel} ${y1Pixel} Q ${midX1} ${midY1} ${vatX} ${vatY} Q ${midX2} ${midY2} ${x2Pixel} ${y2Pixel}`;
+        path.setAttribute('d', d);
+        
+        console.log('[REDRAW WITH VAT]', {
+            connecteur: connecteurData.name,
+            segment1: `(${x1Pixel.toFixed(0)}, ${y1Pixel.toFixed(0)}) -> VAT`,
+            segment2: `VAT -> (${x2Pixel.toFixed(0)}, ${y2Pixel.toFixed(0)})`
+        });
+    }
+
+    /**
+     * Réinitialise tous les connecteurs à leur position d'origine
+     */
+    resetConnecteurs() {
+        console.log('🔄 Réinitialisation des connecteurs...');
+        
+        // Vider la Map des connecteurs décrochés
+        this.droppedConnectors.clear();
+        
+        // Supprimer tous les SVG de connecteurs existants
+        const svgConnectors = this.backgroundArea.querySelectorAll('svg');
+        svgConnectors.forEach(svg => {
+            if (svg.__connecteurData) {
+                svg.remove();
+            }
+        });
+        
+        // Supprimer les connecteurs de la liste positionedImages
+        this.positionedImages = this.positionedImages.filter(item => {
+            if (item.tagName === 'svg' && item.__connecteurData) {
+                return false;
+            }
+            return true;
+        });
+        
+        // Recharger uniquement les connecteurs depuis la configuration
+        const backgroundFileName = `Image${this.currentBackgroundIndex}.png`;
+        if (IMAGES_CONFIG[backgroundFileName]) {
+            const imageConfigs = IMAGES_CONFIG[backgroundFileName];
+            
+            // Filtrer uniquement les connecteurs
+            const connecteurConfigs = imageConfigs.filter(config => 
+                config.type === 'connecteur' || config.type === 'connecteurmultiple'
+            );
+            
+            // Redessiner chaque connecteur
+            connecteurConfigs.forEach(config => {
+                if (config.type === 'connecteur') {
+                    this.drawConnecteur({
+                        name: config.name,
+                        x1: config.x1,
+                        y1: config.y1,
+                        x2: config.x2,
+                        y2: config.y2,
+                        pending: config.pending || 0,
+                        color: config.color,
+                        fixed: config.fixed
+                    });
+                } else if (config.type === 'connecteurmultiple') {
+                    const points = [];
+                    for (let i = 1; i <= config.NbPoint; i++) {
+                        points.push({
+                            x: config[`x${i}`],
+                            y: config[`y${i}`]
+                        });
+                    }
+                    this.drawConnecteurMultiple({
+                        type: 'connecteurmultiple',
+                        name: config.name,
+                        namebout: config.namebout,
+                        imagePath: `ImagesPourFond/${config.name}`,
+                        imagePathBout: config.namebout ? `ImagesPourFond/${config.namebout}` : null,
+                        nbPoint: config.NbPoint,
+                        points: points,
+                        pending: config.pending || 0,
+                        color: config.color,
+                        fixed: config.fixed
+                    });
+                }
+            });
+            
+            console.log(`✅ ${connecteurConfigs.length} connecteur(s) réinitialisé(s)`);
+        }
+    }
+
+    /**
+     * Nettoie les images positionnées
+     */
+    cleanup() {
+        this.positionedImages.forEach(img => img.remove());
+        this.positionedImages = [];
+    }
+}
+
+// Initialisation globale
+let businessLogicManager = null;
+
+// Fonction d'initialisation appelée après le chargement du DragDropManager
+function initBusinessLogic(dragDropManager) {
+    businessLogicManager = new BusinessLogicManager(dragDropManager);
+    businessLogicManager.init();
+    
+    // Écouter les redimensionnements de fenêtre
+    window.addEventListener('resize', () => {
+        if (businessLogicManager) {
+            setTimeout(() => {
+                businessLogicManager.recalculatePositions();
+            }, 300);
+        }
+    });
+}
+
+
+
+// ############################## Connecteur chute logique##############################
+
+
+// connecteurs.js
+// Toute la logique de décrochage et détection d'accroche VAT pour les connecteurs
+
+ const VAT_DETECTION_DISTANCE = 10; // px, modifiable facilement
+
+class ConnecteurDecrochageManager {
+    constructor(backgroundArea, droppedConnectors) {
+        this.backgroundArea = backgroundArea;
+        this.droppedConnectors = droppedConnectors;
+    }
+
+    // Animation de décrochage (ancienne animateConnectorDrop)
+    animateDecrochage(connecteurData, path, fallingCircle, anchorX, anchorY, fallingXStart, fallingYStart, cableLength, whichEnd) {
+        const duration = 1000; // 1 seconde environ
+        // Indiquer qu'une animation est en cours pour ce connecteur
+        connecteurData.isAnimating = true;
+        const startTime = performance.now();
+        const fallingXEnd = anchorX;
+        const fallingYEnd = anchorY + cableLength;
+
+        const animate = (currentTime) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const easeOut = 1 - Math.pow(1 - progress, 3);
+            const currentFallingX = fallingXStart + (fallingXEnd - fallingXStart) * easeOut;
+            const currentFallingY = fallingYStart + (fallingYEnd - fallingYStart) * easeOut;
+            const distance = Math.abs(currentFallingY - anchorY);
+            const sag = distance * 0.05;
+            const midX = (anchorX + currentFallingX) / 2;
+            const midY = (anchorY + currentFallingY) / 2 + sag;
+            let d;
+            if (whichEnd === 'start') {
+                d = `M ${anchorX} ${anchorY} Q ${midX} ${midY} ${currentFallingX} ${currentFallingY}`;
+            } else {
+                d = `M ${anchorX} ${anchorY} Q ${midX} ${midY} ${currentFallingX} ${currentFallingY}`;
+            }
+            path.setAttribute('d', d);
+            fallingCircle.setAttribute('cx', currentFallingX);
+            fallingCircle.setAttribute('cy', currentFallingY);
+            
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            } else {
+                // Animation terminée : mettre à jour les coordonnées dans connecteurData
+                if (whichEnd === 'start') {
+                    connecteurData.x1Pixel = currentFallingX;
+                    connecteurData.y1Pixel = currentFallingY;
+                    console.log(`[UPDATE COORDS] ${connecteurData.name} - x1: ${currentFallingX.toFixed(0)}, y1: ${currentFallingY.toFixed(0)}`);
+                } else {
+                    connecteurData.x2Pixel = currentFallingX;
+                    connecteurData.y2Pixel = currentFallingY;
+                    console.log(`[UPDATE COORDS] ${connecteurData.name} - x2: ${currentFallingX.toFixed(0)}, y2: ${currentFallingY.toFixed(0)}`);
+                }
+                // Animation terminée : lever le verrou
+                connecteurData.isAnimating = false;
+            }
+        };
+        requestAnimationFrame(animate);
+    }
+
+    // Détection VAT accrochée sur un câble
+    // vats : tableau d'objets {img, x, y} (coordonnées centre VAT sur le fond)
+    detectVatAccroche(connecteurData, vats) {
+        if (!vats || vats.length === 0) return null;
+        
+        // IMPORTANT : Utiliser les coordonnées PIXELS stockées lors du dessin
+        const {x1Pixel, y1Pixel, x2Pixel, y2Pixel, pending} = connecteurData;
+        
+        // Quadratique : on approxime la courbe par 20 segments pour la projection
+        const points = [];
+        for (let t = 0; t <= 1; t += 0.05) {
+            const midX = (x1Pixel + x2Pixel) / 2;
+            const midY = (y1Pixel + y2Pixel) / 2 + Math.abs(x2Pixel - x1Pixel) * (pending / 100);
+            const x = (1 - t) * (1 - t) * x1Pixel + 2 * (1 - t) * t * midX + t * t * x2Pixel;
+            const y = (1 - t) * (1 - t) * y1Pixel + 2 * (1 - t) * t * midY + t * t * y2Pixel;
+            points.push({x, y, t});
+        }
+        let minDist = Infinity;
+        let accroche = null;
+        for (const vat of vats) {
+            for (const pt of points) {
+                // Nouvelle contrainte : n'autoriser l'accroche que près du milieu du connecteur
+                // On ne considère que les points dont le paramètre t est proche de 0.5
+                const t = pt.t;
+                if (t < 0.4 || t > 0.6) {
+                    continue;
+                }
+                const dx = pt.x - vat.x;
+                const dy = pt.y - vat.y;
+                const dist = Math.sqrt(dx*dx + dy*dy);
+                if (dist < VAT_DETECTION_DISTANCE && dist < minDist) {
+                    minDist = dist;
+                    accroche = {vat, t: pt.t, x: pt.x, y: pt.y, dist};
+                }
+            }
+        }
+        return accroche; // null si rien trouvé, sinon {vat, t, x, y, dist}
+    }
+
+    // Décrochage avec prise en compte de la VAT
+    // direction: 'start' ou 'end'
+    // circle: le cercle qui tombe
+    decrocherAvecVat(connecteurData, path, circle, direction, vats) {
+        // Vérifier si l'autre extrémité est déjà décrochée
+        const alreadyDropped = this.droppedConnectors.get(connecteurData.name);
+        const otherEndDropped = (direction === 'start' && alreadyDropped === 'end') || 
+                                (direction === 'end' && alreadyDropped === 'start');
+        
+        if (otherEndDropped) {
+            console.log('[DECROCHAGE] L\'autre extrémité est déjà décrochée, tout le connecteur tombe');
+            // Les deux extrémités sont décrochées, tout tombe
+            // Pas d'animation, juste cacher le connecteur
+            const svg = path.parentElement;
+            if (svg) svg.style.display = 'none';
+            return;
+        }
+        
+        // NOUVEAU : Si un VAT est déjà accroché, on garde le câble en deux segments
+        if (connecteurData.vatAccroche) {
+            console.log('[DECROCHAGE AVEC VAT ACCROCHE]', {
+                connecteur: connecteurData.name,
+                direction,
+                vatAccroche: connecteurData.vatAccroche
+            });
+            
+            // Le câble reste en deux segments : origine fixe -> VAT -> extrémité qui tombe
+            const { x: vatX, y: vatY } = connecteurData.vatAccroche;
+            let anchorX, anchorY, fallingXStart, fallingYStart, cableLength;
+            let fixedX, fixedY; // L'extrémité qui reste fixe
+            
+            if (direction === 'start') {
+                // L'extrémité de départ tombe, garder le segment (fin -> VAT)
+                anchorX = vatX;
+                anchorY = vatY;
+                fallingXStart = connecteurData.x1Pixel;
+                fallingYStart = connecteurData.y1Pixel;
+                fixedX = connecteurData.x2Pixel;
+                fixedY = connecteurData.y2Pixel;
+            } else {
+                // L'extrémité de fin tombe, garder le segment (départ -> VAT)
+                anchorX = vatX;
+                anchorY = vatY;
+                fallingXStart = connecteurData.x2Pixel;
+                fallingYStart = connecteurData.y2Pixel;
+                fixedX = connecteurData.x1Pixel;
+                fixedY = connecteurData.y1Pixel;
+            }
+            
+            cableLength = Math.sqrt(Math.pow(fallingXStart - anchorX, 2) + Math.pow(fallingYStart - anchorY, 2));
+            
+            // Supprimer uniquement les anciens segments de CE connecteur
+            const svg = path.parentElement;
+            const oldRemainingSegments = svg.querySelectorAll(`.remaining-segment[data-connecteur="${connecteurData.name}"]`);
+            oldRemainingSegments.forEach(seg => seg.remove());
+            
+            // Note: otherEndDropped a déjà été vérifié plus haut (ligne 697-709)
+            // Ici, on sait qu'une seule extrémité est décrochée, donc on crée toujours le segment restant
+            
+            // Redessiner le segment qui reste (fixe -> VAT) avant l'animation
+            const dist = Math.abs(fixedX - vatX);
+            const sag = dist * (connecteurData.pending / 100);
+            const midX = (fixedX + vatX) / 2;
+            const midY = (fixedY + vatY) / 2 + sag;
+            const remainingSegment = `M ${fixedX} ${fixedY} Q ${midX} ${midY} ${vatX} ${vatY}`;
+            
+            // Créer un path temporaire pour le segment qui reste
+            const remainingPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            remainingPath.setAttribute('d', remainingSegment);
+            remainingPath.setAttribute('stroke', connecteurData.color);
+            remainingPath.setAttribute('stroke-width', '3');
+            remainingPath.setAttribute('fill', 'none');
+            remainingPath.setAttribute('class', 'remaining-segment');
+            remainingPath.setAttribute('data-connecteur', connecteurData.name);
+            svg.insertBefore(remainingPath, path);
+            
+            this.animateDecrochage(connecteurData, path, circle, anchorX, anchorY, fallingXStart, fallingYStart, cableLength, direction);
+            return;
+        }
+        
+        // Ancienne logique : détection VAT lors du décrochage
+        const accroche = this.detectVatAccroche(connecteurData, vats);
+        let anchorX, anchorY, fallingXStart, fallingYStart, cableLength;
+        
+        if (accroche) {
+            console.log('[DEBUG VAT ACCROCHE]', {
+                vatImage: accroche.vat.img,
+                vatCoords: { x: accroche.vat.x, y: accroche.vat.y },
+                accrocheX: accroche.x,
+                accrocheY: accroche.y,
+                dist: accroche.dist,
+                t: accroche.t
+            });
+            anchorX = accroche.x;
+            anchorY = accroche.y;
+            if (direction === 'start') {
+                fallingXStart = connecteurData.x1Pixel;
+                fallingYStart = connecteurData.y1Pixel;
+            } else {
+                fallingXStart = connecteurData.x2Pixel;
+                fallingYStart = connecteurData.y2Pixel;
+            }
+            cableLength = Math.sqrt(Math.pow(fallingXStart - anchorX, 2) + Math.pow(fallingYStart - anchorY, 2));
+        } else {
+            if (direction === 'start') {
+                anchorX = connecteurData.x2Pixel;
+                anchorY = connecteurData.y2Pixel;
+                fallingXStart = connecteurData.x1Pixel;
+                fallingYStart = connecteurData.y1Pixel;
+            } else {
+                anchorX = connecteurData.x1Pixel;
+                anchorY = connecteurData.y1Pixel;
+                fallingXStart = connecteurData.x2Pixel;
+                fallingYStart = connecteurData.y2Pixel;
+            }
+            cableLength = Math.sqrt(Math.pow(fallingXStart - anchorX, 2) + Math.pow(fallingYStart - anchorY, 2));
+        }
+        
+        console.log(`[DEBUG decrocherAvecVat] anchorX=${anchorX}, anchorY=${anchorY}, fallingXStart=${fallingXStart}, fallingYStart=${fallingYStart}`);
+        this.animateDecrochage(connecteurData, path, circle, anchorX, anchorY, fallingXStart, fallingYStart, cableLength, direction);
+    }
+}
+

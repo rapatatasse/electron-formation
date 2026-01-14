@@ -39,6 +39,12 @@ Rails.application.routes.draw do
     resources :quizzes, only: [:index, :show] do
       resources :questions, only: [:index, :show]
     end
+
+    get "exercices", to: "exercices#index"
+
+    get "exercices/dragdrop", to: "exercices#dragdrop"
+
+    get "exercices/elingage", to: "exercices#elingage"
   end
 
   namespace :apprenant do

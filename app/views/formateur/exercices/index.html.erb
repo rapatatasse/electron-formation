@@ -1,0 +1,72 @@
+<% content_for :title do %>
+  Exercices
+<% end %>
+
+<% content_for :head do %>
+  <%= stylesheet_link_tag "exercices_index" %>
+  <%= javascript_include_tag "exercices/exercices_index.js", defer: true %>
+<% end %>
+
+    <!-- Container principal -->
+    <div class="container">
+        <div class="header">
+            <p>Choisissez votre fond de travail</p>
+            <p>Sélectionnez un schéma pour commencer à travailler</p>
+        </div>
+
+        <!-- Grille de cartes -->
+        <% fonds = [
+          { id: 1, nom: "Pose LEQ", description: "Niv 1" },
+          { id: 2, nom: "Pose LEQ", description: "Niv 2" },
+          { id: 3, nom: "Pose LEQ", description: "Niv 2" },
+          { id: 5, nom: "Pose LEQ", description: "Niv 3" },
+          { id: 6, nom: "Pose LEQ", description: "Niv 3" },
+          { id: 7, nom: "Pose LEQ", description: "Niv 3" },
+          { id: 8, nom: "Pose LEQ", description: "Niv 3" },
+          { id: 9, nom: "Pose LEQ", description: "Niv 3" },
+          { id: 10, nom: "Pose Malt", description: "Niv 1" },
+          { id: 11, nom: "Pose Malt", description: "Niv 1" },
+          { id: 31, nom: "Changement de touret", description: "Niv 2" },
+          { id: 30, nom: "Changement de touret", description: "Niv 3" },
+          { id: 32, nom: "Dépose Iso", description: "Niv 3" },
+          { id: 33, nom: "Dépose Cable", description: "Niv 3" },
+          { id: 34, nom: "Dépose ISO", description: "Niv 4 " },
+          { id: 35, nom: "Dépose ISO", description: "Niv 4 " }
+        ].map { |f| f.merge(image_url: image_path("exercices/ImageFond/fond#{f[:id]}.jpg"), link_url: formateur_exercices_dragdrop_path(fond: f[:id])) } %>
+
+        <div class="cards-grid" id="cardsGrid" data-fonds='<%= raw(fonds.to_json) %>'>
+            <!-- Les cartes seront générées dynamiquement par JavaScript -->
+        </div>
+
+        <div class="cards-grid" id="">
+           
+            <a href="DAOE/DAOE1.pdf" class="card">
+                    <%= image_tag "exercices/DAOE/daoe1.png", class: "card-image", alt: "pdf daoe" %>
+                    <div class="card-content">
+                        <h3 class="card-title">DAOE1</h3>
+                        <p class="card-description"></p>
+                        
+                    </div>
+            </a>
+            <a href="DAOE/DAOE2.pdf" class="card">
+                    <%= image_tag "exercices/DAOE/daoe2.png", class: "card-image", alt: "pdf daoe" %>
+                    <div class="card-content">
+                        <h3 class="card-title">DAOE2</h3>
+                        <p class="card-description"></p>
+                        
+                    </div>
+            </a>
+            <%= link_to formateur_exercices_elingage_path, class: "card" do %>
+                    <%= image_tag "exercices/ImageElingage/3-4Brin.png", class: "card-image", alt: "pdf daoe" %>
+                    <div class="card-content">
+                        <h3 class="card-title">Calculette élingage</h3>
+                        <p class="card-description"></p>
+                        
+                    </div>
+            <% end %>
+        </div>
+    </div>
+
+
+
+

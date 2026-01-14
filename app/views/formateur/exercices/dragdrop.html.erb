@@ -1,0 +1,86 @@
+<% content_for :title do %>
+  Tableau Blanc - Drag & Drop
+<% end %>
+
+
+
+
+<!-- logo retour accueil fixed haut gauche -->
+<%= link_to formateur_exercices_path do %>
+  <%= image_tag "exercices/logo.png", class: "nav-logo" %>
+<% end %>
+            
+    <button id="resetBtn" class="reset-button nav-logo">Reset</button>
+    <br>
+    <button id="resetConnecteurBtn" class="reset-button nav-logo" style="margin-top: 50px;">Reset Connecteur</button>
+
+
+
+
+    <!-- Zone principale avec image de fond -->
+    <div class="main-container-drop">
+        <div class="background-area" id="backgroundArea">
+            <%= image_tag "exercices/ImageFond/fond1.jpg", class: "background-image" %>
+            <!-- Les images déplaçables seront ajoutées ici dynamiquement -->
+        </div>
+        
+        <!-- Zones à droite pour les images -->
+        <div class="bottom-zones">
+
+            <div class="zone" id="zone1">
+                <h3>Outils 
+                    <button id="flipModeBtn" class="flip-mode-button" title="Activer le mode retournement">
+                        ⇄
+                    </button>
+                    <button id="infobtn" class="flip-mode-button" title="afficher le sujet">
+                        i
+                    </button>
+                </h3>
+                <div class="zone-images" data-zone="1"></div>
+            </div>
+            <div class="zone" id="zone2">
+                
+                <div class="zone-images" data-zone="2"></div>
+            </div>
+            <div class="zone" id="zone3">
+                
+                <div class="zone-images" data-zone="3"></div>
+            </div>
+                <!-- Footer -->
+            <div class="footer-info " >
+                    <p class="copyright">© Electron Formation | Créé par Jonathan Chaffanjon</p>
+            </div> 
+        </div>
+    </div>
+
+    <!-- Modal Sujet/Corrigé -->
+    <div class="modal-overlay" id="sujetModal">
+        <div class="modal-content">
+            <button class="modal-close" id="closeModal">×</button>
+            <h2 class="modal-title">Sujet et Corrigé</h2>
+            
+            <div class="modal-sujet">
+                <h3>Consigne :</h3>
+                <p id="sujetText"></p>
+            </div>
+            
+            <div class="modal-corrige">
+                <h3>Corrigé :</h3>
+                <div class="corrige-dropdown" id="corrigeDropdown"></div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+<% content_for :head do %>
+  <base href="/exercices/">
+  <%= stylesheet_link_tag "dragdrop" %>
+
+  <%= javascript_include_tag "exercices/dragdrop" %>
+  <%= javascript_include_tag "exercices/businessLogic" %>
+  <%= javascript_include_tag "exercices/sujet_corrige" %>
+  <%= javascript_include_tag "exercices/modal_sujet" %>
+<% end %>
+

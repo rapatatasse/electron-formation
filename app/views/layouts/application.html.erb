@@ -20,45 +20,17 @@
 
   <body>
     <% if user_signed_in? %>
-      <nav class="navbar">
-        <div class="container navbar-content">
-          <%= link_to "Formation", root_path, class: "navbar-brand" %>
-          <ul class="navbar-menu">
-            <li><%= link_to "Tableau de bord", dashboard_path, class: "navbar-link" %></li>
-            
-            <% if current_user.admin? %>
-              <li><%= link_to "Utilisateurs", admin_users_path, class: "navbar-link" %></li>
-
-            <% end %>
-            
-            <% if current_user.formateur?  %>
-              
-              <li><%= link_to "Mes Quiz", formateur_quizzes_path, class: "navbar-link" %></li>
-            <% end %>
-            
-            <li style="margin-left: auto;">
-              <span style="color: var(--gray-600);"></span>
-            </li>
-            <li><%= link_to "#{ current_user.initials} Déconnexion", destroy_user_session_path, data: { turbo_method: :delete }, class: "navbar-link bg-danger" %></li>
-          </ul>
-        </div>
-      </nav>
-    <% end %>
-
-    <% if notice.present? %>
-      <div class="flash-notification flash-notice">
-        <span><%= notice %></span>
-        <button class="flash-close" onclick="this.parentElement.remove()">×</button>
-      </div>
-    <% end %>
     
-    <% if alert.present? %>
-      <div class="flash-notification flash-alert">
-        <span><%= alert %></span>
-        <button class="flash-close" onclick="this.parentElement.remove()">×</button>
-      </div>
+      <%= render "shared/navbar"unless @hide_nav %>
+    
     <% end %>
+
+    <%= render "shared/flashes" %>
 
     <%= yield %>
+
+   
+      <%= render "shared/footer" unless @hide_nav%>
+    
   </body>
 </html>

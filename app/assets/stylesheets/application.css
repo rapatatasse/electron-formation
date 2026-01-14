@@ -1,5 +1,4 @@
 /*
- *= require_tree .
  *= require_self
  */
 
@@ -20,6 +19,55 @@
   --border-radius: 8px;
   --box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
   --box-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+/* couleur police */
+.text-gray {
+  color: var(--gray-600);
+}
+.text-gray-600 {
+  color: var(--gray-600);
+}
+.text-gray-700 {
+  color: var(--gray-700);
+}
+.text-gray-900 {
+  color: var(--gray-900);
+}
+/* couleur background fond avec couleur general */
+.bg-gray {
+  background-color: var(--gray-50);
+}
+.bg-primary {
+  background-color: var(--primary-color);
+}
+.br-secondary {
+  border-color: var(--secondary-color);
+}
+
+.card-image {
+  width: 100%;
+  height: auto;
+}
+
+.card {
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: 1.5rem;
+  width: 100%;
+}
+.card img {
+  width: 100%;
+  height: 180px;
+}
+.w-30 {
+  width: 30% !important;
+}
+.w-50 {
+  width: 50% !important;
+}
+.w-70 {
+  width: 70%;
 }
 
 /* Reset et base */

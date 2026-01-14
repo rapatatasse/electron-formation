@@ -1,22 +1,24 @@
 <div class="container">
   <div class="page-header">
     <h1 class="page-title">Tableau de bord Formateur</h1>
-    <%= link_to "Créer un quiz", new_formateur_quiz_path, class: "btn btn-primary" %>
-  </div>
-
-  <div class="dashboard-grid">
-    <div class="stat-card">
-      <h3><%= @total_quizzes %></h3>
-      <p>Quiz créés</p>
-    </div>
     
-    <div class="stat-card" style="background: linear-gradient(135deg, var(--secondary-color), #059669);">
-      <h3><%= @total_attempts %></h3>
-      <p>Tentatives totales</p>
-    </div>
   </div>
 
-  <div class="card">
+    <div class="card w-30">
+      <%= image_tag "exercices/ImageFond/fond1.jpg", class:"card-image", alt: "Logo" %>
+      <h3><%= link_to "Exercices tableau interactif", formateur_exercices_path, class: "btn btn-primary" %></h3>
+    </div>
+   
+    <hr>
+    <br>
+  <div class="dashboard-grid">
+    <!-- Card exercies avec phot-->
+    
+    
+    
+  </div>
+
+  <div class="card ">
     <div class="card-header">
       Mes derniers quiz
     </div>
