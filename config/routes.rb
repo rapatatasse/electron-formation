@@ -15,8 +15,10 @@ Rails.application.routes.draw do
         post :process_import
         get :download_template
       end
+      member do
+        post :reset_password
+      end
     end
-    resources :courses
     resources :themes
     resources :quizzes do
       resources :questions do
@@ -25,11 +27,20 @@ Rails.application.routes.draw do
           post :process_import
           get :export
           get :download_template
+          delete :destroy_all
         end
       end
       member do
         get :assign_users
         post :update_assignments
+      end
+    end
+    resources :activity_reports, only: [:index] do
+      collection do
+        get :export
+      end
+      member do
+        get :user_report
       end
     end
   end
@@ -45,6 +56,12 @@ Rails.application.routes.draw do
     get "exercices/dragdrop", to: "exercices#dragdrop"
 
     get "exercices/elingage", to: "exercices#elingage"
+
+    resources :activity_reports, only: [:index] do
+      member do
+        get :user_report
+      end
+    end
   end
 
   namespace :apprenant do

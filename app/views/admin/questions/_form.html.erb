@@ -46,10 +46,7 @@
         <%= f.label :multiple_correct_answers, "Plusieurs réponses correctes", style: "font-weight: normal;" %>
       </div>
 
-      <div>
-        <%= f.check_box :randomize_answers, style: "width: auto; margin-right: 0.5rem;" %>
-        <%= f.label :randomize_answers, "Ordre aléatoire des réponses", style: "font-weight: normal;" %>
-      </div>
+
     </div>
   </div>
 
@@ -65,7 +62,7 @@
               <%= answer_form.text_field :answer_text, class: "form-control", placeholder: "Texte de la réponse" %>
             </div>
             <div style="display: flex; align-items: center; gap: 0.5rem;">
-              <%= answer_form.check_box :is_correct, style: "width: auto; margin: 0;" %>
+              <%= answer_form.check_box :correct, style: "width: auto; margin: 0;" %>
               <%= answer_form.label :correct, "Correcte", style: "margin: 0; font-weight: normal; white-space: nowrap;" %>
             </div>
             <%= answer_form.hidden_field :_destroy %>
@@ -97,7 +94,7 @@ function addAnswer() {
       <input type="text" name="question[answers_attributes][${answerIndex}][answer_text]" class="form-control" placeholder="Texte de la réponse">
     </div>
     <div style="display: flex; align-items: center; gap: 0.5rem;">
-      <input type="checkbox" name="question[answers_attributes][${answerIndex}][is_correct]" value="1" style="width: auto; margin: 0;">
+      <input type="checkbox" name="question[answers_attributes][${answerIndex}][correct]" value="1" style="width: auto; margin: 0;">
       <label style="margin: 0; font-weight: normal; white-space: nowrap;">Correcte</label>
     </div>
     <button type="button" class="btn btn-sm btn-danger" onclick="this.closest('.answer-field').remove();">×</button>

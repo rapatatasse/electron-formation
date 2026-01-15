@@ -9,11 +9,6 @@
       <p>Utilisateurs</p>
     </div>
     
-    <div class="stat-card" style="background: linear-gradient(135deg, var(--secondary-color), #059669);">
-      <h3><%= @courses_count %></h3>
-      <p>Cours</p>
-    </div>
-    
     <div class="stat-card" style="background: linear-gradient(135deg, var(--warning-color), #d97706);">
       <h3><%= @quizzes_count %></h3>
       <p>Quiz</p>
@@ -41,14 +36,16 @@
           <div>Gérer les quiz</div>
         <% end %>
         
-        <%= link_to admin_courses_path, class: "btn btn-primary", style: "text-align: center;" do %>
-          <div style="font-size: 2rem; margin-bottom: 0.5rem;">📚</div>
-          <div>Gérer les cours</div>
-        <% end %>
+
         
         <%= link_to admin_themes_path, class: "btn btn-primary", style: "text-align: center;" do %>
           <div style="font-size: 2rem; margin-bottom: 0.5rem;">🎨</div>
           <div>Gérer les thèmes</div>
+        <% end %>
+        
+        <%= link_to admin_activity_reports_path, class: "btn btn-primary", style: "text-align: center; background: linear-gradient(135deg, #8b5cf6, #6366f1);" do %>
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">📊</div>
+          <div>Logs d'activité</div>
         <% end %>
       </div>
     </div>

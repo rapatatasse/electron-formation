@@ -238,6 +238,17 @@ const IMAGES_CONFIG = {
         },
 
     ],
+    "Image35.png": [
+
+
+        {
+           "name": "cable.png",
+            "x": 35,
+            "y": 33.5,
+            "type": "image",
+            "rotation": 0
+        },
+    ],
     // Ajoutez ici d'autres configurations pour Image31.png, Image32.png, etc.
 };
 
@@ -391,7 +402,7 @@ class BusinessLogicManager {
             const img = new Image();
             img.onload = () => resolve(true);
             img.onerror = () => resolve(false);
-            img.src = imagePath;
+            img.src = assetUrl(imagePath);
         });
     }
 
@@ -421,7 +432,7 @@ class BusinessLogicManager {
      */
     placeImageOnBackground(imageData) {
         const img = document.createElement('img');
-        img.src = imageData.path;
+        img.src = assetUrl(imageData.path);
         img.classList.add('positioned-image');
         img.classList.add('draggable-image'); // Rendre l'image draggable
         img.draggable = true;
@@ -766,7 +777,7 @@ class BusinessLogicManager {
             const imageSrc = (isExtremity && connecteurData.imagePathBout) 
                 ? connecteurData.imagePathBout 
                 : connecteurData.imagePath;
-            img.src = imageSrc;
+            img.src = assetUrl(imageSrc);
             img.dataset.isExtremity = isExtremity ? 'true' : 'false';
             img.classList.add('positioned-image', 'draggable-image', 'connecteur-multiple-point');
             img.draggable = true;

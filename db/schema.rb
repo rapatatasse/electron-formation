@@ -10,70 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_01_08_154700) do
+ActiveRecord::Schema[7.2].define(version: 2026_01_14_132300) do
   create_table "answers", force: :cascade do |t|
     t.integer "question_id", null: false
     t.text "answer_text"
-    t.boolean "is_correct"
+    t.boolean "correct"
     t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["question_id"], name: "index_answers_on_question_id"
-  end
-
-  create_table "attempt_answers", force: :cascade do |t|
-    t.integer "quiz_attempt_id", null: false
-    t.integer "question_id", null: false
-    t.json "answer_ids", null: false
-    t.boolean "correct"
-    t.integer "question_difficulty"
-    t.integer "user_level_at_time"
-    t.integer "time_spent"
-    t.integer "position"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["question_id"], name: "index_attempt_answers_on_question_id"
-    t.index ["quiz_attempt_id"], name: "index_attempt_answers_on_quiz_attempt_id"
-  end
-
-  create_table "certificates", force: :cascade do |t|
-    t.integer "quiz_attempt_id", null: false
-    t.integer "user_id", null: false
-    t.integer "issued_by_id", null: false
-    t.string "certificate_number"
-    t.integer "score"
-    t.string "level"
-    t.string "pdf_url"
-    t.datetime "issued_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["certificate_number"], name: "index_certificates_on_certificate_number", unique: true
-    t.index ["issued_by_id"], name: "index_certificates_on_issued_by_id"
-    t.index ["quiz_attempt_id"], name: "index_certificates_on_quiz_attempt_id"
-    t.index ["user_id"], name: "index_certificates_on_user_id"
-  end
-
-  create_table "course_assignments", force: :cascade do |t|
-    t.integer "course_id", null: false
-    t.integer "user_id", null: false
-    t.string "assignment_type"
-    t.datetime "assigned_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["course_id"], name: "index_course_assignments_on_course_id"
-    t.index ["user_id"], name: "index_course_assignments_on_user_id"
-  end
-
-  create_table "courses", force: :cascade do |t|
-    t.string "title"
-    t.text "description"
-    t.string "slug"
-    t.text "content"
-    t.integer "position"
-    t.boolean "active"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["slug"], name: "index_courses_on_slug", unique: true
   end
 
   create_table "questions", force: :cascade do |t|
@@ -82,7 +27,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_08_154700) do
     t.text "question_text"
     t.string "image_url"
     t.integer "difficulty_level"
-    t.boolean "randomize_answers"
     t.boolean "multiple_correct_answers"
     t.integer "position"
     t.datetime "created_at", null: false
@@ -91,62 +35,34 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_08_154700) do
     t.index ["theme_id"], name: "index_questions_on_theme_id"
   end
 
-  create_table "quiz_assignments", force: :cascade do |t|
+  create_table "quiz_attempts", force: :cascade do |t|
     t.integer "quiz_id", null: false
     t.integer "user_id", null: false
     t.string "assigned_by_type"
     t.integer "assigned_by_id"
     t.datetime "assigned_at"
     t.datetime "due_date"
-    t.boolean "completed", default: false
     t.text "notes"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["assigned_by_id"], name: "index_quiz_assignments_on_assigned_by_id"
-    t.index ["quiz_id", "user_id"], name: "index_quiz_assignments_on_quiz_id_and_user_id", unique: true
-    t.index ["quiz_id"], name: "index_quiz_assignments_on_quiz_id"
-    t.index ["user_id"], name: "index_quiz_assignments_on_user_id"
-  end
-
-  create_table "quiz_attempts", force: :cascade do |t|
-    t.integer "quiz_id", null: false
-    t.integer "user_id", null: false
     t.datetime "started_at"
     t.datetime "completed_at"
     t.integer "score"
     t.integer "initial_level"
     t.integer "final_level"
-    t.integer "correct_answers_count"
-    t.integer "total_questions"
     t.integer "time_spent"
     t.boolean "passed"
     t.string "status"
+    t.json "answers_data"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["assigned_by_id"], name: "index_quiz_attempts_on_assigned_by_id"
+    t.index ["quiz_id", "user_id"], name: "index_quiz_attempts_on_quiz_id_and_user_id"
     t.index ["quiz_id"], name: "index_quiz_attempts_on_quiz_id"
     t.index ["user_id"], name: "index_quiz_attempts_on_user_id"
-  end
-
-  create_table "quiz_statistics", force: :cascade do |t|
-    t.integer "quiz_id", null: false
-    t.integer "total_attempts"
-    t.integer "total_completions"
-    t.float "average_score"
-    t.float "average_time"
-    t.integer "pass_count"
-    t.integer "fail_count"
-    t.float "pass_rate"
-    t.datetime "last_calculated_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["quiz_id"], name: "index_quiz_statistics_on_quiz_id"
   end
 
   create_table "quizzes", force: :cascade do |t|
     t.string "title"
     t.text "description"
-    t.integer "creator_id", null: false
-    t.integer "course_id"
     t.integer "quiz_type"
     t.integer "question_count"
     t.integer "time_limit"
@@ -157,23 +73,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_08_154700) do
     t.boolean "active"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "max_attempts"
-    t.index ["course_id"], name: "index_quizzes_on_course_id"
-    t.index ["creator_id"], name: "index_quizzes_on_creator_id"
-  end
-
-  create_table "theme_statistics", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "theme_id", null: false
-    t.integer "questions_answered"
-    t.integer "correct_answers"
-    t.float "success_rate"
-    t.float "average_difficulty"
-    t.datetime "last_updated_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["theme_id"], name: "index_theme_statistics_on_theme_id"
-    t.index ["user_id"], name: "index_theme_statistics_on_user_id"
   end
 
   create_table "themes", force: :cascade do |t|
@@ -183,6 +82,23 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_08_154700) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_themes_on_name", unique: true
+  end
+
+  create_table "user_activity_logs", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "action_type"
+    t.string "resource_type"
+    t.integer "resource_id"
+    t.json "metadata"
+    t.string "ip_address"
+    t.string "user_agent"
+    t.datetime "performed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["action_type", "performed_at"], name: "index_user_activity_logs_on_action_type_and_performed_at"
+    t.index ["resource_type", "resource_id"], name: "index_user_activity_logs_on_resource_type_and_resource_id"
+    t.index ["user_id", "performed_at"], name: "index_user_activity_logs_on_user_id_and_performed_at"
+    t.index ["user_id"], name: "index_user_activity_logs_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -210,22 +126,9 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_08_154700) do
   end
 
   add_foreign_key "answers", "questions"
-  add_foreign_key "attempt_answers", "questions"
-  add_foreign_key "attempt_answers", "quiz_attempts"
-  add_foreign_key "certificates", "issued_bies"
-  add_foreign_key "certificates", "quiz_attempts"
-  add_foreign_key "certificates", "users"
-  add_foreign_key "course_assignments", "courses"
-  add_foreign_key "course_assignments", "users"
   add_foreign_key "questions", "quizzes"
   add_foreign_key "questions", "themes"
-  add_foreign_key "quiz_assignments", "quizzes"
-  add_foreign_key "quiz_assignments", "users"
   add_foreign_key "quiz_attempts", "quizzes"
   add_foreign_key "quiz_attempts", "users"
-  add_foreign_key "quiz_statistics", "quizzes"
-  add_foreign_key "quizzes", "courses"
-  add_foreign_key "quizzes", "users", column: "creator_id"
-  add_foreign_key "theme_statistics", "themes"
-  add_foreign_key "theme_statistics", "users"
+  add_foreign_key "user_activity_logs", "users"
 end

@@ -6,6 +6,9 @@
       <%= link_to "📥 Importer CSV", import_admin_quiz_questions_path(@quiz), class: "btn btn-secondary" %>
       <% if @quiz.questions.any? %>
         <%= link_to "📤 Exporter CSV", export_admin_quiz_questions_path(@quiz), class: "btn btn-outline" %>
+    
+        <%= button_to  "🗑️ Supprimer toutes les questions", destroy_all_admin_quiz_questions_path(@quiz), method: :delete, :onclick => "return confirm('Êtes vous sûr ?')", class: "btn btn-danger" %>
+ 
       <% end %>
     </div>
   </div>
@@ -33,9 +36,7 @@
                 <% if question.multiple_correct_answers? %>
                   <span class="badge badge-warning">Réponses multiples</span>
                 <% end %>
-                <% if question.randomize_answers? %>
-                  <span class="badge badge-secondary">Ordre aléatoire</span>
-                <% end %>
+      
               </div>
 
               <% if question.image_url.present? %>
@@ -48,8 +49,8 @@
                 <strong>Réponses :</strong>
                 <ul style="margin-top: 0.5rem; list-style: none; padding-left: 0;">
                   <% question.answers.each do |answer| %>
-                    <li style="padding: 0.5rem; margin: 0.25rem 0; background: <%= answer.is_correct? ? '#d1fae5' : '#f3f4f6' %>; border-radius: 4px;">
-                      <%= answer.is_correct? ? '✓' : '✗' %>
+                    <li style="padding: 0.5rem; margin: 0.25rem 0; background: <%= answer.correct? ? '#d1fae5' : '#f3f4f6' %>; border-radius: 4px;">
+                      <%= answer.correct? ? '✓' : '✗' %>
                       <%= answer.answer_text %>
                     </li>
                   <% end %>
@@ -59,7 +60,7 @@
 
             <div style="margin-left: 1rem;">
               <%= link_to "Modifier", edit_admin_quiz_question_path(@quiz, question), class: "btn btn-sm btn-outline" %>
-              <%= link_to "Supprimer", admin_quiz_question_path(@quiz, question), data: { turbo_method: :delete, turbo_confirm: "Êtes-vous sûr ?" }, class: "btn btn-sm btn-danger" %>
+              <%= button_to "Supprimer", admin_quiz_question_path(@quiz, question), method: :delete, :onclick => "return confirm('Êtes vous sûr ?')", class: "btn btn-sm btn-danger" %>
             </div>
           </div>
         </div>

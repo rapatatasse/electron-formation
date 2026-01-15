@@ -1,15 +1,17 @@
 class User < ApplicationRecord
+  include ActivityTrackable
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :trackable
 
   enum role: { apprenant: 0, formateur: 1, admin: 2 }
 
   has_many :course_assignments, dependent: :destroy
-  has_many :courses, through: :course_assignments
+  has_many :user_activity_logs, dependent: :destroy
+
   has_many :created_quizzes, class_name: 'Quiz', foreign_key: 'creator_id', dependent: :destroy
   has_many :quiz_attempts, dependent: :destroy
-  has_many :quiz_assignments, dependent: :destroy
-  has_many :assigned_quizzes, through: :quiz_assignments, source: :quiz
+  has_many :assigned_quizzes, -> { where.not(assigned_at: nil) }, through: :quiz_attempts, source: :quiz
   has_many :certificates, dependent: :destroy
   has_many :issued_certificates, class_name: 'Certificate', foreign_key: 'issued_by_id'
   has_many :theme_statistics, dependent: :destroy

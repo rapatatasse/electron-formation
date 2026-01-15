@@ -39,6 +39,12 @@ class Admin::QuestionsController < ApplicationController
     redirect_to admin_quiz_questions_path(@quiz), notice: "Question supprimée"
   end
 
+  def destroy_all
+    count = @quiz.questions.count
+    @quiz.questions.destroy_all
+    redirect_to admin_quiz_questions_path(@quiz), notice: "#{count} question(s) supprimée(s) avec succès"
+  end
+
   def import
   end
 
@@ -85,8 +91,8 @@ class Admin::QuestionsController < ApplicationController
   def question_params
     params.require(:question).permit(
       :question_text, :theme_id, :image_url, :difficulty_level, :position,
-      :multiple_correct_answers, :randomize_answers,
-      answers_attributes: [:id, :answer_text, :is_correct, :_destroy]
+      :multiple_correct_answers, 
+      answers_attributes: [:id, :answer_text, :correct, :_destroy]
     )
   end
 

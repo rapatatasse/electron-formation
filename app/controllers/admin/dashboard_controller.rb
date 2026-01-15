@@ -4,7 +4,7 @@ class Admin::DashboardController < ApplicationController
 
   def index
     @users_count = User.count
-    @courses_count = Course.count
+    
     @quizzes_count = Quiz.count
     @recent_users = User.order(created_at: :desc).limit(5)
   end

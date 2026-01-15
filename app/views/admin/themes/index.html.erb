@@ -30,7 +30,7 @@
             <td>
               <div class="actions">
                 <%= link_to "Modifier", edit_admin_theme_path(theme), class: "btn btn-sm btn-outline" %>
-                <%= link_to "Supprimer", admin_theme_path(theme), data: { turbo_method: :delete, turbo_confirm: "Êtes-vous sûr ?" }, class: "btn btn-sm btn-danger" %>
+                <%= button_to "Supprimer", admin_theme_path(theme), method: :delete, :onclick => "return confirm('Êtes vous sûr ?')", class: "btn btn-sm btn-danger" %>
               </div>
             </td>
           </tr>

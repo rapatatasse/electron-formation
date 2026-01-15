@@ -27,7 +27,8 @@
             <td>
               <div class="actions">
                 <%= link_to "Modifier", edit_admin_user_path(user), class: "btn btn-sm btn-outline" %>
-                <%= link_to "Supprimer", admin_user_path(user), data: { turbo_method: :delete, turbo_confirm: "Êtes-vous sûr ?" }, class: "btn btn-sm btn-danger" %>
+                <button onclick="openResetPasswordModal(<%= user.id %>, '<%= user.full_name %>')" class="btn btn-sm btn-secondary">Réinitialiser MDP</button>
+                <%= button_to "Supprimer", admin_user_path(user), method: :delete, :onclick => "return confirm('Êtes vous sûr ?')", class: "btn btn-sm btn-danger" %>
               </div>
             </td>
           </tr>
@@ -40,3 +41,94 @@
     </div>
   </div>
 </div>
+
+<!-- Modal de réinitialisation de mot de passe -->
+<div id="resetPasswordModal" class="modal" style="display: none;">
+  <div class="modal-overlay" onclick="closeResetPasswordModal()"></div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Réinitialiser le mot de passe</h3>
+      <button onclick="closeResetPasswordModal()" class="modal-close">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p id="resetPasswordUserName" style="margin-bottom: 1rem; font-weight: 600;"></p>
+      <div class="form-group">
+        <label for="newPassword" class="form-label">Nouveau mot de passe</label>
+        <input type="text" id="newPassword" class="form-control" placeholder="Entrez le nouveau mot de passe">
+        <small style="color: var(--gray-600); margin-top: 0.5rem; display: block;">Minimum 6 caractères</small>
+      </div>
+      <div id="resetPasswordError" class="alert alert-danger" style="display: none; margin-top: 1rem;"></div>
+      <div id="resetPasswordSuccess" class="alert alert-success" style="display: none; margin-top: 1rem;"></div>
+    </div>
+    <div class="modal-footer">
+      <button onclick="closeResetPasswordModal()" class="btn btn-outline">Annuler</button>
+      <button onclick="submitResetPassword()" class="btn btn-primary">Réinitialiser</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let currentUserId = null;
+  
+  function openResetPasswordModal(userId, userName) {
+    currentUserId = userId;
+    document.getElementById('resetPasswordUserName').textContent = 'Utilisateur : ' + userName;
+    document.getElementById('newPassword').value = '';
+    document.getElementById('resetPasswordError').style.display = 'none';
+    document.getElementById('resetPasswordSuccess').style.display = 'none';
+    document.getElementById('resetPasswordModal').style.display = 'flex';
+  }
+  
+  function closeResetPasswordModal() {
+    document.getElementById('resetPasswordModal').style.display = 'none';
+    currentUserId = null;
+  }
+  
+  function submitResetPassword() {
+    const newPassword = document.getElementById('newPassword').value;
+    const errorDiv = document.getElementById('resetPasswordError');
+    const successDiv = document.getElementById('resetPasswordSuccess');
+    
+    errorDiv.style.display = 'none';
+    successDiv.style.display = 'none';
+    
+    if (!newPassword) {
+      errorDiv.textContent = 'Veuillez entrer un mot de passe';
+      errorDiv.style.display = 'block';
+      return;
+    }
+    
+    fetch(`/admin/users/${currentUserId}/reset_password`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+      },
+      body: JSON.stringify({ new_password: newPassword })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        successDiv.textContent = data.message;
+        successDiv.style.display = 'block';
+        setTimeout(() => {
+          closeResetPasswordModal();
+        }, 2000);
+      } else {
+        errorDiv.textContent = data.error;
+        errorDiv.style.display = 'block';
+      }
+    })
+    .catch(error => {
+      errorDiv.textContent = 'Une erreur est survenue';
+      errorDiv.style.display = 'block';
+    });
+  }
+  
+  // Fermer la modal avec la touche Escape
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && document.getElementById('resetPasswordModal').style.display === 'flex') {
+      closeResetPasswordModal();
+    }
+  });
+</script>

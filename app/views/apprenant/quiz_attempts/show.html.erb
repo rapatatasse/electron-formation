@@ -25,7 +25,7 @@
             <div style="color: var(--gray-600);">Bonnes réponses</div>
           </div>
           <div>
-            <div style="font-size: 2rem; font-weight: bold;"><%= @attempt.total_questions %></div>
+            <div style="font-size: 2rem; font-weight: bold;"><%= @attempt.total_questions_count %></div>
             <div style="color: var(--gray-600);">Questions</div>
           </div>
         </div>
@@ -61,52 +61,55 @@
         Détail des réponses
       </div>
       <div class="card-body">
-        <% @attempt.attempt_answers.includes(:question, :answers).each_with_index do |attempt_answer, index| %>
-          <div style="padding: 1.5rem; border: 2px solid <%= attempt_answer.correct? ? 'var(--secondary-color)' : 'var(--danger-color)' %>; border-radius: var(--border-radius); margin-bottom: 1rem; background: <%= attempt_answer.correct? ? '#d1fae5' : '#fee2e2' %>;">
-            <div style="display: flex; justify-content: between; align-items: start; margin-bottom: 1rem;">
-              <div style="flex: 1;">
-                <strong>Question <%= index + 1 %> :</strong>
-                <p style="margin: 0.5rem 0; font-size: 1.1rem;"><%= attempt_answer.question.question_text %></p>
+        <% valid_answers = @attempt.get_valid_answers %>
+        <% if valid_answers.empty? %>
+          <p style="text-align: center; color: var(--gray-600); padding: 2rem;">
+            Les questions de ce quiz ont été modifiées depuis votre tentative. Les détails ne sont plus disponibles.
+          </p>
+        <% else %>
+          <% valid_answers.each_with_index do |answer_data, index| %>
+            <div style="padding: 1.5rem; border: 2px solid <%= answer_data['correct'] ? 'var(--secondary-color)' : 'var(--danger-color)' %>; border-radius: var(--border-radius); margin-bottom: 1rem; background: <%= answer_data['correct'] ? '#d1fae5' : '#fee2e2' %>;">
+              <div style="display: flex; justify-content: between; align-items: start; margin-bottom: 1rem;">
+                <div style="flex: 1;">
+                  <strong>Question <%= index + 1 %> :</strong>
+                  <p style="margin: 0.5rem 0; font-size: 1.1rem;"><%= answer_data['question_text'] %></p>
+                </div>
+                <div>
+                  <% if answer_data['correct'] %>
+                    <span class="badge badge-success">✓ Correct</span>
+                  <% else %>
+                    <span class="badge badge-danger">✗ Incorrect</span>
+                  <% end %>
+                </div>
               </div>
-              <div>
-                <% if attempt_answer.is_correct? %>
-                  <span class="badge badge-success">✓ Correct</span>
-                <% else %>
-                  <span class="badge badge-danger">✗ Incorrect</span>
-                <% end %>
-              </div>
-            </div>
 
-            <% if attempt_answer.question.image_url.present? %>
-              <div style="margin: 1rem 0;">
-                <img src="<%= attempt_answer.question.image_url %>" alt="Image question" style="max-width: 300px; border-radius: var(--border-radius);">
-              </div>
-            <% end %>
-
-            <div style="margin-top: 1rem;">
-              <strong>Votre réponse :</strong>
-              <div style="margin-top: 0.5rem;">
-                <% attempt_answer.answers.each do |answer| %>
-                  <div style="padding: 0.5rem; margin: 0.25rem 0; background: white; border-radius: 4px; border: 2px solid var(--primary-color);">
-                    <%= answer.answer_text %>
-                  </div>
-                <% end %>
-              </div>
-            </div>
-
-            <% unless attempt_answer.is_correct? %>
               <div style="margin-top: 1rem;">
-                <strong>Bonne(s) réponse(s) :</strong>
+                <strong>Votre réponse :</strong>
                 <div style="margin-top: 0.5rem;">
-                  <% attempt_answer.question.answers.correct.each do |answer| %>
-                    <div style="padding: 0.5rem; margin: 0.25rem 0; background: white; border-radius: 4px; border: 2px solid var(--secondary-color);">
-                      ✓ <%= answer.answer_text %>
+                  <% selected_answers = answer_data['answers'].select { |a| answer_data['answer_ids'].map(&:to_i).include?(a['id']) } %>
+                  <% selected_answers.each do |answer| %>
+                    <div style="padding: 0.5rem; margin: 0.25rem 0; background: white; border-radius: 4px; border: 2px solid var(--primary-color);">
+                      <%= answer['text'] %>
                     </div>
                   <% end %>
                 </div>
               </div>
-            <% end %>
-          </div>
+
+              <% unless answer_data['correct'] %>
+                <div style="margin-top: 1rem;">
+                  <strong>Bonne(s) réponse(s) :</strong>
+                  <div style="margin-top: 0.5rem;">
+                    <% correct_answers = answer_data['answers'].select { |a| a['correct'] } %>
+                    <% correct_answers.each do |answer| %>
+                      <div style="padding: 0.5rem; margin: 0.25rem 0; background: white; border-radius: 4px; border: 2px solid var(--secondary-color);">
+                        ✓ <%= answer['text'] %>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
         <% end %>
       </div>
     </div>
@@ -120,7 +123,7 @@
         <% if current_question %>
           <div style="margin-bottom: 2rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-              <span class="badge badge-info">Question <%= @attempt.attempt_answers.count + 1 %> / <%= @attempt.total_questions %></span>
+              <span class="badge badge-info">Question <%= (@attempt.answers_data || []).length + 1 %> / <%= @attempt.quiz.questions.count %></span>
               
               <% if @attempt.quiz.time_limit && @attempt.started_at %>
                 <div id="timer" style="font-weight: bold; color: var(--danger-color);">
@@ -130,7 +133,9 @@
             </div>
 
             <div style="width: 100%; height: 8px; background: var(--gray-200); border-radius: 4px; margin-bottom: 2rem;">
-              <div style="width: <%= (@attempt.attempt_answers.count.to_f / @attempt.total_questions * 100).round %>%; height: 100%; background: var(--primary-color); border-radius: 4px; transition: width 0.3s;"></div>
+              <% total_q = @attempt.quiz.questions.count %>
+              <% answered_q = (@attempt.answers_data || []).length %>
+              <div style="width: <%= total_q > 0 ? (answered_q.to_f / total_q * 100).round : 0 %>%; height: 100%; background: var(--primary-color); border-radius: 4px; transition: width 0.3s;"></div>
             </div>
           </div>
 
@@ -146,7 +151,7 @@
             <%= f.hidden_field :question_id, value: current_question.id %>
             
             <div style="margin: 2rem 0;">
-              <% answers = current_question.randomize_answers? ? current_question.answers.shuffle : current_question.answers %>
+              <% answers = current_question.quiz.randomize_answers? ? current_question.answers.shuffle : current_question.answers %>
               <% answers.each do |answer| %>
                 <label style="display: block; padding: 1rem; margin: 0.5rem 0; border: 2px solid var(--gray-300); border-radius: var(--border-radius); cursor: pointer; transition: all 0.2s;" 
                        onmouseover="this.style.borderColor='var(--primary-color)'; this.style.background='var(--gray-50)';" 

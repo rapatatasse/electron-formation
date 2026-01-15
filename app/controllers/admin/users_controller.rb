@@ -1,7 +1,7 @@
 class Admin::UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :require_admin
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :reset_password]
 
   def index
     @users = User.order(created_at: :desc).page(params[:page]).per(20)
@@ -98,6 +98,7 @@ class Admin::UsersController < ApplicationController
   def download_template
     send_data User.csv_template, filename: "template_import_apprenants.csv", type: 'text/csv; charset=utf-8'
   end
+  
   def process_import
     result = User.import_from_csv(params[:file].path)
     
@@ -108,6 +109,29 @@ class Admin::UsersController < ApplicationController
     end
     
     redirect_to admin_users_path
+  end
+
+  def reset_password
+    new_password = params[:new_password]
+    
+    if new_password.blank?
+      render json: { error: "Le mot de passe ne peut pas être vide" }, status: :unprocessable_entity
+      return
+    end
+    
+    if new_password.length < 6
+      render json: { error: "Le mot de passe doit contenir au moins 6 caractères" }, status: :unprocessable_entity
+      return
+    end
+    
+    @user.password = new_password
+    @user.password_confirmation = new_password
+    
+    if @user.save
+      render json: { success: true, message: "Mot de passe réinitialisé avec succès pour #{@user.full_name}" }
+    else
+      render json: { error: @user.errors.full_messages.join(', ') }, status: :unprocessable_entity
+    end
   end
 
   private

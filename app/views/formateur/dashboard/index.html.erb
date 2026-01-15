@@ -18,6 +18,25 @@
     
   </div>
 
+  <div class="card">
+    <div class="card-header">
+      Actions rapides
+    </div>
+    <div class="card-body">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+        <%= link_to formateur_quizzes_path, class: "btn btn-primary", style: "text-align: center;" do %>
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">📝</div>
+          <div>Voir les quiz</div>
+        <% end %>
+        
+        <%= link_to formateur_activity_reports_path, class: "btn btn-primary", style: "text-align: center; background: linear-gradient(135deg, #8b5cf6, #6366f1);" do %>
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">📊</div>
+          <div>Activité des apprenants</div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
   <div class="card ">
     <div class="card-header">
       Mes derniers quiz

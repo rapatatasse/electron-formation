@@ -1,7 +1,7 @@
 class Admin::ThemesController < ApplicationController
   before_action :authenticate_user!
   before_action :require_admin
-  before_action :set_theme, only: [:show, :edit, :update, :destroy]
+  before_action :set_theme, only: [:edit, :update, :destroy]
 
   def index
     @themes = Theme.order(:name)

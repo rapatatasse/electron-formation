@@ -15,7 +15,7 @@
     </div>
     
     <div class="stat-card" style="background: linear-gradient(135deg, var(--secondary-color), #059669);">
-      <h3><%= @quiz.quiz_assignments.count %></h3>
+      <h3><%= @quiz.quiz_attempts.assigned.count %></h3>
       <p>Apprenants assignés</p>
     </div>
     
@@ -64,10 +64,7 @@
           <%= @quiz.passing_score || "Non défini" %>%
         </div>
 
-        <div>
-          <strong>Tentatives max :</strong>
-          <%= @quiz.max_attempts || "Illimitées" %>
-        </div>
+
 
         <div>
           <strong>Ordre aléatoire :</strong>
@@ -113,8 +110,10 @@
               </td>
               <td><%= l(assignment.assigned_at, format: :short) if assignment.assigned_at %></td>
               <td>
-                <% if assignment.completed? %>
+                <% if assignment.status == 'completed' && assignment.passed? %>
                   <span class="badge badge-success">Complété</span>
+                <% elsif assignment.status == 'in_progress' %>
+                  <span class="badge badge-info">En cours</span>
                 <% else %>
                   <span class="badge badge-warning">En attente</span>
                 <% end %>

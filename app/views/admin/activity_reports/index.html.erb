@@ -1,0 +1,140 @@
+<div class="container">
+  <div class="page-header">
+    <h1 class="page-title">📊 Rapport d'Activité Mensuel</h1>
+    <%= link_to "Exporter CSV", export_admin_activity_reports_path(date: @date), class: "btn btn-secondary" %>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <%= form_with url: admin_activity_reports_path, method: :get, class: "form-group" do |f| %>
+        <div style="display: flex; gap: 1rem; align-items: flex-end;">
+          <div style="flex: 1;">
+            <%= f.label :date, "Mois", class: "form-label" %>
+            <%= f.month_field :date, value: @date.strftime('%Y-%m'), class: "form-control" %>
+          </div>
+          <%= f.submit "Filtrer", class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      Période: <%= @report[:period] %>
+    </div>
+    <div class="card-body">
+      <div class="dashboard-grid">
+        <div class="stat-card">
+          <h3><%= @report[:total_users] %></h3>
+          <p>Total Utilisateurs</p>
+        </div>
+        <div class="stat-card" style="background: linear-gradient(135deg, var(--secondary-color), #059669);">
+          <h3><%= @report[:active_users] %></h3>
+          <p>Utilisateurs Actifs</p>
+        </div>
+        <div class="stat-card" style="background: linear-gradient(135deg, #8b5cf6, #6366f1);">
+          <h3><%= @report[:global_stats][:total_activities] %></h3>
+          <p>Total Activités</p>
+        </div>
+        <div class="stat-card" style="background: linear-gradient(135deg, var(--warning-color), #d97706);">
+          <h3><%= @report[:global_stats][:avg_activities_per_user].round(1) %></h3>
+          <p>Moyenne/Utilisateur</p>
+        </div>
+      </div>
+
+      <div style="margin-top: 2rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem;">Activités par Type</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+          <% @report[:activity_by_action].each do |action, count| %>
+            <div style="background: white; border: 2px solid var(--gray-200); border-radius: var(--border-radius); padding: 1rem; text-align: center;">
+              <p style="color: var(--gray-600); font-size: 0.875rem; margin-bottom: 0.5rem;"><%= action.humanize %></p>
+              <p style="font-size: 1.5rem; font-weight: 700; color: var(--primary-color);"><%= count %></p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      🏆 Top 10 Utilisateurs Actifs
+    </div>
+    <div class="card-body">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Activités</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @report[:top_active_users].each_with_index do |user, index| %>
+            <tr>
+              <td><%= index + 1 %></td>
+              <td><strong><%= user[:name] %></strong></td>
+              <td><%= user[:email] %></td>
+              <td><span class="badge badge-info"><%= user[:activity_count] %></span></td>
+              <td>
+                <%= link_to "Voir détails", user_report_admin_activity_report_path(user[:user_id], date: @date), class: "btn btn-sm btn-outline" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      👥 Tous les Utilisateurs
+    </div>
+    <div class="card-body">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Rôle</th>
+            <th>Activités</th>
+            <th>Connexions</th>
+            <th>Quiz</th>
+            <th>Jours Actifs</th>
+            <th>Dernière Connexion</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @report[:users_details].each do |user_detail| %>
+            <tr>
+              <td><strong><%= user_detail[:name] %></strong></td>
+              <td><%= user_detail[:email] %></td>
+              <td>
+                <span class="badge <%= user_detail[:role] == 'admin' ? 'badge-danger' : user_detail[:role] == 'formateur' ? 'badge-info' : 'badge-success' %>">
+                  <%= user_detail[:role] %>
+                </span>
+              </td>
+              <td><%= user_detail[:stats][:total_activities] %></td>
+              <td><%= user_detail[:stats][:logins] %></td>
+              <td><%= user_detail[:stats][:quizzes_completed] %>/<%= user_detail[:stats][:quizzes_started] %></td>
+              <td><%= user_detail[:stats][:active_days] %></td>
+              <td>
+                <% if user_detail[:stats][:last_login] %>
+                  <span style="font-size: 0.875rem;"><%= user_detail[:stats][:last_login].strftime('%d/%m/%Y %H:%M') %></span>
+                <% else %>
+                  <span class="badge badge-warning">Jamais</span>
+                <% end %>
+              </td>
+              <td>
+                <%= link_to "Détails", user_report_admin_activity_report_path(user_detail[:user_id], date: @date), class: "btn btn-sm btn-outline" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

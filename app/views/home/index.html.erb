@@ -1,42 +1,119 @@
-<div class="container">
-  <div style="text-align: center; padding: 4rem 0;">
-    <h1 style="font-size: 3rem; font-weight: 700; margin-bottom: 1rem; color: var(--primary-color);">
-      Plateforme de Formation
-    </h1>
-    <p style="font-size: 1.25rem; color: var(--gray-600); margin-bottom: 2rem;">
-      Système de quiz adaptatif pour l'apprentissage et l'évaluation
-    </p>
-    
-    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+<%= stylesheet_link_tag "home" %>
+
+<nav class="home-navbar">
+  <div class="home-navbar-content">
+    <%= link_to root_path, class: "home-navbar-brand" do %>
+      <%= image_tag "exercices/logo.png", class: "home-nav-logo" %>
+      <span class="home-navbar-title">Electron Formation</span>
+    <% end %>
+    <div class="home-navbar-actions">
       <% if user_signed_in? %>
-        <%= link_to "Accéder au tableau de bord", dashboard_path, class: "btn btn-primary" %>
-        <%= link_to "Se déconnecter", destroy_user_session_path, data: { turbo_method: :delete }, class: "btn bg-danger" %>
+        <%= link_to "Tableau de bord", dashboard_path, class: "btn btn-primary" %>
+        <%= link_to "Déconnexion", destroy_user_session_path, data: { turbo_method: :delete }, class: "btn btn-outline" %>
       <% else %>
-        <%= link_to "Se connecter", new_user_session_path, class: "btn btn-primary" %>
-        <%= link_to "S'inscrire", new_user_registration_path, class: "btn btn-outline" %>
+        <%= link_to "Se connecter", new_user_session_path, class: "btn bg-gray" %>
       <% end %>
     </div>
   </div>
+</nav>
 
-  <div class="dashboard-grid" style="margin-top: 3rem;">
-    <div class="card">
-      <h3 style="color: var(--primary-color); margin-bottom: 1rem;">📚 Cours</h3>
-      <p>Accédez à une bibliothèque de cours structurés et organisés par thématiques.</p>
+<div class="hero-section">
+  <h1 class="hero-title">ELECTRON FORMATION</h1>
+  <p class="hero-subtitle">COMPÉTENCES • ACTIONS • CHANTIERS</p>
+  <p class="hero-description">
+    Depuis sa création, ELECTRON FORMATION offre aux entreprises du secteur de l'Énergie et à ses stagiaires 
+    des formations adaptées aux métiers spécifiques de la Haute Tension. Nous travaillons à un environnement 
+    d'apprentissage riche et diversifié.
+  </p>
+</div>
+
+<div class="container">
+  <h2 class="section-title">Faire la différence</h2>
+  <p class="section-description">
+    Les connaissances, la créativité et l'expérience pratique ont toujours été au cœur de nos préoccupations. 
+    Nous sommes fiers des monteurs, techniciens et encadrants de chantier qui ont reçu leur formation avec le 
+    concours de notre centre. Nous encourageons nos stagiaires et nos formateurs à s'épanouir, à apprendre et 
+    à créer, jour après jour.
+  </p>
+  
+  <div class="stats-container">
+    <div class="stats-badge">Taux de Réussite 2024 : 99%</div>
+  </div>
+
+  <h2 class="section-title">Nos Formations</h2>
+  
+  <div class="grid-3">
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <h3 class="feature-title">Haute Tension</h3>
+      <p>Formations spécialisées pour les lignes aériennes, postes HTB et liaisons souterraines. Expertise reconnue dans le secteur.</p>
     </div>
     
-    <div class="card">
-      <h3 style="color: var(--secondary-color); margin-bottom: 1rem;">✅ Quiz</h3>
-      <p>Testez vos connaissances avec des quiz simples ou adaptatifs de type.</p>
+    <div class="feature-card">
+      <div class="feature-icon">🎓</div>
+      <h3 class="feature-title">Pass RTE & Végétation</h3>
+      <p>Certifications Pass RTE et Pass Végétation pour RTE, ENEDIS et EDF. Formations adaptées aux besoins du terrain.</p>
     </div>
     
-    <div class="card">
-      <h3 style="color: var(--warning-color); margin-bottom: 1rem;">📊 Statistiques</h3>
-      <p>Suivez votre progression et analysez vos résultats en détail.</p>
-    </div>
-    
-    <div class="card">
-      <h3 style="color: var(--danger-color); margin-bottom: 1rem;">🏆 Certificats</h3>
-      <p>Obtenez des certificats officiels après validation de vos compétences.</p>
+    <div class="feature-card">
+      <div class="feature-icon">🔧</div>
+      <h3 class="feature-title">Pratique Terrain</h3>
+      <p>Apprentissage basé sur l'expérience réelle de chantier. Formateurs passionnés et expérimentés.</p>
     </div>
   </div>
+
+  <div class="info-section">
+    <h3>La Formation au Cœur de l'Action Terrain</h3>
+    <p>
+      ELECTRON FORMATION procure un environnement d'apprentissage riche et diversifié aux stagiaires et aux entreprises. 
+      Notre centre de formation situé en Rhône-Alpes à SAINT-MAURICE-L'EXIL, au Sud de Lyon, dispose d'installations 
+      modernes et adaptées.
+    </p>
+    <p class="info-paragraph">
+      Nos formateurs sont passionnés, expérimentés et enthousiastes à l'idée de transmettre leurs connaissances et 
+      leurs expériences chantier à nos stagiaires. Nous mettons tout en œuvre pour préparer nos stagiaires à mener 
+      une carrière épanouissante et gratifiante.
+    </p>
+  </div>
+
+  <div class="cta-section">
+    <h3>Planifiez vos formations en toute simplicité</h3>
+    <p>
+      Choisissez et réservez facilement vos formations selon vos disponibilités, votre localisation et le nombre de participants.
+    </p>
+    <p class="cta-phone">
+      09 81 37 57 81
+    </p>
+    <p class="cta-email">
+      contact@electron-formation.fr
+    </p>
+  </div>
+
 </div>
+
+<footer class="home-footer">
+  <div class="home-footer-content">
+    <div class="footer-contact">
+      <a href="tel:0981375781">09 81 37 57 81</a>
+      <span class="footer-separator">•</span>
+      <a href="mailto:contact@electron-formation.fr">contact@electron-formation.fr</a>
+    </div>
+    
+    <div class="footer-copyright">
+      
+    </div>
+    
+    <div class="footer-links">
+      <a href="https://www.electron-formation.fr/about-7" target="_blank" rel="noopener">RGPD</a>
+      <span class="footer-separator">•</span>
+      <a href="https://www.electron-formation.fr/copie-de-rgpd" target="_blank" rel="noopener">Mentions Légales</a>
+      <span class="footer-separator">•</span>
+      <a href="https://www.electron-formation.fr/copie-de-mentions-l%C3%A9gales" target="_blank" rel="noopener">CGV</a>
+      <span class="footer-copyright">
+        © 2023 par ELECTRON FORMATION.
+      </span>
+    </div>
+    
+    </div>
+  </div>
+</footer>

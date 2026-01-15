@@ -40,9 +40,9 @@ puts "✓ Apprenant créé : #{apprenant.email} (mot de passe: password123)"
 # Création de thèmes
 puts "\nCréation des thèmes..."
 themes_data = [
-  { name: 'Risque electrique', description: 'Questions de mathématiques', color: '#3b82f6' },
-  { name: 'Risque mecanique', description: 'Questions de français et grammaire', color: '#10b981' },
-  { name: 'Legislation', description: 'Questions sur l\'informatique et la programmation', color: '#f59e0b' } 
+  { name: 'Risque electrique', description: 'Questions Niveau 1', color: '#3b82f6' },
+  { name: 'Risque mecanique', description: 'Questions Niveau 1', color: '#10b981' },
+  { name: 'Législation', description: 'Questions Niveau 1', color: '#f59e0b' } 
 ]
 
 themes_data.each do |theme_data|
@@ -53,28 +53,9 @@ themes_data.each do |theme_data|
   puts "✓ Thème créé : #{theme.name}"
 end
 
-# Création de cours
-puts "\nCréation des cours..."
-courses_data = [
-  { title: 'Calcul Elingage', slug: 'calculelingage', position: 1 },
-  { title: 'Exercices Malt', slug: 'Exo', position: 2 },
-  { title: 'DAOE', slug: 'dao', position: 3 }
-]
 
-courses_data.each do |course_data|
-  course = Course.find_or_create_by!(slug: course_data[:slug]) do |c|
-    c.title = course_data[:title]
-    c.description = "Description du cours #{course_data[:title]}"
-    c.content = "Contenu du cours #{course_data[:title]}"
-    c.position = course_data[:position]
-    c.active = true
-  end
-  puts "✓ Cours créé : #{course.title}"
-end
-
-puts "\n" + "="*50
 puts "SEED TERMINÉ !"
-puts "="*50
+
 puts "\nComptes créés :"
 
 puts "\nVous pouvez maintenant vous connecter avec ces comptes."

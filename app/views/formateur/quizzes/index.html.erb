@@ -41,7 +41,7 @@
                 <%= link_to "Voir", formateur_quiz_path(quiz), class: "btn btn-sm btn-outline" %>
                 <%= link_to "Modifier", edit_formateur_quiz_path(quiz), class: "btn btn-sm btn-outline" %>
                 <%= link_to "Questions", formateur_quiz_questions_path(quiz), class: "btn btn-sm btn-primary" %>
-                <%= link_to "Supprimer", formateur_quiz_path(quiz), data: { turbo_method: :delete, turbo_confirm: "Êtes-vous sûr ?" }, class: "btn btn-sm btn-danger" %>
+                <%= button_to "Supprimer", formateur_quiz_path(quiz), method: :delete, :onclick => "return confirm('Êtes vous sûr ?')", class: "btn btn-sm btn-danger" %>
               </div>
             </td>
           </tr>

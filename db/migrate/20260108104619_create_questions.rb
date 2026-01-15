@@ -6,9 +6,8 @@ class CreateQuestions < ActiveRecord::Migration[7.2]
       t.text :question_text
       t.string :image_url
       t.integer :difficulty_level
-      t.boolean :randomize_answers
       t.boolean :multiple_correct_answers
-      t.integer :position
+      t.integer :position #dans le quiz
 
       t.timestamps
     end

@@ -1,10 +1,9 @@
 class Quiz < ApplicationRecord
-  belongs_to :creator, class_name: 'User', foreign_key: 'creator_id'
+
   belongs_to :course, optional: true
   has_many :questions, dependent: :destroy
   has_many :quiz_attempts, dependent: :destroy
-  has_many :quiz_assignments, dependent: :destroy
-  has_many :assigned_users, through: :quiz_assignments, source: :user
+  has_many :assigned_users, through: :quiz_attempts, source: :user
   has_one :quiz_statistic, dependent: :destroy
 
   enum quiz_type: { simple: 0, adaptatif: 1 }
@@ -19,7 +18,7 @@ class Quiz < ApplicationRecord
   scope :simple_quizzes, -> { where(quiz_type: :simple) }
   scope :adaptive_quizzes, -> { where(quiz_type: :adaptatif) }
 
-  after_create :create_quiz_statistic
+
 
   def questions_count
     questions.count
@@ -29,13 +28,7 @@ class Quiz < ApplicationRecord
     quiz_attempts.count
   end
 
-  def average_score
-    quiz_statistic&.average_score || 0
-  end
-
-  def pass_rate
-    quiz_statistic&.pass_rate || 0
-  end
+ 
 
   def adaptive?
     quiz_type == :adaptive
@@ -43,7 +36,5 @@ class Quiz < ApplicationRecord
 
   private
 
-  def create_quiz_statistic
-    QuizStatistic.create(quiz: self)
-  end
+
 end

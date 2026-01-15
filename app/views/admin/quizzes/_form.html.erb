@@ -21,6 +21,11 @@
   </div>
 
   <div class="form-group">
+    <%= f.label :question_count, "Nombre de questions" %>
+    <%= f.number_field :question_count, class: "form-control", placeholder: "Ex: 10", min: 1 %>
+  </div>
+
+  <div class="form-group">
     <%= f.label :quiz_type, "Type de quiz" %>
     <%= f.select :quiz_type, 
         options_for_select([["Simple", "simple"], ["Adaptatif", "adaptive"]], quiz.quiz_type), 
@@ -43,11 +48,7 @@
     </div>
   </div>
 
-  <div class="form-group">
-    <%= f.label :max_attempts, "Nombre maximum de tentatives" %>
-    <%= f.number_field :max_attempts, class: "form-control", placeholder: "Ex: 3", min: 1 %>
-    <small class="form-text">Laisser vide pour tentatives illimitées</small>
-  </div>
+  
 
   <div class="form-group">
     <div style="display: flex; gap: 2rem;">

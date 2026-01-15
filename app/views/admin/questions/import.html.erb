@@ -12,7 +12,7 @@
           <li>Le fichier doit être au format CSV (séparateur : virgule ou point-virgule)</li>
           <li>La première ligne doit contenir les en-têtes de colonnes</li>
           <li>Colonnes requises : question_text, theme_name, difficulty_level</li>
-          <li>Colonnes optionnelles : image_url, position, multiple_correct_answers, randomize_answers</li>
+          <li>Colonnes optionnelles : image_url, position, multiple_correct_answers</li>
           <li>Réponses : answer_1 à answer_4 avec correct_1 à correct_4 (oui/non)</li>
           <li>Les thèmes doivent exister dans la base de données</li>
         </ul>
@@ -42,7 +42,7 @@
       Exemple de fichier CSV
     </div>
     <div class="card-body">
-      <pre style="background: var(--gray-50); padding: 1rem; border-radius: 4px; overflow-x: auto; font-size: 0.85rem;">question_text;theme_name;image_url;difficulty_level;position;multiple_correct_answers;randomize_answers;answer_1;correct_1;answer_2;correct_2;answer_3;correct_3;answer_4;correct_4
+      <pre style="background: var(--gray-50); padding: 1rem; border-radius: 4px; overflow-x: auto; font-size: 0.85rem;">question_text;theme_name;image_url;difficulty_level;position;multiple_correct_answers;answer_1;correct_1;answer_2;correct_2;answer_3;correct_3;answer_4;correct_4
 Quelle est la tension du réseau domestique en France ?;Risque electrique;;30;1;non;non;230V;oui;110V;non;400V;non;12V;non
 Quels équipements de protection sont obligatoires ?;Risque mecanique;;50;2;oui;non;Gants;oui;Lunettes;oui;Casquette;non;Chaussures de sécurité;oui</pre>
     </div>
