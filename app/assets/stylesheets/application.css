@@ -137,6 +137,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: linear-gradient(135deg, #f2f4fa 0%, #f0e9f7 100%);
 }
 
 .navbar-brand {

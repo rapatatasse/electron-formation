@@ -70,6 +70,13 @@ function assetUrl(path) {
                     return found.path;
                 }
             }
+        } else if (path.includes('ImagesPourFond/')) {
+            // Format: "ImagesPourFond/31_touret.png"
+            const filename = path.split('ImagesPourFond/')[1];
+            if (filename && assetPaths.pourFond && assetPaths.pourFond[filename]) {
+                console.log('✅ Asset PourFond trouvé:', path, '->', assetPaths.pourFond[filename]);
+                return assetPaths.pourFond[filename];
+            }
         }
         
         console.warn('⚠️ Asset non trouvé dans le mapping:', path);

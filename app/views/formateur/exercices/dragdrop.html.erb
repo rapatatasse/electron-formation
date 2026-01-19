@@ -48,7 +48,22 @@
                  rescue
                    nil
                  end
-               }.compact
+               }.compact,
+               pourFond: {
+                 "31_touret.png" => asset_path("exercices/ImagesPourFond/31_touret.png"),
+                 "32_Iso_Droite.png" => asset_path("exercices/ImagesPourFond/32_Iso_Droite.png"),
+                 "32_Iso_Gauche.png" => asset_path("exercices/ImagesPourFond/32_Iso_Gauche.png"),
+                 "32_touret.png" => asset_path("exercices/ImagesPourFond/32_touret.png"),
+                 "34DoubleISO.png" => asset_path("exercices/ImagesPourFond/34DoubleISO.png"),
+                 "Camion.png" => asset_path("exercices/ImagesPourFond/Camion.png"),
+                 "HommeH1.png" => asset_path("exercices/ImagesPourFond/HommeH1.png"),
+                 "HommeH2.png" => asset_path("exercices/ImagesPourFond/HommeH2.png"),
+                 "HommeNH.png" => asset_path("exercices/ImagesPourFond/HommeNH.png"),
+                 "Terre roulante.png" => asset_path("exercices/ImagesPourFond/Terre roulante.png"),
+                 "cable.png" => asset_path("exercices/ImagesPourFond/cable.png"),
+                 "crochet.png" => asset_path("exercices/ImagesPourFond/crochet.png"),
+                 "poulie.png" => asset_path("exercices/ImagesPourFond/poulie.png")
+               }
              }.to_json) %>'>
             <%= image_tag "exercices/ImageFond/fond1.jpg", class: "background-image" %>
             <!-- Les images déplaçables seront ajoutées ici dynamiquement -->
