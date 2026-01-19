@@ -19,7 +19,37 @@
 
     <!-- Zone principale avec image de fond -->
     <div class="main-container-drop">
-        <div class="background-area" id="backgroundArea">
+        <div class="background-area" id="backgroundArea"
+             data-asset-paths='<%= raw({
+               fonds: (1..35).map { |i| 
+                 begin
+                   { id: i, path: asset_path("exercices/ImageFond/fond#{i}.jpg") }
+                 rescue
+                   nil
+                 end
+               }.compact,
+               z1: (1..9).map { |i| 
+                 begin
+                   { id: i, path: asset_path("exercices/ImagesZ1/image(#{i}).png") }
+                 rescue
+                   nil
+                 end
+               }.compact,
+               z2: (1..9).map { |i| 
+                 begin
+                   { id: i, path: asset_path("exercices/ImagesZ2/image(#{i}).png") }
+                 rescue
+                   nil
+                 end
+               }.compact,
+               z3: (1..9).map { |i| 
+                 begin
+                   { id: i, path: asset_path("exercices/ImagesZ3/image(#{i}).png") }
+                 rescue
+                   nil
+                 end
+               }.compact
+             }.to_json) %>'>
             <%= image_tag "exercices/ImageFond/fond1.jpg", class: "background-image" %>
             <!-- Les images déplaçables seront ajoutées ici dynamiquement -->
         </div>
@@ -78,7 +108,7 @@
   <base href="/exercices/">
   <%= stylesheet_link_tag "dragdrop" %>
 
-  <%= javascript_include_tag "exercices/asset_paths" %>
+ 
   <%= javascript_include_tag "exercices/dragdrop" %>
   <%= javascript_include_tag "exercices/businessLogic" %>
   <%= javascript_include_tag "exercices/sujet_corrige" %>

@@ -37,3 +37,7 @@ git push heroku main
 
 # migration sur heroku
 heroku run rails db:migrate --app electronformation
+
+
+Attention pour les images charger en JS utiliser en plus ceci :
+app\assets\javascripts\exercices\asset_paths.js.erb
