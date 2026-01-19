@@ -8,18 +8,34 @@ function afficherAlerteAngle(angle, elementAlerte) {
     }
 }
 
-// Calcule l'ordonnée à partir de l'angle (avec hauteur fixe = 1m)
+// Calcule l'ordonnée à partir de l'angle de pente (avec hauteur fixe = 1m)
 function calculerOrdonneeDepuisAngle(angleDeg) {
-    if (isNaN(angleDeg) || angleDeg <= 0 || angleDeg >= 180) return null;
+    if (isNaN(angleDeg) || angleDeg <= 0 || angleDeg >= 90) return null;
     const angleRad = (angleDeg * Math.PI) / 180;
-    return HAUTEUR_FIXE * Math.tan(angleRad / 2);
+    return HAUTEUR_FIXE * Math.tan(angleRad);
 }
 
-// Calcule l'angle à partir de l'ordonnée (avec hauteur fixe = 1m)
+// Calcule l'angle de pente à partir de l'ordonnée (avec hauteur fixe = 1m)
 function calculerAngleDepuisOrdonnee(ordonnee) {
     if (isNaN(ordonnee) || ordonnee <= 0) return null;
-    const angleRad = 2 * Math.atan(ordonnee / HAUTEUR_FIXE);
+    const angleRad = Math.atan(ordonnee / HAUTEUR_FIXE);
     return (angleRad * 180) / Math.PI;
+}
+
+// Met à jour le label de pente en pourcentage
+function mettreAJourPente() {
+    const alpha2Input = document.getElementById('alpha2');
+    const penteLabel = document.getElementById('penteLabel');
+    const angle = parseFloat(alpha2Input.value);
+    
+    if (!isNaN(angle) && angle > 0 && angle < 90) {
+        // Calcul de la pente : tan(angle) × 100
+        const angleRad = (angle * Math.PI) / 180;
+        const pente = Math.tan(angleRad) * 100;
+        penteLabel.textContent = `Pente: ${pente.toFixed(1)}%`;
+    } else {
+        penteLabel.textContent = 'Pente: 0%';
+    }
 }
 
 // Met à jour l'ordonnée quand l'angle change
@@ -31,6 +47,7 @@ function mettreAJourOrdonneeDepuisAngle() {
     if (ordonnee !== null) {
         ordonneesInput.value = ordonnee.toFixed(3);
     }
+    mettreAJourPente();
     calculerTous();
 }
 
@@ -43,6 +60,7 @@ function mettreAJourAngleDepuisOrdonnee() {
     if (angle !== null) {
         alpha2Input.value = angle.toFixed(1);
     }
+    mettreAJourPente();
     calculerTous();
 }
 
