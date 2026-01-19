@@ -69,6 +69,8 @@ Rails.application.routes.draw do
 
     get "exercices/elingage", to: "exercices#elingage"
 
+    get "DAOE/:pdf_name", to: "exercices#daoe", as: :daoe_pdf
+
     resources :activity_reports, only: [:index] do
       member do
         get :user_report
