@@ -220,7 +220,8 @@ class DragDropManager {
 
     createDraggableImage(src, container, zoneNumber, altText = '', connectorColor = '#27ae60') {
         const img = document.createElement('img');
-        img.src = assetUrl(src);
+        // Si c'est une data URL, l'utiliser directement, sinon passer par assetUrl
+        img.src = src.startsWith('data:') ? src : assetUrl(src);
         img.alt = altText || `Image Zone ${zoneNumber}`;
         img.className = 'draggable-image';
         img.draggable = true;
