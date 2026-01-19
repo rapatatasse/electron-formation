@@ -1,11 +1,76 @@
 // Fonction helper pour gérer les chemins des assets Rails
 function assetUrl(path) {
-    // Les images sont dans app/assets/images/exercices/
-    // Rails les sert depuis /assets/exercices/
-    // Utiliser window.location.origin pour éviter les conflits avec <base href>
-    const url = `${window.location.origin}/assets/exercices/${path}`;
-    console.log('🔗 assetUrl:', path, '->', url);
-    return url;
+    // Si c'est une data URL, la retourner directement
+    if (path.startsWith('data:')) {
+        return path;
+    }
+    
+    // Récupérer les chemins depuis l'attribut data-asset-paths
+    const backgroundArea = document.getElementById('backgroundArea');
+    if (!backgroundArea) {
+        console.warn('⚠️ backgroundArea non trouvé');
+        return path;
+    }
+    
+    const assetPathsJson = backgroundArea.getAttribute('data-asset-paths');
+    if (!assetPathsJson) {
+        console.warn('⚠️ data-asset-paths non trouvé');
+        return path;
+    }
+    
+    try {
+        const assetPaths = JSON.parse(assetPathsJson);
+        
+        // Déterminer le type de ressource
+        if (path.includes('ImageFond/fond')) {
+            // Format: "ImageFond/fond1.jpg"
+            const match = path.match(/fond(\d+)\./);
+            if (match) {
+                const id = parseInt(match[1]);
+                const found = assetPaths.fonds.find(f => f.id === id);
+                if (found) {
+                    console.log('✅ Asset fond trouvé:', path, '->', found.path);
+                    return found.path;
+                }
+            }
+        } else if (path.includes('ImagesZ1/image')) {
+            const match = path.match(/image\((\d+)\)/);
+            if (match) {
+                const id = parseInt(match[1]);
+                const found = assetPaths.z1.find(f => f.id === id);
+                if (found) {
+                    console.log('✅ Asset Z1 trouvé:', path, '->', found.path);
+                    return found.path;
+                }
+            }
+        } else if (path.includes('ImagesZ2/image')) {
+            const match = path.match(/image\((\d+)\)/);
+            if (match) {
+                const id = parseInt(match[1]);
+                const found = assetPaths.z2.find(f => f.id === id);
+                if (found) {
+                    console.log('✅ Asset Z2 trouvé:', path, '->', found.path);
+                    return found.path;
+                }
+            }
+        } else if (path.includes('ImagesZ3/image')) {
+            const match = path.match(/image\((\d+)\)/);
+            if (match) {
+                const id = parseInt(match[1]);
+                const found = assetPaths.z3.find(f => f.id === id);
+                if (found) {
+                    console.log('✅ Asset Z3 trouvé:', path, '->', found.path);
+                    return found.path;
+                }
+            }
+        }
+        
+        console.warn('⚠️ Asset non trouvé dans le mapping:', path);
+        return path;
+    } catch (e) {
+        console.error('❌ Erreur parsing data-asset-paths:', e);
+        return path;
+    }
 }
 
 const IMAGES_CONFIG = {
