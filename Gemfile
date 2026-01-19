@@ -42,6 +42,7 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+  gem "wkhtmltopdf-binary"
 end
 
 group :test do
@@ -57,5 +58,5 @@ gem "kaminari", "~> 1.2"
 gem "roo", "~> 2.10"
 gem "rubyXL", "~> 3.4"
 
-gem "wicked_pdf"
-gem "wkhtmltopdf-binary"
+gem "wicked_pdf", "~> 2.8.2"  
+

@@ -340,7 +340,7 @@ DEPENDENCIES
   sqlite3 (>= 1.4)
   tzinfo-data
   web-console
-  wicked_pdf
+  wicked_pdf (~> 2.8.2)
   wkhtmltopdf-binary
 
 RUBY VERSION
