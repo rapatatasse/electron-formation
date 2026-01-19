@@ -1,13 +1,7 @@
 // Fonction helper pour gérer les chemins des assets Rails
 function assetUrl(path) {
-    // Les images sont dans app/assets/images/exercices/
-    // Rails les sert depuis /assets/exercices/
-    // Encoder chaque partie du chemin pour gérer les espaces et caractères spéciaux
-    const pathParts = path.split('/');
-    const encodedPath = pathParts.map(part => encodeURIComponent(part)).join('/');
-    const url = `${window.location.origin}/assets/exercices/${encodedPath}`;
-    console.log('🔗 assetUrl:', path, '->', url);
-    return url;
+    // Utiliser la fonction globale getAssetPath qui gère les fingerprints
+    return window.getAssetPath ? window.getAssetPath(path) : path;
 }
 
 class DragDropManager {

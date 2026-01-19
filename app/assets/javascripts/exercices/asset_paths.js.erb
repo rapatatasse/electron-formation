@@ -1,0 +1,62 @@
+// Asset paths avec fingerprints générés par Rails
+window.ASSET_PATHS = {
+  // Images de fond
+  <% Dir.glob(Rails.root.join('app/assets/images/exercices/ImageFond/*.{jpg,jpeg,png,gif}')).each do |file| %>
+  '<%= File.basename(file, File.extname(file)) %>': '<%= asset_path("exercices/ImageFond/#{File.basename(file)}") %>',
+  <% end %>
+  
+  // Images Zone 1
+  <% Dir.glob(Rails.root.join('app/assets/images/exercices/ImagesZ1/*.{jpg,jpeg,png,gif}')).each do |file| %>
+  'ImagesZ1/<%= File.basename(file, File.extname(file)) %>': '<%= asset_path("exercices/ImagesZ1/#{File.basename(file)}") %>',
+  <% end %>
+  
+  // Images Zone 2
+  <% Dir.glob(Rails.root.join('app/assets/images/exercices/ImagesZ2/*.{jpg,jpeg,png,gif}')).each do |file| %>
+  'ImagesZ2/<%= File.basename(file, File.extname(file)) %>': '<%= asset_path("exercices/ImagesZ2/#{File.basename(file)}") %>',
+  <% end %>
+  
+  // Images Zone 3
+  <% Dir.glob(Rails.root.join('app/assets/images/exercices/ImagesZ3/*.{jpg,jpeg,png,gif}')).each do |file| %>
+  'ImagesZ3/<%= File.basename(file, File.extname(file)) %>': '<%= asset_path("exercices/ImagesZ3/#{File.basename(file)}") %>',
+  <% end %>
+  
+  // Images pour fond
+  <% Dir.glob(Rails.root.join('app/assets/images/exercices/ImagesPourFond/*.{jpg,jpeg,png,gif}')).each do |file| %>
+  'ImagesPourFond/<%= File.basename(file, File.extname(file)) %>': '<%= asset_path("exercices/ImagesPourFond/#{File.basename(file)}") %>',
+  <% end %>
+};
+
+// Fonction helper pour obtenir le chemin correct d'un asset
+window.getAssetPath = function(path) {
+  // Si c'est une data URL, la retourner directement
+  if (path.startsWith('data:')) {
+    return path;
+  }
+  
+  // Extraire le dossier et le nom de fichier sans extension
+  const parts = path.split('/');
+  let key;
+  
+  if (parts.length > 1) {
+    // Format: "ImagesZ1/image(1).png"
+    const folder = parts[0];
+    const filename = parts[1].replace(/\.(png|jpg|jpeg|gif)$/i, '');
+    key = `${folder}/${filename}`;
+  } else {
+    // Format: "fond1.jpg"
+    key = path.replace(/\.(png|jpg|jpeg|gif)$/i, '');
+  }
+  
+  // Chercher dans le mapping
+  const assetPath = window.ASSET_PATHS[key];
+  
+  if (assetPath) {
+    console.log('✅ Asset trouvé:', path, '->', assetPath);
+    return assetPath;
+  } else {
+    console.warn('⚠️ Asset non trouvé dans le mapping:', path, 'key:', key);
+    // Fallback: construire l'URL manuellement (ne fonctionnera pas en production)
+    const encodedPath = path.split('/').map(part => encodeURIComponent(part)).join('/');
+    return `/assets/exercices/${encodedPath}`;
+  }
+};
