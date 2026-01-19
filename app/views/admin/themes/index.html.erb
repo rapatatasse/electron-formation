@@ -8,6 +8,7 @@
     <table class="table">
       <thead>
         <tr>
+          <th>Id</th>
           <th>Nom</th>
           <th>Description</th>
           <th>Couleur</th>
@@ -18,6 +19,7 @@
       <tbody>
         <% @themes.each do |theme| %>
           <tr>
+            <td><%= theme.id %></td>
             <td>
               <strong><%= theme.name %></strong>
             </td>

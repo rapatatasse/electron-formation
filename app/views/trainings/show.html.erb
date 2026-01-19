@@ -1,0 +1,95 @@
+<%= render 'shared/public_navbar' %>
+<div class="container">
+  <div style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
+    <%= link_to "← Retour au catalogue", trainings_path, class: "btn btn-outline" %>
+    <%= link_to training_path(@training, format: :pdf), class: "btn btn-primary", style: "background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); border: none; font-weight: 700;" do %>
+      <i class="fas fa-file-pdf"></i> Télécharger en PDF
+    <% end %>
+  </div>
+
+  <div class="card">
+    <% if @training.image_url.present? %>
+      <div style="width: 100%; max-height: 400px; overflow: hidden; border-radius: var(--border-radius) var(--border-radius) 0 0;">
+        <img src="<%= @training.image_url %>" alt="<%= @training.title %>" style="width: 100%; height: 100%; object-fit: cover;">
+      </div>
+    <% end %>
+
+    <div class="card-body">
+      <h1 style="margin-bottom: 1rem;"><%= @training.title %></h1>
+
+      <div style="display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap;">
+        <% if @training.training_type.present? %>
+          <span class="badge badge-info"><%= @training.training_type %></span>
+        <% end %>
+        <span class="badge badge-secondary"><i class="far fa-clock"></i> <%= @training.duration %></span>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; padding: 1.5rem; background: var(--gray-50); border-radius: var(--border-radius);">
+        <div>
+          <strong style="display: block; margin-bottom: 0.5rem; color: var(--gray-600);">Prix Intra HT</strong>
+          <span style="font-size: 1.5rem; font-weight: bold; color: var(--primary-color);"><%= @training.price_intra_formatted %></span>
+        </div>
+        <div>
+          <strong style="display: block; margin-bottom: 0.5rem; color: var(--gray-600);">Prix Inter HT / Stagiaire</strong>
+          <span style="font-size: 1.5rem; font-weight: bold; color: var(--primary-color);"><%= @training.price_inter_formatted %></span>
+        </div>
+      </div>
+
+      <% if @training.description.present? %>
+        <div style="margin-bottom: 2rem;">
+          <h2 style="margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--primary-color);">Description</h2>
+          <p style="white-space: pre-wrap; line-height: 1.6;"><%= @training.description %></p>
+        </div>
+      <% end %>
+
+      <% if @training.objective.present? %>
+        <div style="margin-bottom: 2rem;">
+          <h2 style="margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--primary-color);">Objectifs</h2>
+          <p style="white-space: pre-wrap; line-height: 1.6;"><%= @training.objective %></p>
+        </div>
+      <% end %>
+
+      <% if @training.program.present? %>
+        <div style="margin-bottom: 2rem;">
+          <h2 style="margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--primary-color);">Programme</h2>
+          <p style="white-space: pre-wrap; line-height: 1.6;"><%= @training.program %></p>
+        </div>
+      <% end %>
+
+      <% if @training.target_audience.present? %>
+        <div style="margin-bottom: 2rem;">
+          <h2 style="margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--primary-color);">Public visé</h2>
+          <p style="white-space: pre-wrap; line-height: 1.6;"><%= @training.target_audience %></p>
+        </div>
+      <% end %>
+
+      <% if @training.prerequisites.present? %>
+        <div style="margin-bottom: 2rem;">
+          <h2 style="margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--primary-color);">Prérequis</h2>
+          <p style="white-space: pre-wrap; line-height: 1.6;"><%= @training.prerequisites %></p>
+        </div>
+      <% end %>
+
+      <% if @training.teaching_methods.present? %>
+        <div style="margin-bottom: 2rem;">
+          <h2 style="margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--primary-color);">Méthodes pédagogiques</h2>
+          <p style="white-space: pre-wrap; line-height: 1.6;"><%= @training.teaching_methods %></p>
+        </div>
+      <% end %>
+
+      <% if @training.evaluation_method.present? %>
+        <div style="margin-bottom: 2rem;">
+          <h2 style="margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--primary-color);">Mode d'évaluation</h2>
+          <p style="white-space: pre-wrap; line-height: 1.6;"><%= @training.evaluation_method %></p>
+        </div>
+      <% end %>
+
+      <div style="margin-top: 3rem; padding-top: 2rem; border-top: 2px solid var(--gray-200); text-align: center;">
+        <p style="font-size: 1.1rem; margin-bottom: 1rem;">Intéressé par cette formation ?</p>
+        <a href="mailto:contact@formation.com?subject=Demande d'information - <%= @training.title %>" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2rem;">
+          <i class="fas fa-envelope"></i> Nous contacter
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

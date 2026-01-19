@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_01_14_132300) do
+ActiveRecord::Schema[7.2].define(version: 2026_01_15_140001) do
   create_table "answers", force: :cascade do |t|
     t.integer "question_id", null: false
     t.text "answer_text"
@@ -75,6 +75,15 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_14_132300) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "sessions", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description"
+    t.boolean "active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_sessions_on_name", unique: true
+  end
+
   create_table "themes", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -82,6 +91,29 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_14_132300) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_themes_on_name", unique: true
+  end
+
+  create_table "trainings", force: :cascade do |t|
+    t.string "title", null: false
+    t.decimal "price_intra_ht", precision: 10, scale: 2
+    t.decimal "price_inter_ht", precision: 10, scale: 2
+    t.string "training_type"
+    t.string "image_url"
+    t.string "duration"
+    t.text "description"
+    t.text "objective"
+    t.text "program"
+    t.text "target_audience"
+    t.text "teaching_methods"
+    t.text "prerequisites"
+    t.integer "priority", default: 0
+    t.text "evaluation_method"
+    t.boolean "published", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["priority"], name: "index_trainings_on_priority"
+    t.index ["published"], name: "index_trainings_on_published"
+    t.index ["title"], name: "index_trainings_on_title"
   end
 
   create_table "user_activity_logs", force: :cascade do |t|
@@ -101,6 +133,16 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_14_132300) do
     t.index ["user_id"], name: "index_user_activity_logs_on_user_id"
   end
 
+  create_table "user_sessions", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "session_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["session_id"], name: "index_user_sessions_on_session_id"
+    t.index ["user_id", "session_id"], name: "index_user_sessions_on_user_id_and_session_id", unique: true
+    t.index ["user_id"], name: "index_user_sessions_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -116,13 +158,11 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_14_132300) do
     t.datetime "updated_at", null: false
     t.string "first_name"
     t.string "last_name"
-    t.integer "role"
+    t.json "role", default: ["apprenant"]
     t.string "locale"
     t.string "phone"
-    t.string "session"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-    t.index ["session"], name: "index_users_on_session"
   end
 
   add_foreign_key "answers", "questions"
@@ -131,4 +171,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_14_132300) do
   add_foreign_key "quiz_attempts", "quizzes"
   add_foreign_key "quiz_attempts", "users"
   add_foreign_key "user_activity_logs", "users"
+  add_foreign_key "user_sessions", "sessions"
+  add_foreign_key "user_sessions", "users"
 end

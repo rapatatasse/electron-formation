@@ -1,0 +1,83 @@
+<%= stylesheet_link_tag "catalogue" %>
+<%= render 'shared/public_navbar' %>
+
+<div class="training-catalog-header">
+  <div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div>
+        <h1 class="training-catalog-title">Catalogue de Formations Professionnelles</h1>
+        <p class="training-catalog-subtitle">Formations techniques et sécurité pour entreprises et professionnels</p>
+      </div>
+      <%= link_to catalog_pdf_trainings_path(format: :pdf, search: params[:search], type: params[:type]), 
+          style: "background: white; color: #1e3a8a; padding: 1rem 2rem; font-weight: 700; text-decoration: none; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: all 0.3s; display: inline-block;" do %>
+        <i class="fas fa-file-pdf"></i> Télécharger le catalogue complet (PDF)
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <!-- Barre de recherche -->
+  <div class="training-search-bar">
+    <%= form_with url: trainings_path, method: :get, local: true do |f| %>
+      <%= f.text_field :search, 
+          placeholder: "Rechercher une formation par titre, type ou contenu...", 
+          class: "training-search-input",
+          value: params[:search] %>
+    <% end %>
+  </div>
+
+  <!-- Filtres -->
+  <div class="training-filters">
+    <%= link_to "Toutes les formations", trainings_path, class: "filter-btn #{params[:type].blank? ? 'active' : ''}" %>
+    <%= link_to "Formation Initiale", trainings_path(type: 'initiale'), class: "filter-btn #{params[:type] == 'initiale' ? 'active' : ''}" %>
+    <%= link_to "Recyclage", trainings_path(type: 'recyclage'), class: "filter-btn #{params[:type] == 'recyclage' ? 'active' : ''}" %>
+   
+  </div>
+
+  <% if @trainings.empty? %>
+    <div style="background: white; padding: 4rem; text-align: center; box-shadow: 0 2px 15px rgba(0,0,0,0.05);">
+      <p style="color: #64748b; font-size: 1.2rem; font-weight: 500;">Aucune formation disponible pour le moment.</p>
+    </div>
+  <% else %>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+      <% @trainings.each do |training| %>
+        <%= link_to training_path(training), class: "training-card" do %>
+          <% if training.image_url.present? %>
+            <div class="training-card-image">
+              <img src="<%= training.image_url %>" alt="<%= training.title %>">
+            </div>
+          <% end %>
+          
+          <div class="training-card-body">
+            <h3 class="training-card-title"><%= training.title %></h3>
+            
+            <div class="training-card-badges">
+              <% if training.training_type.present? %>
+                <span class="training-badge training-badge-primary"><%= training.training_type %></span>
+              <% end %>
+              <span class="training-badge">⏱ <%= training.duration %></span>
+            </div>
+
+            <% if training.description.present? %>
+              <p class="training-card-description">
+                <%= truncate(training.description, length: 160) %>
+              </p>
+            <% end %>
+
+            <div class="training-card-footer">
+              <div class="training-price-box training-price-box-intra">
+                <span class="training-price-label">Prix Intra HT</span>
+                <span class="training-price-value"><%= training.price_intra_formatted %></span>
+              </div>
+              <div class="training-price-box training-price-box-inter">
+                <span class="training-price-label">Prix Inter HT / Stagiaire</span>
+                <span class="training-price-value"><%= training.price_inter_formatted %></span>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

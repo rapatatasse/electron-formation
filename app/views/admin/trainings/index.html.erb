@@ -1,0 +1,58 @@
+<div class="container">
+  <div class="page-header">
+    <h1 class="page-title">Catalogue de formations</h1>
+    <div>
+      <%= link_to "📤 Exporter Excel", export_admin_trainings_path, class: "btn btn-outline" %>
+      <%= link_to "📥 Importer Excel", import_admin_trainings_path, class: "btn btn-outline" %>
+      <%= link_to "Nouvelle formation", new_admin_training_path, class: "btn btn-primary" %>
+    </div>
+  </div>
+
+  <div class="card">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Titre</th>
+          <th>Type</th>
+          <th>Durée</th>
+          <th>Prix Intra HT</th>
+          <th>Prix Inter HT</th>
+          <th>Priorité</th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @trainings.each do |training| %>
+          <tr>
+            <td><strong><%= training.title %></strong></td>
+            <td><%= training.training_type %></td>
+            <td><%= training.duration %></td>
+            <td><%= training.price_intra_formatted %></td>
+            <td><%= training.price_inter_formatted %></td>
+            <td><%= training.priority %></td>
+            <td>
+              <% if training.published %>
+                <span class="badge badge-success">Publié</span>
+              <% else %>
+                <span class="badge badge-secondary">Brouillon</span>
+              <% end %>
+            </td>
+            <td>
+              <div class="actions">
+                <%= link_to "Voir", admin_training_path(training), class: "btn btn-sm btn-outline" %>
+                <%= link_to "Modifier", edit_admin_training_path(training), class: "btn btn-sm btn-outline" %>
+                <%= button_to training.published ? "Dépublier" : "Publier", toggle_publish_admin_training_path(training), method: :post, class: "btn btn-sm #{training.published ? 'btn-warning' : 'btn-success'}" %>
+                <%= button_to "Supprimer", admin_training_path(training), method: :delete, :onclick => "return confirm('Êtes vous sûr ?')", class: "btn btn-sm btn-danger" %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    
+    <div style="margin-top: 1.5rem; text-align: center;">
+      <%= paginate @trainings %>
+    </div>
+  </div>
+</div>

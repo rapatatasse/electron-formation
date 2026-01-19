@@ -5,11 +5,11 @@ admin = User.find_or_create_by!(email: 'platonformation@gmail.com') do |user|
   user.last_name = 'John'
   user.password = 'GUKGk45123??'
   user.password_confirmation = 'GUKGk45123??'
-  user.role = :admin
+  user.role = ['admin']
   user.locale = 'fr'
   user.phone = '0123456789'
 end
-puts "✓ Admin créé : #{admin.email} "
+puts "✓ Admin créé : #{admin.email}"
 
 # Création d'un formateur de test
 puts "\nCréation d'un formateur de test..."
@@ -18,7 +18,7 @@ formateur = User.find_or_create_by!(email: 'formateur@formation.com') do |user|
   user.last_name = 'Formateur'
   user.password = 'password123'
   user.password_confirmation = 'password123'
-  user.role = :formateur
+  user.role = ['formateur']
   user.locale = 'fr'
   user.phone = '0123456788'
 end
@@ -31,11 +31,24 @@ apprenant = User.find_or_create_by!(email: 'apprenant@formation.com') do |user|
   user.last_name = 'Apprenant'
   user.password = 'password123'
   user.password_confirmation = 'password123'
-  user.role = :apprenant
+  user.role = ['apprenant']
   user.locale = 'fr'
   user.phone = '0123456787'
 end
 puts "✓ Apprenant créé : #{apprenant.email} (mot de passe: password123)"
+
+# Création d'un utilisateur multi-rôles (formateur + apprenant)
+puts "\nCréation d'un utilisateur multi-rôles..."
+multi = User.find_or_create_by!(email: 'multi@formation.com') do |user|
+  user.first_name = 'Pierre'
+  user.last_name = 'Multi'
+  user.password = 'password123'
+  user.password_confirmation = 'password123'
+  user.role = ['formateur', 'apprenant']
+  user.locale = 'fr'
+  user.phone = '0123456786'
+end
+puts "✓ Utilisateur multi-rôles créé : #{multi.email} (rôles: formateur, apprenant)"
 
 # Création de thèmes
 puts "\nCréation des thèmes..."

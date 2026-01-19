@@ -1,30 +1,37 @@
-      <nav class="navbar">
-        <div class="container navbar-content">
-          <div>
-            <%= link_to  root_path, class: "navbar-brand" do %>
-              <div><%= image_tag "exercices/logo.png", class: "nav-logo" %>
-              <span class="text-gray">Electron Formation</span>
-              <span class="badge badge-info"><%= current_user.role %></span>
-              </div>
-            <% end %>
-          </div>
-          <ul class="navbar-menu">
-           
-            
-            <% if current_user.admin? %>
-              <li><%= link_to "Utilisateurs", admin_users_path, class: "navbar-link" %></li>
-
-            <% end %>
-            
-            <% if current_user.formateur?  %>
-              
-              
-            <% end %>
-            
-            <li style="margin-left: auto;">
-              <span style="color: var(--gray-600);"></span>
-            </li>
-            <li><%= link_to "#{ current_user.full_name} ➜]", destroy_user_session_path, data: { turbo_method: :delete }, class: "navbar-link bg-danger" %></li>
-          </ul>
-        </div>
-      </nav>
+   
+<nav class=" navbar-content">
+  <div>
+    <%= link_to  root_path, class: "navbar-brand" do %>
+      <div><%= image_tag "exercices/logo.png", class: "nav-logo" %>
+      <span class="text-gray">Electron Formation</span>
+      </div>
+    <% end %>
+  </div>
+  <ul class="navbar-menu">
+  
+    <!-- Afficher les boutons de dashboard selon les rôles -->
+    <% if current_user.roles.length > 1 %>
+      <li style="margin-right: 1rem;">
+        <span style="color: var(--gray-600); font-size: 0.875rem;">Dashboards :</span>
+      </li>
+    <% end %>
+    
+    <% if current_user.admin? %>
+      <li><%= link_to "🔧 Admin", admin_dashboard_path, class: "navbar-link #{'active' if request.path.start_with?('/admin')}" %></li>
+    <% end %>
+    
+    <% if current_user.formateur? %>
+      <li><%= link_to "👨‍🏫 Formateur", formateur_dashboard_path, class: "navbar-link #{'active' if request.path.start_with?('/formateur')}" %></li>
+    <% end %>
+    
+    <% if current_user.apprenant? %>
+      <li><%= link_to "📚 Apprenant", apprenant_dashboard_path, class: "navbar-link #{'active' if request.path.start_with?('/apprenant')}" %></li>
+    <% end %>
+    
+    <li style="margin-left: auto;">
+      <span class="badge badge-info"><%= current_user.roles.map(&:capitalize).join(' + ') %></span>
+    </li>
+    <li><%= link_to "#{current_user.full_name} ➜]", destroy_user_session_path, data: { turbo_method: :delete }, class: "navbar-link bg-danger" %></li>
+  </ul>
+</div>
+</nav>

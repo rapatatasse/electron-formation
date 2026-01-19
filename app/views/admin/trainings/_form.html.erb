@@ -1,0 +1,99 @@
+<%= form_with(model: [:admin, training], local: true) do |f| %>
+  <% if training.errors.any? %>
+    <div class="alert alert-danger">
+      <h4><%= pluralize(training.errors.count, "erreur") %> :</h4>
+      <ul>
+        <% training.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-row">
+    <div class="form-group" style="flex: 2;">
+      <%= f.label :title, "Titre de la formation" %>
+      <%= f.text_field :title, class: "form-control", placeholder: "Ex: Formation AIPR" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :training_type, "Type" %>
+      <%= f.text_field :training_type, class: "form-control", placeholder: "Ex: Présentiel" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :duration, "Durée" %>
+      <%= f.text_field :duration, class: "form-control", placeholder: "Ex: 2 jours" %>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <%= f.label :price_intra_ht, "Prix Intra HT (€)" %>
+      <%= f.number_field :price_intra_ht, class: "form-control", step: 0.01, placeholder: "Ex: 1500.00" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :price_inter_ht, "Prix Inter HT / Stagiaire (€)" %>
+      <%= f.number_field :price_inter_ht, class: "form-control", step: 0.01, placeholder: "Ex: 500.00" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :priority, "Priorité" %>
+      <%= f.number_field :priority, class: "form-control", placeholder: "0" %>
+      <small class="form-text">Plus le nombre est élevé, plus la formation apparaît en haut</small>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :image_url, "URL de l'image" %>
+    <%= f.text_field :image_url, class: "form-control", placeholder: "https://..." %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :description, "Description" %>
+    <%= f.text_area :description, class: "form-control", rows: 4, placeholder: "Description de la formation..." %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :objective, "Objectifs" %>
+    <%= f.text_area :objective, class: "form-control", rows: 4, placeholder: "Objectifs pédagogiques..." %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :program, "Programme" %>
+    <%= f.text_area :program, class: "form-control", rows: 6, placeholder: "Programme détaillé..." %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :target_audience, "Public visé" %>
+    <%= f.text_area :target_audience, class: "form-control", rows: 3, placeholder: "À qui s'adresse cette formation..." %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :prerequisites, "Prérequis" %>
+    <%= f.text_area :prerequisites, class: "form-control", rows: 3, placeholder: "Prérequis nécessaires..." %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :teaching_methods, "Méthodes pédagogiques" %>
+    <%= f.text_area :teaching_methods, class: "form-control", rows: 3, placeholder: "Méthodes utilisées..." %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :evaluation_method, "Mode d'évaluation" %>
+    <%= f.text_area :evaluation_method, class: "form-control", rows: 3, placeholder: "Comment les apprenants sont évalués..." %>
+  </div>
+
+  <div class="form-group">
+    <label style="display: flex; align-items: center; cursor: pointer;">
+      <%= f.check_box :published, style: "margin-right: 0.5rem;" %>
+      <span>Publier cette formation sur le catalogue public</span>
+    </label>
+  </div>
+
+  <div class="form-actions">
+    <%= link_to "Annuler", admin_trainings_path, class: "btn btn-outline" %>
+    <%= f.submit training.new_record? ? "Créer la formation" : "Mettre à jour", class: "btn btn-primary" %>
+  </div>
+<% end %>

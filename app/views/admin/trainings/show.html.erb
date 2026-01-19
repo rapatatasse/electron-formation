@@ -1,0 +1,98 @@
+<div class="container">
+  <div class="page-header">
+    <h1 class="page-title"><%= @training.title %></h1>
+    <%= link_to "Modifier", edit_admin_training_path(@training), class: "btn btn-primary" %>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+        <div>
+          <strong>Type :</strong>
+          <p><%= @training.training_type || "-" %></p>
+        </div>
+        <div>
+          <strong>Durée :</strong>
+          <p><%= @training.duration %></p>
+        </div>
+        <div>
+          <strong>Prix Intra HT :</strong>
+          <p><%= @training.price_intra_formatted %></p>
+        </div>
+        <div>
+          <strong>Prix Inter HT :</strong>
+          <p><%= @training.price_inter_formatted %></p>
+        </div>
+        <div>
+          <strong>Priorité :</strong>
+          <p><%= @training.priority %></p>
+        </div>
+        <div>
+          <strong>Statut :</strong>
+          <p>
+            <% if @training.published %>
+              <span class="badge badge-success">Publié</span>
+            <% else %>
+              <span class="badge badge-secondary">Brouillon</span>
+            <% end %>
+          </p>
+        </div>
+      </div>
+
+      <% if @training.image_url.present? %>
+        <div style="margin-bottom: 2rem;">
+          <img src="<%= @training.image_url %>" alt="<%= @training.title %>" style="max-width: 100%; max-height: 400px; border-radius: var(--border-radius);">
+        </div>
+      <% end %>
+
+      <% if @training.description.present? %>
+        <div style="margin-bottom: 2rem;">
+          <h3>Description</h3>
+          <p style="white-space: pre-wrap;"><%= @training.description %></p>
+        </div>
+      <% end %>
+
+      <% if @training.objective.present? %>
+        <div style="margin-bottom: 2rem;">
+          <h3>Objectifs</h3>
+          <p style="white-space: pre-wrap;"><%= @training.objective %></p>
+        </div>
+      <% end %>
+
+      <% if @training.program.present? %>
+        <div style="margin-bottom: 2rem;">
+          <h3>Programme</h3>
+          <p style="white-space: pre-wrap;"><%= @training.program %></p>
+        </div>
+      <% end %>
+
+      <% if @training.target_audience.present? %>
+        <div style="margin-bottom: 2rem;">
+          <h3>Public visé</h3>
+          <p style="white-space: pre-wrap;"><%= @training.target_audience %></p>
+        </div>
+      <% end %>
+
+      <% if @training.prerequisites.present? %>
+        <div style="margin-bottom: 2rem;">
+          <h3>Prérequis</h3>
+          <p style="white-space: pre-wrap;"><%= @training.prerequisites %></p>
+        </div>
+      <% end %>
+
+      <% if @training.teaching_methods.present? %>
+        <div style="margin-bottom: 2rem;">
+          <h3>Méthodes pédagogiques</h3>
+          <p style="white-space: pre-wrap;"><%= @training.teaching_methods %></p>
+        </div>
+      <% end %>
+
+      <% if @training.evaluation_method.present? %>
+        <div style="margin-bottom: 2rem;">
+          <h3>Mode d'évaluation</h3>
+          <p style="white-space: pre-wrap;"><%= @training.evaluation_method %></p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

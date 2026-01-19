@@ -1,0 +1,60 @@
+<div class="container">
+  <div class="page-header">
+    <h1 class="page-title">Importer des formations</h1>
+    <%= link_to "Retour", admin_trainings_path, class: "btn btn-outline" %>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="alert alert-info" style="margin-bottom: 1.5rem;">
+        <strong>📋 Format Excel requis (.xlsx)</strong>
+        <p style="margin-top: 0.5rem; margin-bottom: 0;">
+          Les fichiers Excel permettent de gérer les sauts de ligne dans les cellules (Description, Programme, etc.).
+          Utilisez <kbd>Alt + Entrée</kbd> dans Excel pour insérer un saut de ligne dans une cellule.
+        </p>
+      </div>
+
+      <p style="margin-bottom: 1rem;">
+        Le fichier Excel doit contenir les colonnes suivantes (en-têtes sur la première ligne) :
+      </p>
+
+      <div style="background: var(--gray-50); padding: 1rem; border-radius: var(--border-radius); margin-bottom: 1.5rem; overflow-x: auto;">
+        <table style="font-size: 0.875rem; width: 100%; border-collapse: collapse;">
+          <tr style="border-bottom: 1px solid var(--gray-300);">
+            <th style="text-align: left; padding: 0.5rem;">Colonne</th>
+            <th style="text-align: left; padding: 0.5rem;">Description</th>
+          </tr>
+          <tr><td style="padding: 0.25rem;"><code>Title</code></td><td style="padding: 0.25rem;">Titre de la formation</td></tr>
+          <tr><td style="padding: 0.25rem;"><code>Price Intra HT</code></td><td style="padding: 0.25rem;">Prix intra-entreprise HT</td></tr>
+          <tr><td style="padding: 0.25rem;"><code>Price Inter HT/ Stagiaire</code></td><td style="padding: 0.25rem;">Prix inter-entreprise HT par stagiaire</td></tr>
+          <tr><td style="padding: 0.25rem;"><code>Type</code></td><td style="padding: 0.25rem;">Type de formation (Présentiel, Distanciel, etc.)</td></tr>
+          <tr><td style="padding: 0.25rem;"><code>Image</code></td><td style="padding: 0.25rem;">URL de l'image</td></tr>
+          <tr><td style="padding: 0.25rem;"><code>Duree</code></td><td style="padding: 0.25rem;">Durée (ex: 2 jours)</td></tr>
+          <tr><td style="padding: 0.25rem;"><code>Description</code></td><td style="padding: 0.25rem;">Description (sauts de ligne autorisés)</td></tr>
+          <tr><td style="padding: 0.25rem;"><code>Objectif</code></td><td style="padding: 0.25rem;">Objectifs pédagogiques (sauts de ligne autorisés)</td></tr>
+          <tr><td style="padding: 0.25rem;"><code>Programme</code></td><td style="padding: 0.25rem;">Programme détaillé (sauts de ligne autorisés)</td></tr>
+          <tr><td style="padding: 0.25rem;"><code>Public</code></td><td style="padding: 0.25rem;">Public visé (sauts de ligne autorisés)</td></tr>
+          <tr><td style="padding: 0.25rem;"><code>Méthodes pédagogiques</code></td><td style="padding: 0.25rem;">Méthodes utilisées (sauts de ligne autorisés)</td></tr>
+          <tr><td style="padding: 0.25rem;"><code>Prérequis</code></td><td style="padding: 0.25rem;">Prérequis nécessaires (sauts de ligne autorisés)</td></tr>
+          <tr><td style="padding: 0.25rem;"><code>priorite</code></td><td style="padding: 0.25rem;">Priorité d'affichage (nombre)</td></tr>
+          <tr><td style="padding: 0.25rem;"><code>Mode Evaluation</code></td><td style="padding: 0.25rem;">Mode d'évaluation (sauts de ligne autorisés)</td></tr>
+        </table>
+      </div>
+
+      <div class="alert alert-warning" style="margin-bottom: 1.5rem;">
+        <strong>💡 Astuce :</strong> Téléchargez d'abord un modèle Excel vide en exportant les formations existantes, ou créez un fichier avec les en-têtes ci-dessus.
+      </div>
+
+      <%= form_with(url: process_import_admin_trainings_path, method: :post, local: true, multipart: true) do |f| %>
+        <div class="form-group">
+          <%= f.label :file, "Fichier Excel (.xlsx)" %>
+          <%= f.file_field :file, accept: ".xlsx", class: "form-control" %>
+        </div>
+
+        <div class="form-actions">
+          <%= f.submit "Importer", class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

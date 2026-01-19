@@ -1,0 +1,12 @@
+<!-- app/views/layouts/pdf.html.erb -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PDF Layout</title>
+  <%= wicked_pdf_stylesheet_link_tag 'application' %>
+  <%= wicked_pdf_javascript_include_tag 'application' %>
+</head>
+<body>
+  <%= yield %>
+</body>
+</html>

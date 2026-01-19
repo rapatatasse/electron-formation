@@ -1,21 +1,6 @@
 <%= stylesheet_link_tag "home" %>
 
-<nav class="home-navbar">
-  <div class="home-navbar-content">
-    <%= link_to root_path, class: "home-navbar-brand" do %>
-      <%= image_tag "exercices/logo.png", class: "home-nav-logo" %>
-      <span class="home-navbar-title">Electron Formation</span>
-    <% end %>
-    <div class="home-navbar-actions">
-      <% if user_signed_in? %>
-        <%= link_to "Tableau de bord", dashboard_path, class: "btn btn-primary" %>
-        <%= link_to "Déconnexion", destroy_user_session_path, data: { turbo_method: :delete }, class: "btn btn-outline" %>
-      <% else %>
-        <%= link_to "Se connecter", new_user_session_path, class: "btn bg-gray" %>
-      <% end %>
-    </div>
-  </div>
-</nav>
+<%= render 'shared/public_navbar' %>
 
 <div class="hero-section">
   <h1 class="hero-title">ELECTRON FORMATION</h1>

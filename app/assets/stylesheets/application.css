@@ -71,10 +71,7 @@
 }
 .nav-logo {
     height: 40px;
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    z-index: 20;
+    margin-top:5px;
     cursor: pointer;
     pointer-events: auto;
     width: auto;
@@ -93,6 +90,7 @@ body {
   line-height: 1.6;
   color: var(--gray-900);
   background-color: var(--gray-50);
+  min-height: 100vh;
 }
 
 /* Container */
@@ -100,6 +98,7 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
+  
 }
 
 /* Navigation */
@@ -108,6 +107,10 @@ body {
   box-shadow: var(--box-shadow);
   padding: 1rem 0;
   margin-bottom: 2rem;
+   max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  min-height: 100vh;
 }
 /* Couleur de fond des blocs */
 .bg-primary {

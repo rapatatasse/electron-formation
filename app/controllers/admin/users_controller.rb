@@ -1,7 +1,7 @@
 class Admin::UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :require_admin
-  before_action :set_user, only: [:show, :edit, :update, :destroy, :reset_password]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :reset_password, :update_sessions]
 
   def index
     @users = User.order(created_at: :desc).page(params[:page]).per(20)
@@ -134,6 +134,22 @@ class Admin::UsersController < ApplicationController
     end
   end
 
+  def update_sessions
+    session_ids = params[:session_ids] || []
+    
+    # Supprimer toutes les sessions actuelles
+    @user.user_sessions.destroy_all
+    
+    # Ajouter les nouvelles sessions
+    session_ids.each do |session_id|
+      @user.user_sessions.create(session_id: session_id)
+    end
+    
+    render json: { success: true, message: "Sessions mises à jour pour #{@user.full_name}" }
+  rescue => e
+    render json: { error: e.message }, status: :unprocessable_entity
+  end
+
   private
 
   def set_user
@@ -141,7 +157,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:email, :first_name, :last_name, :role, :locale, :phone, :session, :password, :password_confirmation)
+    params.require(:user).permit(:email, :first_name, :last_name, :locale, :phone, :password, :password_confirmation, role: [])
   end
 
   def detect_separator(file_path)

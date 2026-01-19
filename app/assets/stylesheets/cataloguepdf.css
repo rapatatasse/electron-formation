@@ -1,0 +1,248 @@
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #e0e0e0;
+    color: #333;
+    font-size: 10pt;
+}
+
+/* Page Container */
+.formation {
+    background-color: white;
+    width: 210mm;
+    min-height: 297mm;
+    margin: 20px auto;
+    padding: 15mm 15mm 10mm 25mm;
+    position: relative;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    page-break-after: always;
+    box-sizing: border-box;
+}
+
+.formation:last-child {
+    page-break-after: auto;
+}
+
+.left-shape {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 15mm;
+    height: 120mm;
+    background-color: #005baa;
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+/* Header */
+.page-header {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1cm;
+}
+
+.logo-container {
+    flex: 0 0 50px;
+    margin-right: 20px;
+}
+
+.logo-container img {
+    width: 50px;
+}
+
+.title-container {
+    padding: 5px 10px;
+    flex-grow: 1;
+}
+
+.title-container h1 {
+    font-size: 18pt;
+    color: #005baa;
+    margin: 0;
+    font-weight: bold;
+}
+
+/* Main Content */
+.main-content {
+    padding-left: 5mm;
+}
+
+.top-sections {
+    display: flex;
+    gap: 1cm;
+    margin-bottom: 1cm;
+}
+
+.section-box {
+    border: 1px solid #005baa;
+    padding: 10px;
+    flex: 1;
+    background: white;
+}
+
+.section-box h2 {
+    font-size: 11pt;
+    color: #005baa;
+    margin: 0 0 5px 0;
+    font-weight: bold;
+}
+
+.section-box ul {
+    margin: 0;
+    padding-left: 15px;
+    font-size: 9pt;
+}
+
+/* Info Grid */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5mm;
+    margin-bottom: 1cm;
+}
+
+.grid-item, .prerequis-section, .deroulement-section {
+    text-align: left;
+}
+
+.grid-title {
+    background-color: #d9e2f3;
+    color: #333;
+    font-weight: bold;
+    padding: 2px 8px;
+    display: inline-block;
+    margin-bottom: 5px;
+    font-size: 10pt;
+}
+
+.grid-content {
+    font-size: 9pt;
+}
+
+.prerequis-section, .deroulement-section {
+    margin-bottom: 1cm;
+}
+
+/* Footer Banner */
+.bottom-banner {
+    background-color: #005baa;
+    color: white;
+    padding: 8mm 10mm;
+    display: flex;
+    gap: 1cm;
+    margin: 0 -15mm 0 -25mm; /* Extend to page edges */
+    position: absolute;
+    bottom: 50mm;
+    width: 210mm;
+}
+
+.banner-item h3 {
+    font-size: 10pt;
+    margin: 0 0 5px 0;
+    font-weight: bold;
+}
+
+.banner-item p {
+    font-size: 9pt;
+    margin: 0;
+    opacity: 0.9;
+}
+
+/* Page Footer */
+.page-footer {
+    position: absolute;
+    bottom: 10mm;
+    left: 25mm;
+    right: 15mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-top: 10px;
+    background-color: #f2f2f2;
+    margin: 0 -15mm 0 -25mm;
+    padding: 10mm 15mm 10mm 25mm;
+}
+
+.price-container {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+}
+
+.reference span, .price span {
+    font-size: 10pt;
+    font-weight: bold;
+}
+
+.reference p, .price p {
+    font-size: 14pt;
+    color: #005baa;
+    font-weight: bold;
+    margin: 2px 0;
+}
+
+.price {
+    text-align: right;
+    border-left: 2px solid #005baa;
+    padding-left: 15px;
+}
+
+.duration-box {
+    position: absolute;
+    top: 15mm;
+    right: 15mm;
+    background-color: #005baa;
+    color: white;
+    padding: 8px 15px;
+    font-size: 12pt;
+    font-weight: bold;
+    text-align: center;
+    z-index: 10;
+}
+
+.price small {
+    font-size: 9pt;
+}
+
+.page-number {
+    position: absolute;
+    bottom: 5mm;
+    right: 5mm;
+    background-color: #005baa;
+    color: white;
+    padding: 5px 8px;
+    font-size: 10pt;
+    clip-path: polygon(100% 0, 100% 100%, 20% 100%, 0 80%, 0 0);
+}
+
+/* Print-specific styles */
+@media print {
+    body {
+        background-color: #fff;
+    }
+    .formation {
+        margin: 0;
+        box-shadow: none;
+        width: 100%;
+        height: 100%;
+    }
+    .left-shape, .bottom-banner, .page-footer, .page-number, .grid-title {
+        background-color: #005baa !important; /* Force colors for printing */
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    .bottom-banner, .page-footer {
+        color: white !important;
+    }
+    .page-footer {
+         background-color: #f2f2f2 !important;
+    }
+    .title-container {
+        border: none !important;
+    }
+    .duration-box {
+        background-color: #005baa !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}

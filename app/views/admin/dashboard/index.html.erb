@@ -3,21 +3,11 @@
     <h1 class="page-title">Tableau de bord Admin</h1>
   </div>
 
-  <div class="dashboard-grid">
-    <div class="stat-card">
-      <h3><%= @users_count %></h3>
-      <p>Utilisateurs</p>
-    </div>
-    
-    <div class="stat-card" style="background: linear-gradient(135deg, var(--warning-color), #d97706);">
-      <h3><%= @quizzes_count %></h3>
-      <p>Quiz</p>
-    </div>
-  </div>
+
 
   <div class="card">
     <div class="card-header">
-      Actions rapides
+      Gestion :
     </div>
     <div class="card-body">
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
@@ -30,18 +20,35 @@
           <div style="font-size: 2rem; margin-bottom: 0.5rem;">📥</div>
           <div>Importer des apprenants (CSV)</div>
         <% end %>
+      </div>
+      <br><hr>
+
+        <h3>Catalogue formation :</h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+        <%= link_to admin_trainings_path, class: "btn btn-primary", style: "text-align: center;" do %>
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">📚</div>
+          <div>Gérer les formations</div>
+        <% end %>
+      </div>
+        <br><hr>
+
+        <h3>Quiz :</h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
         
         <%= link_to admin_quizzes_path, class: "btn btn-primary", style: "text-align: center;" do %>
           <div style="font-size: 2rem; margin-bottom: 0.5rem;">📝</div>
           <div>Gérer les quiz</div>
         <% end %>
         
-
-        
+       
         <%= link_to admin_themes_path, class: "btn btn-primary", style: "text-align: center;" do %>
           <div style="font-size: 2rem; margin-bottom: 0.5rem;">🎨</div>
           <div>Gérer les thèmes</div>
         <% end %>
+      </div>
+        <br><hr>
+        <h3>Autres :</h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
         
         <%= link_to admin_activity_reports_path, class: "btn btn-primary", style: "text-align: center; background: linear-gradient(135deg, #8b5cf6, #6366f1);" do %>
           <div style="font-size: 2rem; margin-bottom: 0.5rem;">📊</div>
@@ -70,7 +77,13 @@
             <tr>
               <td><%= user.full_name %></td>
               <td><%= user.email %></td>
-              <td><span class="badge badge-info"><%= user.role %></span></td>
+              <td>
+                <% user.roles.each do |role| %>
+                  <span class="badge <%= role == 'admin' ? 'badge-danger' : (role == 'formateur' ? 'badge-warning' : 'badge-info') %>">
+                    <%= role.capitalize %>
+                  </span>
+                <% end %>
+              </td>
               <td><%= l(user.created_at, format: :short) %></td>
             </tr>
           <% end %>

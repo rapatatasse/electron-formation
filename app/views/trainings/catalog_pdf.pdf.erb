@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Catalogue de Formations</title>
+  <%= render 'pdf_styles' %>
+</head>
+<body>
+  <!-- Page de garde -->
+  <%= render 'cover_page' %>
+  
+  <!-- Sommaire -->
+  <%= render 'table_of_contents', trainings: @trainings %>
+  
+  <!-- Présentation de l'entreprise -->
+  <%= render 'company_presentation' %>
+  
+  <!-- Formations -->
+  <% @trainings.each_with_index do |training, index| %>
+    <%= render 'training_pdf', training: training, page_number: index + 4 %>
+  <% end %>
+</body>
+</html>

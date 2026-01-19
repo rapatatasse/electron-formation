@@ -1,0 +1,176 @@
+
+  .training-catalog-header {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    padding: 3rem 0;
+    margin-bottom: 3rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  }
+  .training-catalog-title {
+    color: white;
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    letter-spacing: 0.5px;
+  }
+  .training-catalog-subtitle {
+    color: rgba(255,255,255,0.9);
+    font-size: 1.1rem;
+    font-weight: 400;
+  }
+  .training-search-bar {
+    background: white;
+    padding: 1rem;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+    margin-bottom: 2rem;
+  }
+  .training-search-input {
+    width: 100%;
+    padding: 0.9rem 1.2rem;
+    border: 2px solid #e5e7eb;
+    font-size: 1rem;
+    transition: all 0.3s;
+  }
+  .training-search-input:focus {
+    outline: none;
+    border-color: #1e40af;
+    box-shadow: 0 0 0 3px rgba(30,64,175,0.1);
+  }
+  .training-filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+  }
+  .filter-btn {
+    padding: 0.7rem 1.5rem;
+    background: white;
+    border: 2px solid #e5e7eb;
+    color: #374151;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+  }
+  .filter-btn:hover, .filter-btn.active {
+    background: #1e40af;
+    color: white;
+    border-color: #1e40af;
+  }
+  .training-card {
+    background: white;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+  .training-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, #1e40af 0%, #3b82f6 100%);
+    transform: scaleY(0);
+    transition: transform 0.3s;
+  }
+  .training-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(30,64,175,0.15);
+  }
+  .training-card:hover::before {
+    transform: scaleY(1);
+  }
+  .training-card-image {
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    position: relative;
+  }
+  .training-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s;
+  }
+  .training-card:hover .training-card-image img {
+    transform: scale(1.05);
+  }
+  .training-card-body {
+    padding: 1.8rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .training-card-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+  }
+  .training-card-badges {
+    display: flex;
+    gap: 0.6rem;
+    margin-bottom: 1.2rem;
+    flex-wrap: wrap;
+  }
+  .training-badge {
+    padding: 0.4rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    background: #f1f5f9;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .training-badge-primary {
+    background: #dbeafe;
+    color: #1e40af;
+  }
+  .training-card-description {
+    color: #64748b;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    flex: 1;
+  }
+  .training-card-footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: auto;
+  }
+  .training-price-box {
+    padding: 1.2rem;
+    text-align: center;
+    transition: all 0.3s;
+  }
+  .training-price-box-intra {
+    background: #f1f5f9;
+    border-left: 3px solid #64748b;
+  }
+  .training-price-box-inter {
+    background: #e0e7ff;
+    border-left: 3px solid #4f46e5;
+  }
+  .training-price-label {
+    font-weight: 600;
+    color: #475569;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  .training-price-value {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #1e293b;
+    display: block;
+  }

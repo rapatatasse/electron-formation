@@ -1,0 +1,33 @@
+<div class="formation" style="page-break-after: always;">
+    <div class="left-shape"></div>
+    
+    <header style="padding: 40px 40px 20px 80px;">
+        <h1 style="font-size: 32pt; color: #005baa; font-weight: 800; margin: 0 0 10px 0;">SOMMAIRE</h1>
+        <p style="font-size: 11pt; color: #666; margin: 0;">Catalogue des formations professionnelles</p>
+    </header>
+    
+    <main style="padding: 20px 40px 40px 80px;">
+        <table style="width: 100%; border-collapse: collapse;">
+            <% trainings.each_with_index do |training, index| %>
+                <tr style="border-bottom: 1px solid #e5e7eb;">
+                    <td style="padding: 15px 10px; width: 60px; font-weight: 700; color: #005baa; font-size: 11pt;">
+                        <%= index + 1 %>
+                    </td>
+                    <td style="padding: 15px 10px;">
+                        <div style="font-weight: 700; color: #1e293b; font-size: 11pt; margin-bottom: 4px;">
+                            <%= training.title %>
+                        </div>
+                        <% if training.training_type.present? %>
+                            <div style="font-size: 9pt; color: #64748b;">
+                                <%= training.training_type %> • <%= training.duration %>
+                            </div>
+                        <% end %>
+                    </td>
+                    <td style="padding: 15px 10px; text-align: right; width: 80px; font-weight: 700; color: #005baa; font-size: 11pt;">
+                        <%= index + 3 %>
+                    </td>
+                </tr>
+            <% end %>
+        </table>
+    </main>
+</div>

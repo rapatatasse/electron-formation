@@ -27,3 +27,6 @@ rails db:drop
 rails db:create
 rails db:migrate
 rails db:seed
+
+
+si besoin de texte enrichie mettre Trix pour les champs Programme, Description, Objectif

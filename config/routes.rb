@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   
   root to: "home#index"
   get "dashboard", to: "home#dashboard"
+  
 
   namespace :admin do
     get "dashboard", to: "dashboard#index"
@@ -17,9 +18,20 @@ Rails.application.routes.draw do
       end
       member do
         post :reset_password
+        post :update_sessions
       end
     end
     resources :themes
+    resources :trainings do
+      collection do
+        get :import
+        post :process_import
+        get :export
+      end
+      member do
+        post :toggle_publish
+      end
+    end
     resources :quizzes do
       resources :questions do
         collection do
@@ -71,6 +83,11 @@ Rails.application.routes.draw do
         post :submit_answer
         post :complete
       end
+    end
+  end
+  resources :trainings, only: [:index, :show] do
+    collection do
+      get :catalog_pdf
     end
   end
 

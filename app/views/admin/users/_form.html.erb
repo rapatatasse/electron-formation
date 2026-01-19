@@ -31,8 +31,16 @@
   </div>
 
   <div class="form-group">
-    <%= f.label :role, "Rôle", class: "form-label" %>
-    <%= f.select :role, User.roles.keys.map { |r| [r.humanize, r] }, {}, class: "form-control" %>
+    <%= f.label :role, "Rôles", class: "form-label" %>
+    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+      <% User::ROLES.each do |role_name| %>
+        <label style="display: flex; align-items: center; cursor: pointer;">
+          <%= check_box_tag 'user[role][]', role_name, user.roles.include?(role_name), style: "margin-right: 0.5rem;" %>
+          <span><%= role_name.capitalize %></span>
+        </label>
+      <% end %>
+    </div>
+    <small style="color: var(--gray-600); margin-top: 0.5rem; display: block;">Sélectionnez un ou plusieurs rôles</small>
   </div>
 
   <div class="form-group">
