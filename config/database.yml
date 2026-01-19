@@ -32,3 +32,5 @@ test:
 production:
   <<: *default
   database: electronformation_production
+  username: electronformation
+  password: <%= ENV['DATABASE_PASSWORD'] %>
