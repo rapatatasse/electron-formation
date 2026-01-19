@@ -4,7 +4,7 @@ class Apprenant::DashboardController < ApplicationController
 
   def index
     # Récupérer uniquement les quiz assignés à l'apprenant
-    @available_quizzes = current_user.assigned_quizzes.active.order(created_at: :desc)
+    @available_quizzes = current_user.quiz_attempts.completed.order(created_at: :desc)
     @my_attempts = current_user.quiz_attempts.recent.limit(5)
     @total_attempts = current_user.quiz_attempts.where(status: ['in_progress', 'completed']).count
     @passed_attempts = current_user.quiz_attempts.passed.count

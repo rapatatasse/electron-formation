@@ -4,18 +4,10 @@
 
 <% content_for :head do %>
   <%= stylesheet_link_tag "elingage" %>
-  <%= javascript_include_tag "elingage", defer: true %>
+  <%= javascript_include_tag "exercices/elingage", defer: true %>
 <% end %>
 
-<nav class="navbar">
-  <div class="navbar-logo">
-    <%= link_to formateur_dashboard_path do %>
-      <%= image_tag "exercices/logo.png", alt: "Logo" %>
-    <% end %>
-    <h1>Calculette d'élingage Chaine</h1>
-  </div>
-</nav>
-
+<h1 class="text-center bg-primary text-white p-3">Calculette d'élingage Chaine</h1>
 <div class="d-flex">
   <div style="width:500px; margin:5px;">
     <div style="background-color:#145374; padding:20px; border-radius:12px; text-align:center; box-shadow:0 8px 20px rgba(0,0,0,0.3);">

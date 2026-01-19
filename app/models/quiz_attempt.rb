@@ -106,6 +106,8 @@ class QuizAttempt < ApplicationRecord
     passed == true
   end
 
+
+
   def duration_in_seconds
     return 0 unless completed_at && started_at
     (completed_at - started_at).to_i

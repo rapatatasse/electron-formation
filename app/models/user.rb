@@ -12,7 +12,8 @@ class User < ApplicationRecord
   has_many :user_sessions, dependent: :destroy
   has_many :sessions, through: :user_sessions
 
-  has_many :assigned_quizzes, -> { where.not(assigned_at: nil) }, through: :quiz_attempts, source: :quiz
+ 
+  has_many :quiz_attempts
  
   validates :email, presence: true, uniqueness: true
   validates :first_name, presence: true

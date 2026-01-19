@@ -7,3 +7,5 @@
  //= link exercices/modal_sujet.js
  //= link exercices/sujet_corrige.js
  //= link exercices/dragdrop.js
+ //= link exercices/elingage.js
+
