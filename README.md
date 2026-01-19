@@ -30,3 +30,10 @@ rails db:seed
 
 
 si besoin de texte enrichie mettre Trix pour les champs Programme, Description, Objectif
+
+git add .
+git commit -m "message"
+git push heroku main  
+
+# migration sur heroku
+heroku run rails db:migrate --app electronformation
