@@ -39,5 +39,10 @@ git push heroku main
 heroku run rails db:migrate --app electronformation
 
 
-Attention pour les images charger en JS utiliser en plus ceci :
-app\assets\javascripts\exercices\asset_paths.js.erb
+Attention pour les images charger en JS :
+si non charger faire
+```bash
+git commit --allow-empty -m "Force Heroku rebuild"      
+heroku run rake assets:clobber --app electronformation  
+```
+permet de recharger les assets

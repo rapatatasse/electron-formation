@@ -20,18 +20,25 @@ function assetUrl(path) {
     
     try {
         const assetPaths = JSON.parse(assetPathsJson);
+        console.log('📦 Asset paths loaded:', assetPaths);
         
         // Déterminer le type de ressource
         if (path.includes('ImageFond/fond')) {
             // Format: "ImageFond/fond1.jpg"
             const match = path.match(/fond(\d+)\./);
+            console.log('🔍 Searching for fond, path:', path, 'match:', match);
             if (match) {
                 const id = parseInt(match[1]);
+                console.log('🔍 Looking for fond id:', id, 'in', assetPaths.fonds);
                 const found = assetPaths.fonds.find(f => f.id === id);
                 if (found) {
                     console.log('✅ Asset fond trouvé:', path, '->', found.path);
                     return found.path;
+                } else {
+                    console.warn('⚠️ Fond id', id, 'not found in mapping');
                 }
+            } else {
+                console.warn('⚠️ Regex did not match for path:', path);
             }
         } else if (path.includes('ImagesZ1/image')) {
             const match = path.match(/image\((\d+)\)/);
