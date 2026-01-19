@@ -7,18 +7,13 @@ class User < ApplicationRecord
   # Rôles disponibles
   ROLES = %w[apprenant formateur admin].freeze
 
-  has_many :course_assignments, dependent: :destroy
+
   has_many :user_activity_logs, dependent: :destroy
   has_many :user_sessions, dependent: :destroy
   has_many :sessions, through: :user_sessions
 
-  has_many :created_quizzes, class_name: 'Quiz', foreign_key: 'creator_id', dependent: :destroy
-  has_many :quiz_attempts, dependent: :destroy
   has_many :assigned_quizzes, -> { where.not(assigned_at: nil) }, through: :quiz_attempts, source: :quiz
-  has_many :certificates, dependent: :destroy
-  has_many :issued_certificates, class_name: 'Certificate', foreign_key: 'issued_by_id'
-  has_many :theme_statistics, dependent: :destroy
-
+ 
   validates :email, presence: true, uniqueness: true
   validates :first_name, presence: true
   validates :last_name, presence: true

@@ -2,8 +2,10 @@
 function assetUrl(path) {
     // Les images sont dans app/assets/images/exercices/
     // Rails les sert depuis /assets/exercices/
-    // Utiliser window.location.origin pour éviter les conflits avec <base href>
-    const url = `${window.location.origin}/assets/exercices/${path}`;
+    // Encoder chaque partie du chemin pour gérer les espaces et caractères spéciaux
+    const pathParts = path.split('/');
+    const encodedPath = pathParts.map(part => encodeURIComponent(part)).join('/');
+    const url = `${window.location.origin}/assets/exercices/${encodedPath}`;
     console.log('🔗 assetUrl:', path, '->', url);
     return url;
 }
@@ -143,11 +145,11 @@ class DragDropManager {
 
     async loadImagesFromFolder(folderName, zoneNumber, container) {
         const foundImages = [];
-        const colorliaison = [['image (1)',"#26ff4eff"], ['image (2)', '#14d531ff'], ['image (3)', '#0599efff'], ['image (4)', '#477a73ff'], ['image (5)', '#cc9f0aec'], ['image (6)', '#07b029ec']];
+        const colorliaison = [['image(1)',"#26ff4eff"], ['image(2)', '#14d531ff'], ['image(3)', '#0599efff'], ['image(4)', '#477a73ff'], ['image(5)', '#cc9f0aec'], ['image(6)', '#07b029ec']];
         // Essayer de détecter automatiquement les images avec des noms courants
         const commonPatterns = [
-                      // Noms avec parenthèses (comme "image (1).png")
-            'image (1)', 'image (2)', 'image (3)', 'image (4)', 'image (5)', 'image (6)', 'image (7)', 'image (8)','image (9)',
+                      // Noms avec parenthèses (comme "image(1).png")
+            'image(1)', 'image(2)', 'image(3)', 'image(4)', 'image(5)', 'image(6)', 'image(7)', 'image(8)','image(9)',
         ];
         
         const extensions = ['png'];

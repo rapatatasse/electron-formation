@@ -11,8 +11,11 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.2].define(version: 2026_01_15_140001) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "answers", force: :cascade do |t|
-    t.integer "question_id", null: false
+    t.bigint "question_id", null: false
     t.text "answer_text"
     t.boolean "correct"
     t.integer "position"
@@ -22,8 +25,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_15_140001) do
   end
 
   create_table "questions", force: :cascade do |t|
-    t.integer "quiz_id", null: false
-    t.integer "theme_id", null: false
+    t.bigint "quiz_id", null: false
+    t.bigint "theme_id", null: false
     t.text "question_text"
     t.string "image_url"
     t.integer "difficulty_level"
@@ -36,8 +39,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_15_140001) do
   end
 
   create_table "quiz_attempts", force: :cascade do |t|
-    t.integer "quiz_id", null: false
-    t.integer "user_id", null: false
+    t.bigint "quiz_id", null: false
+    t.bigint "user_id", null: false
     t.string "assigned_by_type"
     t.integer "assigned_by_id"
     t.datetime "assigned_at"
@@ -117,7 +120,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_15_140001) do
   end
 
   create_table "user_activity_logs", force: :cascade do |t|
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.string "action_type"
     t.string "resource_type"
     t.integer "resource_id"
@@ -134,8 +137,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_15_140001) do
   end
 
   create_table "user_sessions", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "session_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "session_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["session_id"], name: "index_user_sessions_on_session_id"

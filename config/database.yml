@@ -31,6 +31,4 @@ test:
 # ensure the database is located in a persisted volume.
 production:
   <<: *default
-  database: electronformation_production
-  username: electronformation
-  password: <%= ENV['DATABASE_PASSWORD'] %>
+  url: <%= ENV['DATABASE_URL'] %>
