@@ -16,6 +16,14 @@ const SUJET_CORRIGE = {
         ]
         }
     ],
+        "fond35.jpg": [
+        {
+            "Sujet": "Exercie : opération à réaliser : confection d’un manchon de jonction a compléter pour ouverture de circuit avec pose de shunt",
+            "Corrige": [["mise a la terre du panier, de la nacelle"],
+            
+        ]
+        }
+    ],
 
 
 }

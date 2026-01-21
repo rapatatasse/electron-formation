@@ -162,6 +162,20 @@ const IMAGES_CONFIG = {
             "y": 65,
             "type": "image",
             "rotation": 0
+        },
+        {
+            "name": "30Barriere1.png",
+            "x": 29,
+            "y": 19,
+            "type": "image",
+            "rotation": 0
+        },
+        {
+            "name": "30Barriere2.png",
+            "x": 36,
+            "y": 19,
+            "type": "image",
+            "rotation": 0
         }
 
     ],
