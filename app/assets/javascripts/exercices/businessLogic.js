@@ -130,8 +130,8 @@ const IMAGES_CONFIG = {
         },
         {
             "name": "31_touret.png",
-            "x": 80,
-            "y": 50,
+            "x": 78,
+            "y": 43,
             "type": "image",
             "rotation": 0
         },
@@ -145,21 +145,21 @@ const IMAGES_CONFIG = {
         {
             "name": "HommeH2.png",
             "x": 89,
-            "y": 55,
+            "y": 50,
             "type": "image",
             "rotation": 0
         },
         {
             "name": "HommeH1.png",
             "x": 40,
-            "y": 60,
+            "y": 55,
             "type": "image",
             "rotation": 0
         },
         {
             "name": "HommeNH.png",
             "x": 10,
-            "y": 65,
+            "y": 60,
             "type": "image",
             "rotation": 0
         },
