@@ -2,7 +2,7 @@
 <div class="container">
   <div style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
     <%= link_to "← Retour au catalogue", trainings_path, class: "btn btn-outline" %>
-    <%= link_to training_path(@training, format: :pdf), class: "btn btn-primary", style: "background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); border: none; font-weight: 700;" do %>
+    <%= link_to show_catalog_training_path(@training), class: "btn btn-primary", style: "background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); border: none; font-weight: 700;", target: "_blank" do %>
       <i class="fas fa-file-pdf"></i> Télécharger en PDF
     <% end %>
   </div>

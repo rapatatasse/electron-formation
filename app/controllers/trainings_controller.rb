@@ -19,18 +19,13 @@ class TrainingsController < ApplicationController
 
   def show
     @training = Training.published.find(params[:id])
-    
-    respond_to do |format|
-      format.html
-      format.pdf do   
-        render pdf: "formation_#{@training.title.parameterize}",
-               template: 'trainings/show',
-               layout: false,
-               page_size: 'A4',
-               margin: { top: 0, bottom: 0, left: 0, right: 0 },
-               encoding: 'UTF-8'
-      end
-    end
+  rescue ActiveRecord::RecordNotFound
+    redirect_to trainings_path, alert: "Formation non trouvée"
+  end
+  
+  def show_catalog
+    @training = Training.published.find(params[:id])
+    render layout: false
   rescue ActiveRecord::RecordNotFound
     redirect_to trainings_path, alert: "Formation non trouvée"
   end
@@ -51,10 +46,6 @@ class TrainingsController < ApplicationController
       @trainings = @trainings.where("LOWER(training_type) LIKE ?", "%#{params[:type].downcase}%")
     end
     
-    render pdf: "catalogue_formations_#{Date.today}",
-           layout: false,
-           page_size: 'A4',
-           margin: { top: 0, bottom: 0, left: 0, right: 0 },
-           encoding: 'UTF-8'
+    render layout: false
   end
 end

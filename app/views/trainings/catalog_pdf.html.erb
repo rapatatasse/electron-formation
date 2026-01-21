@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Catalogue de Formations</title>
+  <%= stylesheet_link_tag 'cataloguepdf', media: 'all' %>
+</head>
+<body>
+  <button id="print-button" class="print-button" onclick="window.print()">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+      <rect x="6" y="14" width="12" height="8"/>
+    </svg>
+    Imprimer / PDF
+  </button>
+  
+  <%= render 'cover_page' %>
+  <%= render 'table_of_contents', trainings: @trainings %>
+  <%= render 'company_presentation' %>
+  
+  <% @trainings.each_with_index do |training, index| %>
+    <%= render 'training_detail', training: training, page_number: index + 4 %>
+  <% end %>
+</body>
+</html>

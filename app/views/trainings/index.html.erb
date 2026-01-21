@@ -8,7 +8,7 @@
         <h1 class="training-catalog-title">Catalogue de Formations Professionnelles</h1>
         <p class="training-catalog-subtitle">Formations techniques et sécurité pour entreprises et professionnels</p>
       </div>
-      <%= link_to catalog_pdf_trainings_path(format: :pdf, search: params[:search], type: params[:type]), 
+      <%= link_to catalog_pdf_trainings_path(search: params[:search], type: params[:type]), 
           style: "background: white; color: #1e3a8a; padding: 1rem 2rem; font-weight: 700; text-decoration: none; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: all 0.3s; display: inline-block;" do %>
         <i class="fas fa-file-pdf"></i> Télécharger le catalogue complet (PDF)
       <% end %>

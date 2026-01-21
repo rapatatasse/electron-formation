@@ -47,6 +47,12 @@ Rails.application.routes.draw do
         post :update_assignments
       end
     end
+    resources :sessions, only: [:index, :create, :destroy] do
+      collection do
+        post :assign
+        delete :unassign
+      end
+    end
     resources :activity_reports, only: [:index] do
       collection do
         get :export
@@ -90,6 +96,9 @@ Rails.application.routes.draw do
   resources :trainings, only: [:index, :show] do
     collection do
       get :catalog_pdf
+    end
+    member do
+      get :show_catalog
     end
   end
 

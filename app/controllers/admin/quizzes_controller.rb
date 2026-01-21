@@ -10,6 +10,7 @@ class Admin::QuizzesController < ApplicationController
   def show
     @questions = @quiz.questions.includes(:answers, :theme).ordered
     @assignments = @quiz.quiz_attempts.assigned.includes(:user).order('users.last_name')
+    @nb_sessions = Session.where(active: true).count
   end
 
   def new

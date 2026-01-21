@@ -4,7 +4,11 @@
     <div>
       <%= link_to "Modifier", edit_admin_quiz_path(@quiz), class: "btn btn-outline" %>
       <%= link_to "Gérer les questions", admin_quiz_questions_path(@quiz), class: "btn btn-primary" %>
-      <%= link_to "Assigner des apprenants", assign_users_admin_quiz_path(@quiz), class: "btn btn-secondary" %>
+      <% if @nb_sessions > 0 %>
+        <%= link_to "Assigner des sessions", assign_users_admin_quiz_path(@quiz), class: "btn btn-secondary" %>
+      <% else %>
+        <%= link_to "Ajouter des sessions", admin_users_path, class: "btn btn-secondary" %>
+      <% end %>
     </div>
   </div>
 

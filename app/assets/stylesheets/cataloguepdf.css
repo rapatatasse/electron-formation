@@ -106,7 +106,7 @@ body {
 }
 
 .grid-title {
-    background-color: #d9e2f3;
+    background-color: #dbe4f5;
     color: #333;
     font-weight: bold;
     padding: 2px 8px;
@@ -133,7 +133,7 @@ body {
     margin: 0 -15mm 0 -25mm; /* Extend to page edges */
     position: absolute;
     bottom: 50mm;
-    width: 210mm;
+
 }
 
 .banner-item h3 {
@@ -244,5 +244,52 @@ body {
         background-color: #005baa !important;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
+    }
+}
+
+
+
+
+
+.print-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #e6a903;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transition: background-color 0.3s ease;
+}
+
+.print-button:hover {
+    background-color: #004080;
+}
+
+.print-button svg {
+    flex-shrink: 0;
+}
+
+@media print {
+    body {
+        background-color: white;
+    }
+    
+    .formation {
+        margin: 0;
+        box-shadow: none;
+    }
+    
+    .print-button {
+        display: none;
     }
 }
