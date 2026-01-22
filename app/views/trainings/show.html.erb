@@ -1,3 +1,4 @@
+<%= stylesheet_link_tag "catalogue" %>
 <%= render 'shared/public_navbar' %>
 <div class="container">
   <div style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
@@ -83,6 +84,63 @@
           <p style="white-space: pre-wrap; line-height: 1.6;"><%= @training.evaluation_method %></p>
         </div>
       <% end %>
+
+      <div style="display: flex; justify-content: space-between;">
+        <div class="d-flex gap-1 justify-content-center">
+          <div class="card-info">
+            <%=image_tag "illustration/pictohandi.png", class: "pictomedium" %>
+            <p style="white-space: pre-wrap; line-height: 1.6;">Bâtiment conforme aux normes d'accessibilité, réfèrent handicap Cécile Roque 09 81 37 57 81</p>
+          </div>
+          <div class="card-info">
+            <%=image_tag "illustration/pictogroupe.png", class: "img-fluid pictomedium" %>
+            <p style="white-space: pre-wrap; line-height: 1.6;">12 personnes max par session</p>
+          </div>
+          <div class="card-info">
+            <%=image_tag "illustration/pictoprof.png", class: "img-fluid pictomedium" %>
+            <p style="white-space: pre-wrap; line-height: 1.6;">Formateurs qualifiés et compétent avec une expérience professionnelle sur les installations électriques concernées et possédant les habilitations correspondantes au domaine de formation</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 2rem;">
+        <h2 style="margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--primary-color);">Moyens matériels et pédagogiques</h2>
+        <div style="display: grid; grid-template-columns: 1fr 350px; gap: 2rem; align-items: start;">
+          <div>
+            <h3 style="color: var(--primary-color); margin-bottom: 1rem; font-size: 1.2rem;">Équipements fournis :</h3>
+            <ul style="line-height: 1.8; margin-bottom: 1.5rem; padding-left: 1.5rem;">
+              <li>Tablette pour passage des tests</li>
+              <li>Connexion internet haut débit sécurisée</li>
+            </ul>
+
+            <h3 style="color: var(--primary-color); margin-bottom: 1rem; font-size: 1.2rem;">Environnement de formation :</h3>
+            <ul style="line-height: 1.8; margin-bottom: 1.5rem; padding-left: 1.5rem;">
+              <li>Salle équipée adaptée à l'apprentissage (tables ergonomiques, chaises confortables)</li>
+              <li>Système de projection haute définition (vidéo projecteur et grand écran)</li>
+              <li>Tableau blanc interactif pour les explications complémentaires</li>
+              <li>Prises électriques en nombre suffisant et facilement accessibles</li>
+              <li>Espace de pause avec rafraîchissements</li>
+            </ul>
+
+            <h3 style="color: var(--primary-color); margin-bottom: 1rem; font-size: 1.2rem;">Ressources pédagogiques :</h3>
+            <ul style="line-height: 1.8; margin-bottom: 1.5rem; padding-left: 1.5rem;">
+              <li>Fichiers d'exercices pratiques adaptés à chaque niveau</li>
+              <li>Documentation technique et aide-mémoire téléchargeables</li>
+              <li>Environnement test pour s'entraîner sans risque sur des cas pratiques</li>
+            </ul>
+
+            <h3 style="color: var(--primary-color); margin-bottom: 1rem; font-size: 1.2rem;">Adaptations techniques possibles :</h3>
+            <ul style="line-height: 1.8; padding-left: 1.5rem;">
+              <li>Logiciels d'accessibilité installés sur demande (lecteurs d'écran, zoom, etc.)</li>
+              <li>Possibilité d'adaptation des postes de travail pour les personnes en situation de handicap</li>
+              <li>Configuration personnalisée selon les besoins spécifiques des apprenants</li>
+            </ul>
+          </div>
+          <div style="position: sticky; top: 2rem;">
+            <%= image_tag "sallecours.jpg", class: "img-fluid" %>
+            <%= image_tag "materiel.jpg", class: "img-fluid" %>
+          </div>
+        </div>
+      </div>
 
       <div style="margin-top: 3rem; padding-top: 2rem; border-top: 2px solid var(--gray-200); text-align: center;">
         <p style="font-size: 1.1rem; margin-bottom: 1rem;">Intéressé par cette formation ?</p>

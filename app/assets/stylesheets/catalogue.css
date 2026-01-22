@@ -174,3 +174,12 @@
     color: #1e293b;
     display: block;
   }
+
+  .card-info {
+    width: 30%;
+    border: 1px solid #e5e7eb;
+    border-radius: var(--border-radius);
+    padding: 1.2rem;
+    text-align: center;
+  }
+

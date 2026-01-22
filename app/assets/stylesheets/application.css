@@ -48,6 +48,23 @@
   width: 100%;
   height: auto;
 }
+.d-flex {
+  display: flex;
+}
+.justify-content-center {
+  justify-content: center;
+}
+.gap-1 {
+  gap: 1rem;
+}
+.gap-2 {
+  gap: 2rem;
+}
+
+.pictomedium {
+  width: 50px !important;
+  height: 50px !important;
+}
 
 .card {
   background-color: white;

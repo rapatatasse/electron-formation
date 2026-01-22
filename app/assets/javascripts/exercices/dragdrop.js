@@ -778,7 +778,7 @@ class DragDropManager {
             e.preventDefault();
         }
         // Si l'image est déjà sur le fond
-        else if (img.parentNode.classList.contains('background-area')) {
+        else if (img.parentNode.classList.contains('background-area') || img.parentNode.classList.contains('connecteur-multiple-container')) {
             this.draggedElement = img;
             this.originalParent = img.parentNode;
             this.isTouchDragging = true;
@@ -807,7 +807,7 @@ class DragDropManager {
             // Juste afficher un feedback visuel si nécessaire
         }
         // Si l'image est déjà sur le fond, la déplacer
-        else if (img.parentNode.classList.contains('background-area')) {
+        else if (img.parentNode.classList.contains('background-area') || img.parentNode.classList.contains('connecteur-multiple-container')) {
             const bgRect = this.backgroundArea.getBoundingClientRect();
             const x = touch.clientX - this.touchOffset.x;
             const y = touch.clientY - this.touchOffset.y;
@@ -888,7 +888,7 @@ class DragDropManager {
                     
                     console.log('✅ Image dupliquée et placée sur le fond');
                 }
-            } else if (img.parentNode === this.backgroundArea) {
+            } else if (img.parentNode === this.backgroundArea || img.parentNode?.classList?.contains('connecteur-multiple-container')) {
                 // L'image est déjà sur le fond
                 // Vérifier si le doigt est au-dessus d'une zone de retour
                 const elementAtPoint = document.elementFromPoint(touch.clientX, touch.clientY);
