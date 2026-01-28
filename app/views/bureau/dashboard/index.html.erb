@@ -1,0 +1,80 @@
+<div class="container">
+  <div class="page-header">
+    <h1 class="page-title">Tableau de bord Bureau</h1>
+  </div>
+
+  <div class="dashboard-grid">
+    <div class="stat-card">
+      <h3><%= @projects_count %></h3>
+      <p>Projets</p>
+    </div>
+
+    <div class="stat-card" style="background: linear-gradient(135deg, var(--secondary-color), #059669);">
+      <h3><%= @tasks_count %></h3>
+      <p>Tâches</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      Planning
+    </div>
+    <div class="card-body">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+        <%= link_to bureau_projects_path, class: "btn btn-primary", style: "text-align: center;" do %>
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">📁</div>
+          <div>Projets</div>
+        <% end %>
+
+        <%= link_to calendar_bureau_tasks_path, class: "btn btn-primary", style: "text-align: center;" do %>
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">📅</div>
+          <div>Vue calendrier</div>
+        <% end %>
+
+        <%= link_to bureau_tasks_path, class: "btn btn-primary", style: "text-align: center;" do %>
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">📋</div>
+          <div>Vue liste</div>
+        <% end %>
+
+        <%= link_to todo_bureau_tasks_path, class: "btn btn-primary", style: "text-align: center;" do %>
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">✅</div>
+          <div>To do</div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      Projets récents
+    </div>
+    <div class="card-body">
+      <% if @recent_projects.any? %>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Statut</th>
+              <th>Créé le</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @recent_projects.each do |project| %>
+              <tr>
+                <td><%= project.name %></td>
+                <td><%= project.status %></td>
+                <td><%= l(project.created_at, format: :short) %></td>
+                <td><%= link_to "Ouvrir", bureau_project_path(project), class: "btn btn-sm btn-outline" %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <p style="text-align: center; color: var(--gray-600); padding: 2rem;">
+          Aucun projet.
+        </p>
+      <% end %>
+    </div>
+  </div>
+</div>

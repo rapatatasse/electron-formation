@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="page-header" style="display: flex; justify-content: space-between; align-items: start; gap: 1rem;">
+    <div>
+      <h1 class="page-title"><%= @task.name %></h1>
+      <p style="color: var(--gray-600); margin: 0;">
+        Projet: <%= link_to @task.project.name, bureau_project_path(@task.project) %>
+      </p>
+    </div>
+
+    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: end;">
+      <%= link_to "Modifier", edit_bureau_task_path(@task), class: "btn btn-outline" %>
+      <%= button_to "Supprimer", bureau_task_path(@task), method: :delete, class: "btn btn-danger", form: { data: { turbo_confirm: "Supprimer cette tâche ?" } } %>
+      <%= link_to "Retour", bureau_project_path(@task.project, view: 'list'), class: "btn btn-outline" %>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <p><strong>Description:</strong> <%= @task.description %></p>
+      <p><strong>Début:</strong> <%= @task.start_date %></p>
+      <p><strong>Fin:</strong> <%= @task.end_date %></p>
+      <p><strong>Progress:</strong> <%= @task.progress %>%</p>
+      <p><strong>Statut:</strong> <%= @task.status %></p>
+      <p><strong>Priorité:</strong> <%= @task.priority %></p>
+      <p><strong>Dépendances:</strong> <%= @task.dependencies.map(&:name).join(', ') %></p>
+    </div>
+  </div>
+</div>

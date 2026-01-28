@@ -1,6 +1,7 @@
 //= link_tree ../images
 //= link_directory ../stylesheets .css
 //= link_directory ../javascripts .js
+//= link bureau/gantt.js
  //= link exercices/exercices_index.js
 
  //= link exercices/businessLogic.js

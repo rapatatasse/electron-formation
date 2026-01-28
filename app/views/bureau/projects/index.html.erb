@@ -1,0 +1,44 @@
+<div class="container-full">
+  <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
+    <h1 class="page-title">Projets</h1>
+    <%= link_to "Nouveau projet", new_bureau_project_path, class: "btn btn-primary" %>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <% if @projects.any? %>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Statut</th>
+              <th>Dates</th>
+              <th>Créateur</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @projects.each do |project| %>
+              <tr>
+                <td><%= project.name %></td>
+                <td><%= project.status %></td>
+                <td>
+                  <%= project.start_date %>
+                  <%= project.end_date ? "→ #{project.end_date}" : "" %>
+                </td>
+                <td><%= project.creator&.full_name %></td>
+                <td>
+                  <%= link_to "Voir", bureau_project_path(project), class: "btn btn-sm btn-outline" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <p style="text-align: center; color: var(--gray-600); padding: 2rem;">
+          Aucun projet.
+        </p>
+      <% end %>
+    </div>
+  </div>
+</div>

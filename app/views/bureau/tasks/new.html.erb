@@ -1,0 +1,74 @@
+<div class="container">
+  <div class="page-header">
+    <h1 class="page-title">Nouvelle tâche</h1>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <%= form_with model: [:bureau, @project, @task], local: true do |f| %>
+        <div class="form-group">
+          <%= f.label :name, "Nom" %>
+          <%= f.text_field :name, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :description, "Description" %>
+          <%= f.text_area :description, class: "form-control" %>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+          <div class="form-group">
+            <%= f.label :start_date, "Date début" %>
+            <%= f.date_field :start_date, class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= f.label :end_date, "Date fin" %>
+            <%= f.date_field :end_date, class: "form-control" %>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+          <div class="form-group">
+            <%= f.label :duration_days, "Durée (jours)" %>
+            <%= f.number_field :duration_days, class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= f.label :hours_per_day, "Heures/jour" %>
+            <%= f.number_field :hours_per_day, class: "form-control" %>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+          <div class="form-group">
+            <%= f.label :progress, "Progress (%)" %>
+            <%= f.number_field :progress, class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= f.label :priority, "Priorité" %>
+            <%= f.text_field :priority, class: "form-control" %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :status, "Statut" %>
+          <%= f.text_field :status, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :user_ids, "Affecter aux salariés" %>
+          <div class="chips">
+            <%= f.collection_check_boxes :user_ids, @users, :id, :full_name do |b| %>
+              <label class="chip">
+                <%= b.check_box %>
+                <span><%= b.text %></span>
+              </label>
+            <% end %>
+          </div>
+        </div>
+
+        <%= f.submit "Créer", class: "btn btn-primary" %>
+        <%= link_to "Annuler", bureau_project_path(@project, view: 'list'), class: "btn btn-outline" %>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,44 @@
+<div class="container">
+  <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
+    <h1 class="page-title">Tâches</h1>
+    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: end;">
+      <%= link_to "Calendrier", calendar_bureau_tasks_path, class: "btn btn-outline" %>
+      <%= link_to "To do", todo_bureau_tasks_path, class: "btn btn-outline" %>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <% if @tasks.any? %>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Projet</th>
+              <th>Tâche</th>
+              <th>Début</th>
+              <th>Fin</th>
+              <th>Progress</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @tasks.each do |task| %>
+              <tr>
+                <td><%= link_to task.project.name, bureau_project_path(task.project) %></td>
+                <td><%= link_to task.name, bureau_task_path(task) %></td>
+                <td><%= task.start_date %></td>
+                <td><%= task.end_date %></td>
+                <td><%= task.progress %>%</td>
+                <td>
+                  <%= link_to "Modifier", edit_bureau_task_path(task), class: "btn btn-sm btn-outline" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <p style="text-align: center; color: var(--gray-600); padding: 2rem;">Aucune tâche.</p>
+      <% end %>
+    </div>
+  </div>
+</div>

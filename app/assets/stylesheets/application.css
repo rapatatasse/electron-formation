@@ -114,8 +114,13 @@ body {
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding:  20px;
   
+}
+.container-full {
+  margin: 0 auto;
+  padding: 0 20px;
+  min-height: 100vh;
 }
 
 /* Navigation */
@@ -671,6 +676,33 @@ select.form-control {
 .flash-close:hover {
   background: var(--gray-100);
   color: var(--gray-800);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 9999px;
+  border: 1px solid var(--gray-300);
+  background: white;
+  cursor: pointer;
+  user-select: none;
+}
+
+.chip input[type="checkbox"] {
+  margin: 0;
+}
+
+.chip:has(input[type="checkbox"]:checked) {
+  background: #dbeafe;
+  border-color: #1e40af;
 }
 
 /* Utilities */

@@ -93,6 +93,28 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  namespace :bureau do
+    get "dashboard", to: "dashboard#index"
+    resources :projects do
+      resources :tasks, only: [:new, :create]
+      member do
+        get :gantt
+        get :list
+        get :todo
+        get :gantt_data
+        get :gantt_users
+      end
+    end
+    resources :tasks, only: [:index, :show, :edit, :update, :destroy] do
+      collection do
+        get :calendar
+        get :todo
+      end
+    end
+
+    resources :task_dependencies, only: [:create, :destroy]
+  end
   resources :trainings, only: [:index, :show] do
     collection do
       get :catalog_pdf

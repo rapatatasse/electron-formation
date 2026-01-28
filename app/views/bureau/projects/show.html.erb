@@ -1,0 +1,199 @@
+<div>
+  <div class="page-header" style="display: flex; justify-content: space-between; align-items: start; gap: 1rem;">
+    <div>
+      <h1 class="page-title"><%= @project.name %></h1>
+      <p style="color: var(--gray-600); margin: 0;">
+        <%= @project.description %>
+      </p>
+    </div>
+
+    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: end;">
+      <%= link_to "Modifier", edit_bureau_project_path(@project), class: "btn btn-outline" %>
+      <% if @project.creator_id == current_user.id %>
+        <%= button_to "Supprimer", bureau_project_path(@project), method: :delete, class: "btn btn-danger", form: { data: { turbo_confirm: "Supprimer ce projet ?" } } %>
+      <% end %>
+      <%= link_to "Retour", bureau_projects_path, class: "btn btn-outline" %>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      Vues
+    </div>
+    <div class="card-body">
+      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+        <%= link_to "Gantt", gantt_bureau_project_path(@project), class: "btn btn-sm #{(@view == 'gantt') ? 'btn-primary' : 'btn-outline'}" %>
+        <%= link_to "Liste", list_bureau_project_path(@project), class: "btn btn-sm #{(@view == 'list') ? 'btn-primary' : 'btn-outline'}" %>
+        <%= link_to "To do", todo_bureau_project_path(@project), class: "btn btn-sm #{(@view == 'todo') ? 'btn-primary' : 'btn-outline'}" %>
+      </div>
+    </div>
+  </div>
+
+  <% if @view == 'gantt' %>
+    <% content_for :head do %>
+      <link rel="stylesheet" href="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.css">
+      <%= stylesheet_link_tag "gantt" %>
+      <script src="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.js"></script>
+      <%= javascript_include_tag "bureau/gantt" %>
+    <% end %>
+
+    <div class="card">
+      <div class="card-header">
+        Vue Gantt
+      </div>
+      <div class="card-body">
+        <div class="gantt-actions">
+          <%= link_to "Nouvelle tâche", new_bureau_project_task_path(@project), class: "btn btn-sm btn-primary" %>
+        </div>
+        <div id="gantt_here" class="gantt-container" data-project-id="<%= @project.id %>"></div>
+      </div>
+    </div>
+
+    <div id="gantt-task-modal" class="modal" style="display: none;">
+      <div class="modal-overlay" data-modal-close="1"></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="gantt-modal-title">Modifier tâche</h3>
+          <button type="button" class="modal-close" data-modal-close="1">×</button>
+        </div>
+        <div class="modal-body">
+          <form id="gantt-task-form" data-project-id="<%= @project.id %>">
+            <input type="hidden" id="gantt_task_id" name="gantt_task_id">
+
+            <div class="form-group">
+              <label class="form-label" for="gantt_task_name">Nom</label>
+              <input class="form-control" type="text" id="gantt_task_name" name="gantt_task_name">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="gantt_task_description">Description</label>
+              <textarea class="form-control" id="gantt_task_description" name="gantt_task_description"></textarea>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+              <div class="form-group">
+                <label class="form-label" for="gantt_task_start_date">Date début</label>
+                <input class="form-control" type="date" id="gantt_task_start_date" name="gantt_task_start_date">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="gantt_task_end_date">Date fin</label>
+                <input class="form-control" type="date" id="gantt_task_end_date" name="gantt_task_end_date">
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+              <div class="form-group">
+                <label class="form-label" for="gantt_task_progress">Progress (%)</label>
+                <input class="form-control" type="number" min="0" max="100" id="gantt_task_progress" name="gantt_task_progress">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="gantt_task_status">Statut</label>
+                <input class="form-control" type="text" id="gantt_task_status" name="gantt_task_status">
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+              <div class="form-group">
+                <label class="form-label" for="gantt_task_priority">Priorité</label>
+                <input class="form-control" type="text" id="gantt_task_priority" name="gantt_task_priority">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="gantt_task_user_ids">Affecter à (salariés)</label>
+                <select class="form-control" id="gantt_task_user_ids" name="gantt_task_user_ids" multiple></select>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline" data-modal-close="1">Annuler</button>
+              <button type="submit" class="btn btn-primary">Enregistrer</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  <% elsif @view == 'todo' %>
+    <div class="card">
+      <div class="card-header">
+        To do
+      </div>
+      <div class="card-body">
+        <% todo_tasks = @tasks.select { |t| t.progress.to_i < 100 } %>
+        <% if todo_tasks.any? %>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Tâche</th>
+                <th>Affectation</th>
+                <th>Fin</th>
+                <th>Progress</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% todo_tasks.each do |task| %>
+                <tr>
+                  <td><%= link_to task.name, bureau_task_path(task) %></td>
+                  <td>
+                    <span class="badge badge-warning">
+                      <%= task.user_ids.map { |id| User.find(id).full_name }.join(', ') %>
+                    </span>
+                  </td>
+                  <td><%= task.end_date %></td>
+                  <td><%= task.progress %>%</td>
+                  <td><%= link_to "Modifier", edit_bureau_task_path(task), class: "btn btn-sm btn-outline" %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        <% else %>
+          <p style="text-align: center; color: var(--gray-600); padding: 2rem;">Aucune tâche à faire.</p>
+        <% end %>
+      </div>
+    </div>
+  <% else %>
+    <div class="card">
+      <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
+        <span>Liste des tâches</span>
+        <%= link_to "Nouvelle tâche", new_bureau_project_task_path(@project), class: "btn btn-sm btn-primary" %>
+      </div>
+      <div class="card-body">
+        <% if @tasks.any? %>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Tâche</th>
+                <th>Début</th>
+                <th>Fin</th>
+                <th>Progress</th>
+                <th>Affectation</th>
+                <th>Dépendances</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @tasks.each do |task| %>
+                <tr>
+                  <td><%= link_to task.name, bureau_task_path(task) %></td>
+                  <td><%= task.start_date %></td>
+                  <td><%= task.end_date %></td>
+                  <td><%= task.progress %>%</td>
+                  <td>
+                    <span class="badge badge-warning">
+                      <%= task.user_ids.map { |id| User.find(id).full_name }.join(', ') %>
+                    </span>
+                  </td>
+                  <td><%= task.dependencies.map(&:name).join(', ') %></td>
+                  <td>
+                    <%= link_to "Modifier", edit_bureau_task_path(task), class: "btn btn-sm btn-outline" %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        <% else %>
+          <p style="text-align: center; color: var(--gray-600); padding: 2rem;">Aucune tâche.</p>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

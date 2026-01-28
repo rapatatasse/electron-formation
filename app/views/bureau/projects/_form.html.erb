@@ -1,0 +1,36 @@
+<%= form_with model: [:bureau, project], local: true do |f| %>
+  <div class="form-group">
+    <%= f.label :name, "Nom" %>
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :description, "Description" %>
+    <%= f.text_area :description, class: "form-control" %>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+    <div class="form-group">
+      <%= f.label :start_date, "Date début" %>
+      <%= f.date_field :start_date, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.label :end_date, "Date fin" %>
+      <%= f.date_field :end_date, class: "form-control" %>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+    <div class="form-group">
+      <%= f.label :status, "Statut" %>
+      <%= f.text_field :status, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.label :manager, "Manager" %>
+      <%= f.text_field :manager, class: "form-control" %>
+    </div>
+  </div>
+
+  <%= f.submit "Enregistrer", class: "btn btn-primary" %>
+  <%= link_to "Annuler", (project.persisted? ? bureau_project_path(project) : bureau_projects_path), class: "btn btn-outline" %>
+<% end %>

@@ -27,6 +27,10 @@
     <% if current_user.apprenant? %>
       <li><%= link_to "📚 Apprenant", apprenant_dashboard_path, class: "navbar-link #{'active' if request.path.start_with?('/apprenant')}" %></li>
     <% end %>
+
+    <% if current_user.bureau? %>
+      <li><%= link_to "👨‍🏫 Bureau", bureau_dashboard_path, class: "navbar-link #{'active' if request.path.start_with?('/bureau')}" %></li>
+    <% end %>
     
     <li style="margin-left: auto;">
       <span class="badge badge-info"><%= current_user.roles.map(&:capitalize).join(' + ') %></span>

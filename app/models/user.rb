@@ -5,12 +5,15 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, :trackable
 
   # Rôles disponibles
-  ROLES = %w[apprenant formateur admin].freeze
+  ROLES = %w[apprenant formateur bureau admin].freeze
 
 
   has_many :user_activity_logs, dependent: :destroy
   has_many :user_sessions, dependent: :destroy
   has_many :sessions, through: :user_sessions
+  has_many :created_projects, class_name: 'Project', foreign_key: :creator_id, dependent: :destroy
+  has_many :task_users, dependent: :destroy
+  has_many :tasks, through: :task_users
 
  
   has_many :quiz_attempts
@@ -24,6 +27,7 @@ class User < ApplicationRecord
   # Scopes pour les rôles
   scope :apprenant, -> { where("'apprenant' = ANY(role)") }
   scope :formateur, -> { where("'formateur' = ANY(role)") }
+  scope :bureau, -> { where("'bureau' = ANY(role)") }
   scope :admin, -> { where("'admin' = ANY(role)") }
 
   after_initialize :set_default_role, if: :new_record?
@@ -50,6 +54,12 @@ class User < ApplicationRecord
 
   def apprenant?
     roles.include?('apprenant')
+  rescue
+    false
+  end
+
+  def bureau?
+    roles.include?('bureau')
   rescue
     false
   end
