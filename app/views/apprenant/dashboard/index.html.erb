@@ -55,9 +55,6 @@
                 <% if quiz.time_limit %>
                   <span style="color: var(--gray-600);">⏱️ <%= quiz.time_limit %> min</span>
                 <% end %>
-                <% if quiz.max_attempts %>
-                  <span style="color: var(--gray-600);">Max: <%= quiz.max_attempts %> tentatives</span>
-                <% end %>
                 
                 <% if assignment.completed? %>
                   <%= link_to "Voir les résultats", apprenant_quiz_attempts_path(quiz_id: quiz.id), class: "btn btn-sm btn-outline", style: "margin-left: auto;" %>

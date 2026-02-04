@@ -5,27 +5,11 @@ module Formateur
 
     def index
       @date = params[:date] ? Date.parse(params[:date]) : Time.current
-      @service = UserActivityReportService.new(@date)
-      
-      if current_user.formateur?
-        @users = User.where(role: :apprenant)
-        @report = limited_report_for_formateur
-      else
-        @report = @service.generate_monthly_report
-      end
+      @report = session_based_report
     end
 
     def user_report
-      @user = User.find(params[:id])
-      
-      if current_user.formateur? && !@user.apprenant?
-        redirect_to formateur_activity_reports_path, alert: 'Accès non autorisé'
-        return
-      end
-      
-      @date = params[:date] ? Date.parse(params[:date]) : Time.current
-      @service = UserActivityReportService.new(@date)
-      @report = @service.generate_user_report(@user)
+      redirect_to formateur_activity_reports_path, alert: 'Rapport individuel indisponible (quiz publics)'
     end
 
     private
@@ -36,57 +20,62 @@ module Formateur
       end
     end
 
-    def limited_report_for_formateur
-      apprenants = User.where(role: :apprenant)
-      
+    def session_based_report
+      range = @date.beginning_of_month..@date.end_of_month
+
+      quiz_sessions = QuizSession.where(created_at: range)
+      quiz_sessions = quiz_sessions.where(created_by_id: current_user.id) if current_user.formateur?
+
+      session_ids = quiz_sessions.pluck(:id)
+
+      participants = QuizParticipant.where(quiz_session_id: session_ids)
+      attempts = QuizAttempt.where(quiz_session_id: session_ids)
+      completed_attempts = attempts.where(status: 'completed')
+
+      top_participants = completed_attempts
+        .joins(:quiz_participant)
+        .group(:quiz_participant_id)
+        .count
+        .sort_by { |_, count| -count }
+        .first(10)
+        .map do |participant_id, count|
+          p = participants.find { |pp| pp.id == participant_id } || QuizParticipant.find(participant_id)
+          {
+            participant_id: p.id,
+            name: p.full_name,
+            email: p.email,
+            quizzes_completed: count
+          }
+        end
+
+      participants_details = participants.includes(:quiz_attempts).map do |p|
+        p_attempts = p.quiz_attempts.where(quiz_session_id: session_ids)
+        completed = p_attempts.where(status: 'completed')
+        last_activity = completed.maximum(:completed_at) || p_attempts.maximum(:started_at) || p_attempts.maximum(:created_at)
+
+        {
+          participant_id: p.id,
+          name: p.full_name,
+          email: p.email,
+          stats: {
+            quizzes_started: p_attempts.where.not(started_at: nil).count,
+            quizzes_completed: completed.count,
+            average_score: completed.average(:score)&.round(1),
+            last_activity: last_activity
+          }
+        }
+      end
+
       {
         period: "#{@date.beginning_of_month.strftime('%B %Y')}",
         generated_at: Time.current,
-        total_users: apprenants.count,
-        active_users: active_apprenants_count,
-        users_details: apprenants_activity_details,
-        top_active_users: top_active_apprenants(10)
+        total_sessions: quiz_sessions.count,
+        total_participants: participants.count,
+        total_attempts: attempts.count,
+        completed_attempts: completed_attempts.count,
+        participants_details: participants_details,
+        top_participants: top_participants
       }
-    end
-
-    def active_apprenants_count
-      UserActivityLog.joins(:user)
-                     .where(users: { role: :apprenant })
-                     .where(performed_at: @date.beginning_of_month..@date.end_of_month)
-                     .distinct.count(:user_id)
-    end
-
-    def apprenants_activity_details
-      User.where(role: :apprenant).includes(:user_activity_logs).map do |user|
-        stats = user.monthly_activity_stats(@date)
-        {
-          user_id: user.id,
-          name: user.full_name,
-          email: user.email,
-          session: user.session,
-          stats: stats
-        }
-      end
-    end
-
-    def top_active_apprenants(limit = 10)
-      UserActivityLog.joins(:user)
-                     .where(users: { role: :apprenant })
-                     .where(performed_at: @date.beginning_of_month..@date.end_of_month)
-                     .group(:user_id)
-                     .count
-                     .sort_by { |_, count| -count }
-                     .first(limit)
-                     .map do |user_id, count|
-        user = User.find(user_id)
-        {
-          user_id: user.id,
-          name: user.full_name,
-          email: user.email,
-          session: user.session,
-          activity_count: count
-        }
-      end
     end
   end
 end

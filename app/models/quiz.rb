@@ -3,7 +3,7 @@ class Quiz < ApplicationRecord
   belongs_to :course, optional: true
   has_many :questions, dependent: :destroy
   has_many :quiz_attempts, dependent: :destroy
-  has_many :assigned_users, through: :quiz_attempts, source: :user
+  has_many :quiz_sessions, dependent: :destroy
   has_one :quiz_statistic, dependent: :destroy
 
   enum quiz_type: { simple: 0, adaptatif: 1 }
@@ -13,6 +13,15 @@ class Quiz < ApplicationRecord
   validates :passing_score, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }, allow_nil: true
   validates :question_count, numericality: { only_integer: true, greater_than: 0 }, if: -> { question_count.present? }
   validates :time_limit, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
+
+  def title_for(lang)
+    data = title.is_a?(Hash) ? title : { 'fr' => title }
+    data[lang.to_s].presence || data['fr'].presence || data.values.compact.first
+  end
+
+  def localized_title(lang = nil)
+    title_for(lang || I18n.locale)
+  end
 
   scope :active, -> { where(active: true) }
   scope :simple_quizzes, -> { where(quiz_type: :simple) }

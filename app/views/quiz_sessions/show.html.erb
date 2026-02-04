@@ -1,0 +1,67 @@
+<div class="container">
+  <div class="page-header">
+    <h1 class="page-title"><%= @quiz_session.quiz.title %></h1>
+  </div>
+
+  <% if @participant.nil? %>
+    <div class="card">
+      <div class="card-header">
+        Connexion
+      </div>
+      <div class="card-body">
+        <%= form_with url: quiz_session_participants_path(@quiz_session.token), method: :post, local: true do |f| %>
+          <div class="form-group">
+            <%= label_tag :first_name, 'Prénom *', class: 'form-label' %>
+            <%= text_field_tag :first_name, nil, class: 'form-control', required: true %>
+          </div>
+
+          <div class="form-group">
+            <%= label_tag :last_name, 'Nom *', class: 'form-label' %>
+            <%= text_field_tag :last_name, nil, class: 'form-control', required: true %>
+          </div>
+
+          <div class="form-group">
+            <%= label_tag :email, 'Email (optionnel)', class: 'form-label' %>
+            <%= email_field_tag :email, nil, class: 'form-control' %>
+          </div>
+
+          <%= f.submit 'Commencer', class: 'btn btn-primary' %>
+        <% end %>
+      </div>
+    </div>
+  <% elsif @results.present? %>
+    <div class="card">
+      <div class="card-header">
+        Résultats
+      </div>
+      <div class="card-body">
+        <p><strong><%= @participant.full_name %></strong></p>
+        <p>Score: <strong><%= @results.score %>%</strong></p>
+      </div>
+    </div>
+  <% else %>
+    <div class="card">
+      <div class="card-header">
+        Question
+      </div>
+      <div class="card-body">
+        <p style="margin-bottom: 1rem;"><strong><%= @current_question.question_text %></strong></p>
+
+        <%= form_with url: quiz_session_submit_answer_path(@quiz_session.token), method: :post, local: true do |f| %>
+          <%= hidden_field_tag :question_id, @current_question.id %>
+
+          <% @current_question.answers.order(:position).each do |answer| %>
+            <label style="display: block; padding: 0.5rem; margin: 0.25rem 0; border: 1px solid var(--gray-200); border-radius: 4px; cursor: pointer;">
+              <%= check_box_tag 'answer_ids[]', answer.id, false, style: 'margin-right: 0.5rem; width: auto;' %>
+              <%= answer.answer_text %>
+            </label>
+          <% end %>
+
+          <div style="margin-top: 1rem;">
+            <%= f.submit 'Valider', class: 'btn btn-primary' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

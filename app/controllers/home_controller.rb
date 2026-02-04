@@ -8,6 +8,7 @@ class HomeController < ApplicationController
 
   def dashboard
     # Utiliser le rôle principal pour la redirection
+    
     case current_user.primary_role
     when 'admin'
       redirect_to admin_dashboard_path
@@ -15,8 +16,6 @@ class HomeController < ApplicationController
       redirect_to formateur_dashboard_path
     when 'bureau'
       redirect_to bureau_dashboard_path
-    when 'apprenant'
-      redirect_to apprenant_dashboard_path
     else
       redirect_to root_path
     end

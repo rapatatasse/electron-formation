@@ -360,7 +360,7 @@ select.form-control {
 .stat-card {
   background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
   color: white;
-  padding: 2rem;
+  padding: 1rem;
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow-lg);
 }
@@ -716,6 +716,7 @@ select.form-control {
 .mb-3 { margin-bottom: 1.5rem; }
 .p-2 { padding: 1rem; }
 .p-3 { padding: 1.5rem; }
+.p-1 { padding: 0.5rem; }
 
 
 .alert {

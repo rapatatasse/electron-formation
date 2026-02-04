@@ -25,6 +25,15 @@ class Question < ApplicationRecord
     correct_answers.count > 1
   end
 
+  def question_text_for(lang)
+    data = question_text.is_a?(Hash) ? question_text : { 'fr' => question_text }
+    data[lang.to_s].presence || data['fr'].presence || data.values.compact.first
+  end
+
+  def localized_question_text(lang = nil)
+    question_text_for(lang || I18n.locale)
+  end
+
   # Export CSV pour un quiz spécifique
   def self.export_to_csv(quiz)
     require 'csv'
@@ -35,7 +44,7 @@ class Question < ApplicationRecord
       # Questions du quiz
       quiz.questions.includes(:theme, :answers).order(:position).each do |question|
         row = [
-          question.question_text,
+          question.question_text_for('fr'),
           question.theme.name,
           question.image_url,
           question.difficulty_level,
@@ -96,7 +105,7 @@ class Question < ApplicationRecord
         # Créer la question
         multiple_correct = row['multiple_correct_answers']&.downcase
         question = quiz.questions.build(
-          question_text: row['question_text'],
+          question_text: { 'fr' => row['question_text'] },
           theme: theme,
           image_url: row['image_url'],
           difficulty_level: row['difficulty_level'] || 50,

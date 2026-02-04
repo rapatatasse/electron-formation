@@ -1,6 +1,5 @@
-class UserSession < ApplicationRecord
-  belongs_to :user
-  belongs_to :session
-
-  validates :user_id, uniqueness: { scope: :session_id }
+class UserSession
+  def self.method_missing(*)
+    raise NameError, 'UserSession has been removed. Use QuizParticipant/QuizSession instead.'
+  end
 end

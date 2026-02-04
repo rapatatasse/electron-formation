@@ -64,3 +64,4 @@ gem "rubyXL", "~> 3.4"
 
 gem "wicked_pdf", "~> 2.8.2"  
 
+gem "rqrcode", "~> 2.2"

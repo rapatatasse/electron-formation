@@ -17,7 +17,7 @@ class Admin::QuestionsController < ApplicationController
     @question = @quiz.questions.build(question_params)
     
     if @question.save
-      redirect_to admin_quiz_questions_path(@quiz), notice: "Question créée avec succès"
+      redirect_to admin_quiz_path(@quiz), notice: "Question créée avec succès"
     else
       render :new, status: :unprocessable_entity
     end
@@ -28,7 +28,7 @@ class Admin::QuestionsController < ApplicationController
 
   def update
     if @question.update(question_params)
-      redirect_to admin_quiz_questions_path(@quiz), notice: "Question mise à jour"
+      redirect_to admin_quiz_path(@quiz), notice: "Question mise à jour"
     else
       render :edit, status: :unprocessable_entity
     end
@@ -36,13 +36,13 @@ class Admin::QuestionsController < ApplicationController
 
   def destroy
     @question.destroy
-    redirect_to admin_quiz_questions_path(@quiz), notice: "Question supprimée"
+    redirect_to admin_quiz_path(@quiz), notice: "Question supprimée"
   end
 
   def destroy_all
     count = @quiz.questions.count
     @quiz.questions.destroy_all
-    redirect_to admin_quiz_questions_path(@quiz), notice: "#{count} question(s) supprimée(s) avec succès"
+    redirect_to admin_quiz_path(@quiz), notice: "#{count} question(s) supprimée(s) avec succès"
   end
 
   def import
@@ -62,7 +62,7 @@ class Admin::QuestionsController < ApplicationController
       flash[:notice] = "#{result[:count]} questions importées avec succès"
     end
     
-    redirect_to admin_quiz_questions_path(@quiz)
+    redirect_to admin_quiz_path(@quiz)
   end
 
   def export
@@ -89,11 +89,22 @@ class Admin::QuestionsController < ApplicationController
   end
 
   def question_params
-    params.require(:question).permit(
-      :question_text, :theme_id, :image_url, :difficulty_level, :position,
-      :multiple_correct_answers, 
+    permitted = params.require(:question).permit(
+      :theme_id, :image_url, :difficulty_level, :position,
+      :multiple_correct_answers,
       answers_attributes: [:id, :answer_text, :correct, :_destroy]
     )
+
+    question_text = params.dig(:question, :question_text)
+    if question_text.is_a?(ActionController::Parameters)
+      permitted[:question_text] = question_text.to_unsafe_h
+    elsif question_text.is_a?(Hash)
+      permitted[:question_text] = question_text
+    elsif question_text.present?
+      permitted[:question_text] = { 'fr' => question_text }
+    end
+
+    permitted
   end
 
   def require_admin

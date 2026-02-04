@@ -22,7 +22,7 @@ class Formateur::QuizzesController < ApplicationController
 
   def quiz_params
     params.require(:quiz).permit(:title, :description, :quiz_type, :time_limit, 
-                                  :passing_score, :max_attempts, :randomize_questions, :active)
+                                  :passing_score, :randomize_questions, :active)
   end
 
   def require_formateur

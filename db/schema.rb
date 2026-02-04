@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_01_28_100003) do
+ActiveRecord::Schema[7.2].define(version: 2026_01_29_133600) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -40,20 +40,19 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_28_100003) do
   create_table "questions", force: :cascade do |t|
     t.bigint "quiz_id", null: false
     t.bigint "theme_id", null: false
-    t.text "question_text"
     t.string "image_url"
     t.integer "difficulty_level"
     t.boolean "multiple_correct_answers"
     t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "question_text", default: {}, null: false
     t.index ["quiz_id"], name: "index_questions_on_quiz_id"
     t.index ["theme_id"], name: "index_questions_on_theme_id"
   end
 
   create_table "quiz_attempts", force: :cascade do |t|
     t.bigint "quiz_id", null: false
-    t.bigint "user_id", null: false
     t.string "assigned_by_type"
     t.integer "assigned_by_id"
     t.datetime "assigned_at"
@@ -70,14 +69,41 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_28_100003) do
     t.json "answers_data"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "quiz_session_id"
+    t.bigint "quiz_participant_id"
     t.index ["assigned_by_id"], name: "index_quiz_attempts_on_assigned_by_id"
-    t.index ["quiz_id", "user_id"], name: "index_quiz_attempts_on_quiz_id_and_user_id"
+    t.index ["quiz_id", "quiz_participant_id"], name: "index_quiz_attempts_on_quiz_id_and_quiz_participant_id"
     t.index ["quiz_id"], name: "index_quiz_attempts_on_quiz_id"
-    t.index ["user_id"], name: "index_quiz_attempts_on_user_id"
+    t.index ["quiz_participant_id"], name: "index_quiz_attempts_on_quiz_participant_id"
+    t.index ["quiz_session_id"], name: "index_quiz_attempts_on_quiz_session_id"
+  end
+
+  create_table "quiz_participants", force: :cascade do |t|
+    t.bigint "quiz_session_id", null: false
+    t.string "first_name", null: false
+    t.string "last_name", null: false
+    t.string "email"
+    t.string "identifier", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["quiz_session_id", "identifier"], name: "index_quiz_participants_on_quiz_session_id_and_identifier", unique: true
+    t.index ["quiz_session_id"], name: "index_quiz_participants_on_quiz_session_id"
+  end
+
+  create_table "quiz_sessions", force: :cascade do |t|
+    t.bigint "quiz_id", null: false
+    t.bigint "created_by_id", null: false
+    t.string "token", null: false
+    t.boolean "active", default: true
+    t.json "answers_data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_by_id"], name: "index_quiz_sessions_on_created_by_id"
+    t.index ["quiz_id"], name: "index_quiz_sessions_on_quiz_id"
+    t.index ["token"], name: "index_quiz_sessions_on_token", unique: true
   end
 
   create_table "quizzes", force: :cascade do |t|
-    t.string "title"
     t.text "description"
     t.integer "quiz_type"
     t.integer "question_count"
@@ -89,15 +115,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_28_100003) do
     t.boolean "active"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "sessions", force: :cascade do |t|
-    t.string "name", null: false
-    t.text "description"
-    t.boolean "active", default: true
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_sessions_on_name", unique: true
+    t.jsonb "title", default: {}, null: false
   end
 
   create_table "task_dependencies", force: :cascade do |t|
@@ -184,16 +202,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_28_100003) do
     t.index ["user_id"], name: "index_user_activity_logs_on_user_id"
   end
 
-  create_table "user_sessions", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "session_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["session_id"], name: "index_user_sessions_on_session_id"
-    t.index ["user_id", "session_id"], name: "index_user_sessions_on_user_id_and_session_id", unique: true
-    t.index ["user_id"], name: "index_user_sessions_on_user_id"
-  end
-
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -220,14 +228,16 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_28_100003) do
   add_foreign_key "projects", "users", column: "creator_id"
   add_foreign_key "questions", "quizzes"
   add_foreign_key "questions", "themes"
+  add_foreign_key "quiz_attempts", "quiz_participants"
+  add_foreign_key "quiz_attempts", "quiz_sessions"
   add_foreign_key "quiz_attempts", "quizzes"
-  add_foreign_key "quiz_attempts", "users"
+  add_foreign_key "quiz_participants", "quiz_sessions"
+  add_foreign_key "quiz_sessions", "quizzes"
+  add_foreign_key "quiz_sessions", "users", column: "created_by_id"
   add_foreign_key "task_dependencies", "tasks"
   add_foreign_key "task_dependencies", "tasks", column: "dependency_task_id"
   add_foreign_key "task_users", "tasks"
   add_foreign_key "task_users", "users"
   add_foreign_key "tasks", "projects"
   add_foreign_key "user_activity_logs", "users"
-  add_foreign_key "user_sessions", "sessions"
-  add_foreign_key "user_sessions", "users"
 end

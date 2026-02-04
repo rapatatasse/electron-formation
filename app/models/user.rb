@@ -5,18 +5,14 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, :trackable
 
   # Rôles disponibles
-  ROLES = %w[apprenant formateur bureau admin].freeze
+  ROLES = %w[formateur bureau admin].freeze
 
 
   has_many :user_activity_logs, dependent: :destroy
-  has_many :user_sessions, dependent: :destroy
-  has_many :sessions, through: :user_sessions
   has_many :created_projects, class_name: 'Project', foreign_key: :creator_id, dependent: :destroy
   has_many :task_users, dependent: :destroy
   has_many :tasks, through: :task_users
 
- 
-  has_many :quiz_attempts
  
   validates :email, presence: true, uniqueness: true
   validates :first_name, presence: true
@@ -25,10 +21,9 @@ class User < ApplicationRecord
   validate :roles_must_be_valid
 
   # Scopes pour les rôles
-  scope :apprenant, -> { where("'apprenant' = ANY(role)") }
-  scope :formateur, -> { where("'formateur' = ANY(role)") }
-  scope :bureau, -> { where("'bureau' = ANY(role)") }
-  scope :admin, -> { where("'admin' = ANY(role)") }
+  scope :formateur, -> { where("role::jsonb ? :role", role: 'formateur') }
+  scope :bureau, -> { where("role::jsonb ? :role", role: 'bureau') }
+  scope :admin, -> { where("role::jsonb ? :role", role: 'admin') }
 
   after_initialize :set_default_role, if: :new_record?
   after_initialize :set_default_locale, if: :new_record?
@@ -52,11 +47,7 @@ class User < ApplicationRecord
     false
   end
 
-  def apprenant?
-    roles.include?('apprenant')
-  rescue
-    false
-  end
+  
 
   def bureau?
     roles.include?('bureau')
@@ -65,10 +56,8 @@ class User < ApplicationRecord
   end
 
   def roles
-    # Rails désérialise automatiquement le JSON en array
-    return ['apprenant'] if role.nil? || role.empty?
-    
-    # Si c'est une string JSON, on la parse
+    return [] if role.nil? || role.empty?
+
     current_role = role
     if current_role.is_a?(String)
       begin
@@ -77,7 +66,7 @@ class User < ApplicationRecord
         current_role = [current_role]
       end
     end
-    Array(current_role).compact.presence || ['apprenant']
+    Array(current_role).compact
   end
 
   def roles=(new_roles)
@@ -100,15 +89,15 @@ class User < ApplicationRecord
   end
 
   def primary_role
-    roles.first || 'apprenant'
+    roles.first
   end
 
   def self.csv_template
     require 'csv'
     CSV.generate(headers: true, col_sep: ';') do |csv|
-      csv << ['email', 'first_name', 'last_name', 'phone', 'sessions', 'roles', 'locale']
-      csv << ['exemple@formation.com', 'Jean', 'Dupont', '0123456789', '2024-A', 'apprenant', 'fr']
-      csv << ['exemple2@formation.com', 'Marie', 'Martin', '0123456788', '2024-A,2024-B', 'apprenant,formateur', 'fr']
+      csv << ['email', 'first_name', 'last_name', 'phone', 'roles', 'locale']
+      csv << ['exemple@formation.com', 'Jean', 'Dupont', '0123456789', 'formateur', 'fr']
+      csv << ['exemple2@formation.com', 'Marie', 'Martin', '0123456788', 'bureau', 'fr']
     end
   end
 
@@ -124,9 +113,9 @@ class User < ApplicationRecord
         user = find_or_initialize_by(email: row['email'])
         
         # Gérer les rôles (peut être une liste séparée par des virgules)
-        roles_str = row['roles'] || row['role'] || 'apprenant'
+        roles_str = row['roles'] || row['role'] || ''
         user_roles = roles_str.split(',').map(&:strip).select { |r| ROLES.include?(r) }
-        user_roles = ['apprenant'] if user_roles.empty?
+        user_roles = [] if user_roles.empty?
         
         user.assign_attributes(
           first_name: row['first_name'] || row['prenom'],
@@ -142,14 +131,6 @@ class User < ApplicationRecord
         end
         
         if user.save
-          # Gérer les sessions (peut être une liste séparée par des virgules)
-          if row['sessions'] || row['session']
-            session_names = (row['sessions'] || row['session']).split(',').map(&:strip)
-            session_names.each do |session_name|
-              session = Session.find_or_create_by!(name: session_name)
-              UserSession.find_or_create_by!(user: user, session: session)
-            end
-          end
           count += 1
         else
           errors << "Ligne #{$.}: #{user.errors.full_messages.join(', ')}"
@@ -165,7 +146,7 @@ class User < ApplicationRecord
   private
 
   def set_default_role
-    self.role = ['apprenant'] if role.blank? || role.empty?
+    self.role = [] if role.blank?
   end
 
   def set_default_locale

@@ -1,26 +1,24 @@
+<!--app\views\admin\quizzes\show.html.erb-->
 <div class="container">
   <div class="page-header">
+    <%= link_to "<", admin_quizzes_path, class: "btn btn-outline" %>
     <h1 class="page-title"><%= @quiz.title %></h1>
+    
     <div>
       <%= link_to "Modifier", edit_admin_quiz_path(@quiz), class: "btn btn-outline" %>
-      <%= link_to "Gérer les questions", admin_quiz_questions_path(@quiz), class: "btn btn-primary" %>
-      <% if @nb_sessions > 0 %>
-        <%= link_to "Assigner des sessions", assign_users_admin_quiz_path(@quiz), class: "btn btn-secondary" %>
-      <% else %>
-        <%= link_to "Ajouter des sessions", admin_users_path, class: "btn btn-secondary" %>
-      <% end %>
+      <%= button_to "Créer une session publique", create_quiz_session_admin_quiz_path(@quiz), method: :post, class: "btn btn-secondary" %>
     </div>
   </div>
 
   <div class="dashboard-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
     <div class="stat-card">
-      <h3><%= @quiz.questions.count %></h3>
-      <p>Questions</p>
+      <h3><%= @quiz.question_count %>/<%= @quiz.questions.count %></h3>
+      <p>Nb questions du quiz / Questions disponibles</p>
     </div>
-    
+     
     <div class="stat-card" style="background: linear-gradient(135deg, var(--secondary-color), #059669);">
-      <h3><%= @quiz.quiz_attempts.assigned.count %></h3>
-      <p>Apprenants assignés</p>
+      <h3><%= @quiz_sessions.count %></h3>
+      <p>Sessions publiques</p>
     </div>
     
     <div class="stat-card" style="background: linear-gradient(135deg, var(--warning-color), #d97706);">
@@ -39,7 +37,7 @@
       Informations du quiz
     </div>
     <div class="card-body">
-      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem;">
         <div>
           <strong>Type :</strong>
           <% if @quiz.adaptive? %>
@@ -82,45 +80,51 @@
           <p style="margin-top: 0.5rem;"><%= @quiz.description %></p>
         </div>
       <% end %>
+      <!--question par theme-->
+      <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--gray-200);">
+        <strong>Questions par thème :</strong>
+        <% questions_count_by_theme_id = @quiz.questions.group(:theme_id).count %>
+        <% themes_by_id = Theme.where(id: questions_count_by_theme_id.keys).index_by(&:id) %>
+        <% questions_count_by_theme_id.each do |theme_id, count| %>
+          <p style="margin-top: 0.5rem;"><%= themes_by_id[theme_id]&.name || "(thème supprimé)" %> : <%= count %></p>
+        <% end %>
+      </div>
     </div>
   </div>
 
-  <% if @assignments.any? %>
+  <% if @quiz_sessions.any? %>
     <div class="card">
       <div class="card-header">
-        Apprenants assignés (<%= @assignments.count %>)
+        Sessions publiques (<%= @quiz_sessions.count %>)
       </div>
       <table class="table">
         <thead>
           <tr>
-            <th>Nom</th>
-            <th>Email</th>
-            <th>Session</th>
-            <th>Assigné le</th>
+            <th>Créée le</th>
             <th>Statut</th>
+            <th>Lien</th>
+            <th>QR</th>
           </tr>
         </thead>
         <tbody>
-          <% @assignments.each do |assignment| %>
+          <% @quiz_sessions.each do |qs| %>
             <tr>
-              <td><%= assignment.user.full_name %></td>
-              <td><%= assignment.user.email %></td>
+              <td><%= l(qs.created_at, format: :short) %></td>
               <td>
-                <% if assignment.user.session.present? %>
-                  <span class="badge badge-info"><%= assignment.user.session %></span>
+                <% if qs.active? %>
+                  <span class="badge badge-success">Active</span>
                 <% else %>
-                  -
+                  <span class="badge badge-secondary">Inactive</span>
                 <% end %>
               </td>
-              <td><%= l(assignment.assigned_at, format: :short) if assignment.assigned_at %></td>
               <td>
-                <% if assignment.status == 'completed' && assignment.passed? %>
-                  <span class="badge badge-success">Complété</span>
-                <% elsif assignment.status == 'in_progress' %>
-                  <span class="badge badge-info">En cours</span>
-                <% else %>
-                  <span class="badge badge-warning">En attente</span>
-                <% end %>
+                <%= link_to qs.public_url, qs.public_url, class: "btn btn-sm btn-outline" %>
+              </td>
+              <td>
+                <% qr = RQRCode::QRCode.new(qs.public_url) %>
+                <div style="width: 110px;">
+                  <%= qr.as_svg(module_size: 4).html_safe %>
+                </div>
               </td>
             </tr>
           <% end %>
@@ -129,32 +133,72 @@
     </div>
   <% end %>
 
+ 
+ 
+ <!---------------gestion des questions---------------------->
+    <div style="display: flex; gap: 0.5rem;">
+      <%= link_to "Ajouter une question", new_admin_quiz_question_path(@quiz), class: "btn btn-primary" %>
+      <%= link_to "📥 Importer CSV", import_admin_quiz_questions_path(@quiz), class: "btn btn-secondary" %>
+      <% if @quiz.questions.any? %>
+        <%= link_to "📤 Exporter CSV", export_admin_quiz_questions_path(@quiz), class: "btn btn-outline" %>
+    
+        <%= button_to  "🗑️ Supprimer toutes les questions", destroy_all_admin_quiz_questions_path(@quiz), method: :delete, :onclick => "return confirm('Êtes vous sûr ?')", class: "btn btn-danger" %>
+ 
+      <% end %>
+    </div>
+      <div class="card" style="margin-bottom: 1.5rem;">
+    <div class="card-body">
+      <strong>Quiz :</strong> <%= @quiz.title %> 
+      <span class="badge badge-info" style="margin-left: 1rem;"><%= @quiz.questions.count %> questions</span>
+    </div>
+  </div>
   <% if @questions.any? %>
-    <div class="card">
-      <div class="card-header">
-        Questions du quiz (<%= @questions.count %>)
-      </div>
-      <div class="card-body">
-        <% @questions.each_with_index do |question, index| %>
-          <div style="padding: 1rem; border: 1px solid var(--gray-200); border-radius: var(--border-radius); margin-bottom: 1rem;">
-            <div style="display: flex; justify-content: space-between; align-items: start;">
-              <div style="flex: 1;">
-                <strong>Question <%= index + 1 %> :</strong>
-                <p style="margin: 0.5rem 0;"><%= question.question_text %></p>
-                <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
-                  <span class="badge badge-info">Niveau <%= question.difficulty_level %></span>
-                  <span class="badge" style="background-color: <%= question.theme.color %>; color: white;"><%= question.theme.name %></span>
-                  <% if question.multiple_correct_answers? %>
-                    <span class="badge badge-warning">Réponses multiples</span>
-                  <% end %>
-                </div>
+    <% @questions.order(:position).each_with_index do |question, index| %>
+      <div class="card" style="margin-bottom: 1rem;">
+        <div class="card-body">
+          <div style="display: flex; justify-content: space-between; align-items: start;">
+            <div style="flex: 1;">
+              <h4 style="margin-bottom: 0.5rem;">Question <%= index + 1 %> : <span style="font-size: 1.1rem; color: var(--primary-dark)"><%= question.question_text %></span></h4>            
+              <div style="display: flex; gap: 1rem; margin: 1rem 0;">
+                <span class="badge badge-info">Niveau <%= question.difficulty_level %></span>
+                <span class="badge" style="background-color: <%= question.theme.color %>; color: white;"><%= question.theme.name %></span>
+                <% if question.multiple_correct_answers? %>
+                  <span class="badge badge-warning">Réponses multiples</span>
+                <% end %>
               </div>
-              <div>
-                <%= link_to "Modifier", edit_admin_quiz_question_path(@quiz, question), class: "btn btn-sm btn-outline" %>
+
+              <% if question.image_url.present? %>
+                <div style="margin: 1rem 0;">
+                  <img src="<%= question.image_url %>" alt="Image question" style="max-width: 300px; border-radius: var(--border-radius);">
+                </div>
+              <% end %>
+
+              <div style="margin-top: 1rem;">
+                <strong>Réponses :</strong>
+                <ul style="margin-top: 0.5rem; list-style: none; padding-left: 0;">
+                  <% question.answers.each do |answer| %>
+                    <li style="padding: 0.5rem; margin: 0.25rem 0; background: <%= answer.correct? ? '#d1fae5' : '#f3f4f6' %>; border-radius: 4px;">
+                      <%= answer.correct? ? '✓' : '✗' %>
+                      <%= answer.answer_text %>
+                    </li>
+                  <% end %>
+                </ul>
               </div>
             </div>
+
+            <div style="margin-left: 1rem;">
+              <%= link_to "Modifier", edit_admin_quiz_question_path(@quiz, question), class: "btn btn-sm btn-outline" %>
+              <%= button_to "Supprimer", admin_quiz_question_path(@quiz, question), method: :delete, :onclick => "return confirm('Êtes vous sûr ?')", class: "btn btn-sm btn-danger" %>
+            </div>
           </div>
-        <% end %>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="card">
+      <div class="card-body" style="text-align: center; padding: 3rem;">
+        <p style="color: var(--gray-600); margin-bottom: 1rem;">Aucune question pour ce quiz</p>
+        <%= link_to "Créer la première question", new_admin_quiz_question_path(@quiz), class: "btn btn-primary" %>
       </div>
     </div>
   <% end %>

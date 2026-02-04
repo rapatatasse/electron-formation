@@ -29,13 +29,6 @@
             <div style="font-size: 1.5rem; font-weight: bold;"><%= @quiz.passing_score %>%</div>
           </div>
         <% end %>
-
-        <% if @quiz.max_attempts %>
-          <div style="padding: 1rem; background: var(--gray-50); border-radius: var(--border-radius);">
-            <div style="font-size: 0.875rem; color: var(--gray-600);">Tentatives</div>
-            <div style="font-size: 1.5rem; font-weight: bold;"><%= @attempts_count + 1 %> / <%= @quiz.max_attempts %></div>
-          </div>
-        <% end %>
       </div>
 
       <% if @assignment.due_date %>

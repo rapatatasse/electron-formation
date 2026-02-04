@@ -1,7 +1,7 @@
 <div class="container">
   <div class="page-header">
     <h1 class="page-title">Importer des questions (CSV) - <%= @quiz.title %></h1>
-    <%= link_to "← Retour", admin_quiz_questions_path(@quiz), class: "btn btn-outline" %>
+    <%= link_to "← Retour", admin_quiz_path(@quiz), class: "btn btn-outline" %>
   </div>
 
   <div class="card">
@@ -31,7 +31,7 @@
 
         <div class="form-actions">
           <%= f.submit "Importer les questions", class: "btn btn-primary" %>
-          <%= link_to "Annuler", admin_quiz_questions_path(@quiz), class: "btn btn-outline" %>
+          <%= link_to "Annuler", admin_quiz_path(@quiz), class: "btn btn-outline" %>
         </div>
       <% end %>
     </div>

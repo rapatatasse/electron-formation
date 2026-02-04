@@ -1,5 +1,8 @@
+
+<!--app\views\admin\quizzes\index.html.erb-->
 <div class="container">
   <div class="page-header">
+    <%= link_to "<", admin_dashboard_path, class: "btn btn-outline" %>
     <h1 class="page-title">Gestion des Quiz</h1>
     <div>
       <%= link_to "Nouveau quiz", new_admin_quiz_path, class: "btn btn-primary" %>
@@ -46,8 +49,6 @@
             <td>
               <%= link_to "Voir", admin_quiz_path(quiz), class: "btn btn-sm btn-outline" %>
               <%= link_to "Modifier", edit_admin_quiz_path(quiz), class: "btn btn-sm btn-outline" %>
-              <%= link_to "Questions", admin_quiz_questions_path(quiz), class: "btn btn-sm btn-primary" %>
-              <%= link_to "Assigner", assign_users_admin_quiz_path(quiz), class: "btn btn-sm btn-secondary" %>
               <%= button_to "Supprimer", admin_quiz_path(quiz), method: :delete, :onclick => "return confirm('Êtes vous sûr ?')", class: "btn btn-sm btn-danger" %>
             </td>
           </tr>

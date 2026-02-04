@@ -39,7 +39,7 @@
             <% end %>
           </div>
 
-          <% assignment = current_user.quiz_attempts.assigned.find_by(quiz: quiz) %>
+          <% assignment = current_user.quiz_attempts.assigned.where(quiz: quiz).order(assigned_at: :desc).first %>
           <% user_attempts = quiz.quiz_attempts.where(user: current_user, status: ['in_progress', 'completed']) %>
           
           <% if assignment&.due_date %>
@@ -52,9 +52,6 @@
             <div style="margin-bottom: 1rem;">
               <small style="color: var(--gray-600);">
                 Tentatives : <%= user_attempts.count %>
-                <% if quiz.max_attempts %>
-                  / <%= quiz.max_attempts %>
-                <% end %>
               </small>
               <% best_score = user_attempts.completed.maximum(:score) %>
               <% if best_score %>
@@ -68,12 +65,7 @@
           <% if assignment&.status == 'completed' && assignment.passed? %>
             <%= link_to "Voir les résultats", apprenant_quiz_attempts_path(quiz_id: quiz.id), class: "btn btn-secondary btn-block" %>
           <% else %>
-            <% can_attempt = quiz.max_attempts.nil? || user_attempts.count < quiz.max_attempts %>
-            <% if can_attempt %>
-              <%= link_to "Commencer le quiz", new_apprenant_quiz_attempt_path(quiz_id: quiz.id), class: "btn btn-primary btn-block" %>
-            <% else %>
-              <button class="btn btn-secondary btn-block" disabled>Nombre de tentatives atteint</button>
-            <% end %>
+            <%= link_to "Commencer le quiz", new_apprenant_quiz_attempt_path(quiz_id: quiz.id), class: "btn btn-primary btn-block" %>
           <% end %>
         </div>
       </div>

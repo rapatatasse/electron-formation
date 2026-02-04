@@ -1,6 +1,6 @@
 <div class="container">
   <div class="page-header">
-    <h1 class="page-title">👨‍🎓 Activité des Apprenants</h1>
+    <h1 class="page-title">👨‍🎓 Activité (quiz publics)</h1>
   </div>
 
   <div class="card">
@@ -24,16 +24,16 @@
     <div class="card-body">
       <div class="dashboard-grid">
         <div class="stat-card">
-          <h3><%= @report[:total_users] %></h3>
-          <p>Total Apprenants</p>
+          <h3><%= @report[:total_sessions] %></h3>
+          <p>Total Sessions</p>
         </div>
         <div class="stat-card" style="background: linear-gradient(135deg, var(--secondary-color), #059669);">
-          <h3><%= @report[:active_users] %></h3>
-          <p>Apprenants Actifs</p>
+          <h3><%= @report[:total_participants] %></h3>
+          <p>Total Participants</p>
         </div>
         <div class="stat-card" style="background: linear-gradient(135deg, #8b5cf6, #6366f1);">
-          <h3><%= @report[:total_users] > 0 ? ((@report[:active_users].to_f / @report[:total_users]) * 100).round(1) : 0 %>%</h3>
-          <p>Taux d'Activité</p>
+          <h3><%= @report[:completed_attempts] %></h3>
+          <p>Tentatives terminées</p>
         </div>
       </div>
     </div>
@@ -41,7 +41,7 @@
 
   <div class="card">
     <div class="card-header">
-      🏆 Top 10 Apprenants Actifs
+      🏆 Top 10 Participants
     </div>
     <div class="card-body">
       <table class="table">
@@ -50,22 +50,16 @@
             <th>#</th>
             <th>Nom</th>
             <th>Email</th>
-            <th>Session</th>
-            <th>Activités</th>
-            <th>Actions</th>
+            <th>Quiz terminés</th>
           </tr>
         </thead>
         <tbody>
-          <% @report[:top_active_users].each_with_index do |user, index| %>
+          <% @report[:top_participants].each_with_index do |participant, index| %>
             <tr>
               <td><%= index + 1 %></td>
-              <td><strong><%= user[:name] %></strong></td>
-              <td><%= user[:email] %></td>
-              <td><span class="badge badge-info"><%= user[:session] %></span></td>
-              <td><span class="badge badge-success"><%= user[:activity_count] %></span></td>
-              <td>
-                <%= link_to "Voir détails", user_report_formateur_activity_report_path(user[:user_id], date: @date), class: "btn btn-sm btn-outline" %>
-              </td>
+              <td><strong><%= participant[:name] %></strong></td>
+              <td><%= participant[:email] %></td>
+              <td><span class="badge badge-success"><%= participant[:quizzes_completed] %></span></td>
             </tr>
           <% end %>
         </tbody>
@@ -75,7 +69,7 @@
 
   <div class="card">
     <div class="card-header">
-      👥 Tous les Apprenants
+      👥 Tous les Participants
     </div>
     <div class="card-body">
       <table class="table">
@@ -83,40 +77,32 @@
           <tr>
             <th>Nom</th>
             <th>Email</th>
-            <th>Session</th>
-            <th>Activités</th>
-            <th>Connexions</th>
-            <th>Quiz</th>
-            <th>Jours Actifs</th>
-            <th>Dernière Connexion</th>
-            <th>Actions</th>
+            <th>Quiz démarrés</th>
+            <th>Quiz terminés</th>
+            <th>Score moyen</th>
+            <th>Dernière activité</th>
           </tr>
         </thead>
         <tbody>
-          <% @report[:users_details].each do |user_detail| %>
-            <tr style="<%= user_detail[:stats][:total_activities] == 0 ? 'background-color: #fee2e2;' : '' %>">
-              <td><strong><%= user_detail[:name] %></strong></td>
-              <td><%= user_detail[:email] %></td>
-              <td><span class="badge badge-info"><%= user_detail[:session] %></span></td>
+          <% @report[:participants_details].each do |participant_detail| %>
+            <tr>
+              <td><strong><%= participant_detail[:name] %></strong></td>
+              <td><%= participant_detail[:email] %></td>
+              <td><%= participant_detail[:stats][:quizzes_started] %></td>
+              <td><%= participant_detail[:stats][:quizzes_completed] %></td>
               <td>
-                <% if user_detail[:stats][:total_activities] == 0 %>
-                  <span class="badge badge-danger"><%= user_detail[:stats][:total_activities] %></span>
+                <% if participant_detail[:stats][:average_score] %>
+                  <%= participant_detail[:stats][:average_score] %>%
                 <% else %>
-                  <%= user_detail[:stats][:total_activities] %>
+                  <span class="badge badge-warning">N/A</span>
                 <% end %>
               </td>
-              <td><%= user_detail[:stats][:logins] %></td>
-              <td><%= user_detail[:stats][:quizzes_completed] %>/<%= user_detail[:stats][:quizzes_started] %></td>
-              <td><%= user_detail[:stats][:active_days] %></td>
               <td>
-                <% if user_detail[:stats][:last_login] %>
-                  <span style="font-size: 0.875rem;"><%= user_detail[:stats][:last_login].strftime('%d/%m/%Y %H:%M') %></span>
+                <% if participant_detail[:stats][:last_activity] %>
+                  <span style="font-size: 0.875rem;"><%= participant_detail[:stats][:last_activity].strftime('%d/%m/%Y %H:%M') %></span>
                 <% else %>
                   <span class="badge badge-warning">Jamais</span>
                 <% end %>
-              </td>
-              <td>
-                <%= link_to "Détails", user_report_formateur_activity_report_path(user_detail[:user_id], date: @date), class: "btn btn-sm btn-outline" %>
               </td>
             </tr>
           <% end %>

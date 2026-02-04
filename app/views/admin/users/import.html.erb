@@ -1,6 +1,6 @@
 <div class="container">
   <div class="page-header">
-    <h1 class="page-title">Importer des apprenants (CSV)</h1>
+    <h1 class="page-title">Importer des utilisateurs (CSV)</h1>
     <%= link_to "← Retour", admin_users_path, class: "btn btn-outline" %>
   </div>
 
@@ -12,7 +12,7 @@
           <li>Le fichier doit être au format CSV (séparateur : virgule ou point-virgule)</li>
           <li>La première ligne doit contenir les en-têtes de colonnes</li>
           <li>Les colonnes requises : email, first_name (ou prenom), last_name (ou nom)</li>
-          <li>Les colonnes optionnelles : phone, session, role, locale</li>
+          <li>Les colonnes optionnelles : phone, roles, locale</li>
         </ul>
       </div>
 
@@ -27,7 +27,7 @@
         </div>
 
         <div class="form-actions">
-          <%= f.submit "Importer les apprenants", class: "btn btn-primary" %>
+          <%= f.submit "Importer les utilisateurs", class: "btn btn-primary" %>
           <%= link_to "Annuler", admin_users_path, class: "btn btn-outline" %>
         </div>
       <% end %>
@@ -39,10 +39,10 @@
       Exemple de fichier CSV
     </div>
     <div class="card-body">
-      <pre style="background: var(--gray-50); padding: 1rem; border-radius: 4px; overflow-x: auto;">email;first_name;last_name;phone;session;role;locale
-jean.dupont@formation.com;Jean;Dupont;0123456789;2024-A;apprenant;fr
-marie.martin@formation.com;Marie;Martin;0123456788;2024-A;apprenant;fr
-paul.bernard@formation.com;Paul;Bernard;0123456787;2024-B;apprenant;fr</pre>
+      <pre style="background: var(--gray-50); padding: 1rem; border-radius: 4px; overflow-x: auto;">email;first_name;last_name;phone;roles;locale
+jean.dupont@formation.com;Jean;Dupont;0123456789;formateur;fr
+marie.martin@formation.com;Marie;Martin;0123456788;bureau;fr
+paul.bernard@formation.com;Paul;Bernard;0123456787;admin;fr</pre>
     </div>
   </div>
 </div>

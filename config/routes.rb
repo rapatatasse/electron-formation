@@ -18,7 +18,6 @@ Rails.application.routes.draw do
       end
       member do
         post :reset_password
-        post :update_sessions
       end
     end
     resources :themes
@@ -43,14 +42,7 @@ Rails.application.routes.draw do
         end
       end
       member do
-        get :assign_users
-        post :update_assignments
-      end
-    end
-    resources :sessions, only: [:index, :create, :destroy] do
-      collection do
-        post :assign
-        delete :unassign
+        post :create_quiz_session
       end
     end
     resources :activity_reports, only: [:index] do
@@ -84,15 +76,9 @@ Rails.application.routes.draw do
     end
   end
 
-  namespace :apprenant do
-    get "dashboard", to: "dashboard#index"
-    resources :quiz_attempts, only: [:index, :show, :new, :create] do
-      member do
-        post :submit_answer
-        post :complete
-      end
-    end
-  end
+  get "q/:token", to: "quiz_sessions#show", as: :quiz_session
+  post "q/:token/participants", to: "quiz_sessions#create_participant", as: :quiz_session_participants
+  post "q/:token/answer", to: "quiz_sessions#submit_answer", as: :quiz_session_submit_answer
 
   namespace :bureau do
     get "dashboard", to: "dashboard#index"

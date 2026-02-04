@@ -1,7 +1,7 @@
 class Admin::QuizzesController < ApplicationController
   before_action :authenticate_user!
   before_action :require_admin
-  before_action :set_quiz, only: [:show, :edit, :update, :destroy, :assign_users, :update_assignments]
+  before_action :set_quiz, only: [:show, :edit, :update, :destroy, :create_quiz_session]
 
   def index
     @quizzes = Quiz.includes( :questions).order(created_at: :desc)
@@ -9,8 +9,7 @@ class Admin::QuizzesController < ApplicationController
 
   def show
     @questions = @quiz.questions.includes(:answers, :theme).ordered
-    @assignments = @quiz.quiz_attempts.assigned.includes(:user).order('users.last_name')
-    @nb_sessions = Session.where(active: true).count
+    @quiz_sessions = @quiz.quiz_sessions.order(created_at: :desc)
   end
 
   def new
@@ -43,28 +42,11 @@ class Admin::QuizzesController < ApplicationController
     redirect_to admin_quizzes_path, notice: "Quiz supprimé"
   end
 
-  def assign_users
-    @apprenants = User.apprenant.order(:last_name, :first_name)
-    @sessions = User.apprenant.where.not(session: nil).distinct.pluck(:session).compact.sort
-    @assigned_user_ids = @quiz.quiz_attempts.assigned.pluck(:user_id)
-  end
-
-  def update_assignments
-    user_ids = params[:user_ids]&.reject(&:blank?) || []
-    
-    # Supprimer les assignations non cochées
-    @quiz.quiz_attempts.assigned.where.not(user_id: user_ids).destroy_all
-    
-    # Ajouter les nouvelles assignations
-    user_ids.each do |user_id|
-      @quiz.quiz_attempts.find_or_create_by(user_id: user_id) do |attempt|
-        attempt.assigned_by = current_user
-        attempt.assigned_at = Time.current
-        attempt.due_date = params[:due_date] if params[:due_date].present?
-      end
-    end
-    
-    redirect_to admin_quiz_path(@quiz), notice: "Assignations mises à jour (#{user_ids.count} apprenants)"
+  def create_quiz_session
+    quiz_session = QuizSession.create_from_quiz!(@quiz, created_by: current_user)
+    redirect_to admin_quiz_path(@quiz), notice: "Session créée: #{quiz_session.public_url}"
+  rescue => e
+    redirect_to admin_quiz_path(@quiz), alert: e.message
   end
 
   private
@@ -74,8 +56,19 @@ class Admin::QuizzesController < ApplicationController
   end
 
   def quiz_params
-    params.require(:quiz).permit(:title, :description, :quiz_type, :time_limit, 
-                                  :passing_score,  :randomize_questions, :active)
+    permitted = params.require(:quiz).permit(:description, :quiz_type, :time_limit,
+                                            :passing_score, :randomize_questions, :active, :question_count)
+
+    title = params.dig(:quiz, :title)
+    if title.is_a?(ActionController::Parameters)
+      permitted[:title] = title.to_unsafe_h
+    elsif title.is_a?(Hash)
+      permitted[:title] = title
+    elsif title.present?
+      permitted[:title] = { 'fr' => title }
+    end
+
+    permitted
   end
 
   def require_admin

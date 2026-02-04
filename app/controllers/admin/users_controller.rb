@@ -1,7 +1,7 @@
 class Admin::UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :require_admin
-  before_action :set_user, only: [:show, :edit, :update, :destroy, :reset_password, :update_sessions]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :reset_password]
 
   def index
     @users = User.order(created_at: :desc).page(params[:page]).per(20)
@@ -55,51 +55,6 @@ class Admin::UsersController < ApplicationController
       return
     end
 
-    file = params[:file]
-    count = 0
-    errors = []
-
-    CSV.foreach(file.path, headers: true, col_sep: detect_separator(file.path)) do |row|
-      begin
-        user = User.find_or_initialize_by(email: row['email'])
-        user.assign_attributes(
-          first_name: row['first_name'] || row['prenom'],
-          last_name: row['last_name'] || row['nom'],
-          phone: row['phone'] || row['telephone'],
-          session: row['session'],
-          role: row['role'] || 'apprenant',
-          locale: row['locale'] || 'fr'
-        )
-        
-        if user.new_record?
-          user.password = SecureRandom.hex(8)
-          user.password_confirmation = user.password
-        end
-        
-        if user.save
-          count += 1
-        else
-          errors << "Ligne #{row.line_number}: #{user.errors.full_messages.join(', ')}"
-        end
-      rescue => e
-        errors << "Ligne #{row.line_number}: #{e.message}"
-      end
-    end
-
-    if errors.any?
-      flash[:alert] = "#{count} utilisateurs importés avec #{errors.count} erreurs : #{errors.first(3).join('; ')}"
-    else
-      flash[:notice] = "#{count} utilisateurs importés avec succès"
-    end
-    
-    redirect_to admin_users_path
-  end
-
-  def download_template
-    send_data User.csv_template, filename: "template_import_apprenants.csv", type: 'text/csv; charset=utf-8'
-  end
-  
-  def process_import
     result = User.import_from_csv(params[:file].path)
     
     if result[:errors].any?
@@ -134,22 +89,6 @@ class Admin::UsersController < ApplicationController
     end
   end
 
-  def update_sessions
-    session_ids = params[:session_ids] || []
-    
-    # Supprimer toutes les sessions actuelles
-    @user.user_sessions.destroy_all
-    
-    # Ajouter les nouvelles sessions
-    session_ids.each do |session_id|
-      @user.user_sessions.create(session_id: session_id)
-    end
-    
-    render json: { success: true, message: "Sessions mises à jour pour #{@user.full_name}" }
-  rescue => e
-    render json: { error: e.message }, status: :unprocessable_entity
-  end
-
   private
 
   def set_user
@@ -158,11 +97,6 @@ class Admin::UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:email, :first_name, :last_name, :locale, :phone, :password, :password_confirmation, role: [])
-  end
-
-  def detect_separator(file_path)
-    first_line = File.open(file_path, &:readline)
-    first_line.include?(';') ? ';' : ','
   end
 
   def require_admin

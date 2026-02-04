@@ -1,6 +1,7 @@
 class QuizAttempt < ApplicationRecord
   belongs_to :quiz
-  belongs_to :user
+  belongs_to :quiz_session, optional: true
+  belongs_to :quiz_participant, optional: true
   belongs_to :assigned_by, class_name: 'User', foreign_key: 'assigned_by_id', optional: true
   has_one :certificate, dependent: :destroy
 
@@ -14,7 +15,6 @@ class QuizAttempt < ApplicationRecord
   scope :assigned, -> { where.not(assigned_at: nil) }
   scope :not_started, -> { where(started_at: nil) }
   scope :overdue, -> { where('due_date < ? AND status != ?', Time.current, 'completed') }
-  scope :for_user, ->(user) { where(user: user) }
   scope :for_quiz, ->(quiz) { where(quiz: quiz) }
 
   before_create :set_assigned_at, if: -> { assigned_at.nil? && assigned_by_id.present? }
@@ -39,7 +39,7 @@ class QuizAttempt < ApplicationRecord
   end
 
   def total_questions_count
-    (answers_data || []).length
+    quiz_session&.ordered_question_ids&.length.to_i
   end
 
   def correct_answers_count
@@ -48,7 +48,11 @@ class QuizAttempt < ApplicationRecord
 
   def next_question
     answered_question_ids = (answers_data || []).map { |a| a['question_id'] }
-    quiz.questions.where.not(id: answered_question_ids).order(:position).first
+    ordered = quiz_session&.ordered_question_ids || []
+    next_id = ordered.find { |id| !answered_question_ids.include?(id) }
+    return nil unless next_id
+
+    quiz.questions.find_by(id: next_id)
   end
   
   def add_answer(question, selected_answer_ids)
@@ -90,13 +94,6 @@ class QuizAttempt < ApplicationRecord
       question.updated_at <= question_updated + 1.second # Tolérance de 1 seconde
     end
   end
-  
-  private
-  
-  def check_answer_correctness(question, selected_answer_ids)
-    correct_answer_ids = question.answers.where(correct: true).pluck(:id).sort
-    selected_answer_ids.map(&:to_i).sort == correct_answer_ids
-  end
 
   def completed?
     status == 'completed'
@@ -105,8 +102,13 @@ class QuizAttempt < ApplicationRecord
   def passed?
     passed == true
   end
-
-
+  
+  private
+  
+  def check_answer_correctness(question, selected_answer_ids)
+    correct_answer_ids = question.answers.where(correct: true).pluck(:id).sort
+    selected_answer_ids.map(&:to_i).sort == correct_answer_ids
+  end
 
   def duration_in_seconds
     return 0 unless completed_at && started_at

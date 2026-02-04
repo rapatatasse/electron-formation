@@ -11,26 +11,12 @@ class Apprenant::QuizAttemptsController < ApplicationController
     @quiz = Quiz.find(params[:quiz_id])
     
     # Vérifier que le quiz est assigné à l'apprenant
-    assignment = current_user.quiz_attempts.assigned.find_by(quiz: @quiz)
+    assignment = current_user.quiz_attempts.assigned.where(quiz: @quiz).order(assigned_at: :desc).first
     unless assignment
       redirect_to apprenant_dashboard_path, alert: "Ce quiz ne vous a pas été assigné"
       return
     end
-    
-    # Vérifier si déjà complété
-    if assignment.status == 'completed' && assignment.passed?
-      redirect_to apprenant_dashboard_path, notice: "Vous avez déjà complété ce quiz"
-      return
-    end
-    
-    # Vérifier le nombre de tentatives
-    user_attempts = @quiz.quiz_attempts.where(user: current_user, status: ['in_progress', 'completed'])
-    if @quiz.max_attempts && user_attempts.count >= @quiz.max_attempts
-      redirect_to apprenant_dashboard_path, alert: "Vous avez atteint le nombre maximum de tentatives pour ce quiz"
-      return
-    end
-    
-    @attempts_count = user_attempts.count
+
     @assignment = assignment
   end
 
@@ -51,16 +37,9 @@ class Apprenant::QuizAttemptsController < ApplicationController
 
   def create
     quiz = Quiz.find(params[:quiz_id])
-    
-    # Vérifier si l'utilisateur peut passer le quiz
-    user_attempts = quiz.quiz_attempts.where(user: current_user, status: ['in_progress', 'completed'])
-    if quiz.max_attempts && user_attempts.count >= quiz.max_attempts
-      redirect_to apprenant_quiz_attempts_path, alert: "Vous avez atteint le nombre maximum de tentatives pour ce quiz"
-      return
-    end
 
     # Trouver l'assignation existante ou créer une nouvelle tentative
-    assignment = current_user.quiz_attempts.assigned.find_by(quiz: quiz)
+    assignment = current_user.quiz_attempts.assigned.where(quiz: quiz).order(assigned_at: :desc).first
     
     if assignment && !assignment.started?
       # Démarrer l'assignation existante
