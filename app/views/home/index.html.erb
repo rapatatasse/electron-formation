@@ -6,9 +6,10 @@
   <h1 class="hero-title">ELECTRON FORMATION</h1>
   <p class="hero-subtitle">COMPÉTENCES • ACTIONS • CHANTIERS</p>
   <p class="hero-description">
-    Depuis sa création, ELECTRON FORMATION offre aux entreprises du secteur de l'Énergie et à ses stagiaires 
-    des formations adaptées aux métiers spécifiques de la Haute Tension. Nous travaillons à un environnement 
-    d'apprentissage riche et diversifié.
+    Depuis sa création, ELECTRON FORMATION offre aux entreprises du secteur de l'Energie et à ses stagiaires des formations adaptées aux métiers spécifiques de la Haute Tension. ELECTRON FORMATION travaille à un environnement d’apprentissage riche et diversifié.
+    <br>
+    <br>
+    Les connaissances, la créativité et l’expérience pratique ont toujours été au cœur de nos préoccupations, et nous sommes fiers des monteurs, techniciens, encadrants de chantier qui ont reçu leur formation avec le concours de notre centre. Nous encourageons nos stagiaires et nos formateurs à s'épanouir, à apprendre et à créer, jour près jour.
   </p>
 </div>
 
@@ -29,21 +30,27 @@
   
   <div class="grid-3">
     <div class="feature-card">
-      <div class="feature-icon">⚡</div>
-      <h3 class="feature-title">Haute Tension</h3>
-      <p>Formations spécialisées pour les lignes aériennes, postes HTB et liaisons souterraines. Expertise reconnue dans le secteur.</p>
+      <%= image_tag "illustration/homesecurite.jpg", alt: "HTB", class: "feature-card-img" %>
+      <h3 class="feature-title">Sécurité</h3>
+      <p>Formation travaux, hauteur, risques Électrique, Incendie, SST, PRAP, CACES</p>
     </div>
     
     <div class="feature-card">
-      <div class="feature-icon">🎓</div>
-      <h3 class="feature-title">Pass RTE & Végétation</h3>
-      <p>Certifications Pass RTE et Pass Végétation pour RTE, ENEDIS et EDF. Formations adaptées aux besoins du terrain.</p>
+      <%= image_tag "illustration/homemetier.jpg", alt: "HTB", class: "feature-card-img" %>
+      <h3 class="feature-title">Métier</h3>
+      <p>Ligne Aériennes (mise en oeuvre du CQP), Postes Haute Tension, Liaison souterraines</p>
     </div>
     
     <div class="feature-card">
-      <div class="feature-icon">🔧</div>
-      <h3 class="feature-title">Pratique Terrain</h3>
-      <p>Apprentissage basé sur l'expérience réelle de chantier. Formateurs passionnés et expérimentés.</p>
+      <%= image_tag "illustration/homeaipr.jpg", alt: "HTB", class: "feature-card-img" %>
+      <h3 class="feature-title">AIPR</h3>
+      <p>Formation et centre d'examen AIPR Concepteur, AIPR Encadrant, AIPR Opérateur(Autorisation d’Intervention à Proximité des Réseaux) </p>
+    </div>
+
+    <div class="feature-card">
+      <%= image_tag "illustration/homehtb.jpg", alt: "HTB", class: "feature-card-img" %>
+      <h3 class="feature-title">Pass HTB</h3>
+      <p>Formation Reconnue par RTE, EDF et ENEDIS</p>
     </div>
   </div>
 
@@ -73,6 +80,24 @@
       contact@electron-formation.fr
     </p>
   </div>
+
+  <section class="partners-section">
+    <h2 class="section-title">Partenaire</h2>
+    <p class="section-description partners-description">
+      Nous collaborons avec des acteurs majeurs du secteur de l'énergie afin de proposer des formations alignées avec les besoins du terrain.
+    </p>
+
+    <div class="partners-logos">
+      <div class="partner-logo-card"><%= image_tag "logos/omexom.png", alt: "OMEXOM", class: "partner-logo" %></div>
+      <div class="partner-logo-card"><%= image_tag "logos/spie.png", alt: "SPIE", class: "partner-logo" %></div>
+      <div class="partner-logo-card"><%= image_tag "logos/rte.png", alt: "RTE", class: "partner-logo" %></div>
+      <div class="partner-logo-card"><%= image_tag "logos/equans.png", alt: "EQUANS", class: "partner-logo" %></div>
+      <div class="partner-logo-card"><%= image_tag "logos/eiffage.png", alt: "EIFFAGE", class: "partner-logo" %></div>
+      <div class="partner-logo-card"><%= image_tag "logos/fayat.png", alt: "FAYAT", class: "partner-logo" %></div>
+      <div class="partner-logo-card"><%= image_tag "logos/bouygues.png", alt: "BOUYGUES", class: "partner-logo" %></div>
+      <div class="partner-logo-card"><%= image_tag "logos/geociel.png", alt: "GEOCIEL", class: "partner-logo" %></div>
+    </div>
+  </section>
 
 </div>
 

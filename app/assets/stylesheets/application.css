@@ -1,5 +1,6 @@
 /*
  *= require_self
+ *= require actiontext
  */
 
 /* Variables CSS */
@@ -630,6 +631,12 @@ select.form-control {
   z-index: 9999;
   animation: slideIn 0.3s ease-out;
 }
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+}
+
 
 @keyframes slideIn {
   from {

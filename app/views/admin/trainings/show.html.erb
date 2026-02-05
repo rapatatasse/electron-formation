@@ -1,5 +1,6 @@
 <div class="container">
   <div class="page-header">
+    <%= link_to "Retour", admin_trainings_path, class: "btn btn-secondary" %>
     <h1 class="page-title"><%= @training.title %></h1>
     <%= link_to "Modifier", edit_admin_training_path(@training), class: "btn btn-primary" %>
   </div>
@@ -40,7 +41,7 @@
       </div>
 
       <% if @training.image_url.present? %>
-        <div style="margin-bottom: 2rem;">
+        <div class=" w-30" style="margin-bottom: 2rem;">
           <img src="<%= @training.image_url %>" alt="<%= @training.title %>" style="max-width: 100%; max-height: 400px; border-radius: var(--border-radius);">
         </div>
       <% end %>

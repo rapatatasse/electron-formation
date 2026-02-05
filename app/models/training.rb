@@ -2,7 +2,7 @@ class Training < ApplicationRecord
   validates :title, presence: true
   validates :duration, presence: true
   validates :description, presence: true
-  
+  has_rich_text :program
   scope :published, -> { where(published: true) }
   scope :ordered_by_priority, -> { order(priority: :desc, created_at: :desc) }
   

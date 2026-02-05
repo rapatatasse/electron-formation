@@ -12,11 +12,13 @@
     <%= yield :head %>
 
     <link rel="manifest" href="/manifest.json">
+    <%= favicon_link_tag "favicon.ico" %>
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <%= stylesheet_link_tag "application" %>
+    <%= javascript_include_tag "application" %>
   </head>
 
   <body>

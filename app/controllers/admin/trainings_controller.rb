@@ -89,7 +89,7 @@ class Admin::TrainingsController < ApplicationController
   def training_params
     params.require(:training).permit(
       :title, :price_intra_ht, :price_inter_ht, :training_type, :image_url,
-      :duration, :description, :objective, :program, :target_audience,
+      :duration, :training_category, :description, :objective, :program, :target_audience,
       :teaching_methods, :prerequisites, :priority, :evaluation_method, :published
     )
   end
