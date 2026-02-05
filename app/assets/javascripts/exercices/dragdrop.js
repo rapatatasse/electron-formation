@@ -222,7 +222,7 @@ class DragDropManager {
 
     async loadImagesFromFolder(folderName, zoneNumber, container) {
         const foundImages = [];
-        const colorliaison = [['image(1)',"#26ff4eff"], ['image(2)', '#14d531ff'], ['image(3)', '#0599efff'], ['image(4)', '#477a73ff'], ['image(5)', '#cc9f0aec'], ['image(6)', '#07b029ec']];
+        const colorliaison = [['image(1)',"#26ff4eff"], ['image(2)', '#dda610ff'], ['image(3)', '#0599efff'], ['image(4)', '#477a73ff'], ['image(5)', '#cc9f0aec'], ['image(6)', '#07b029ec']];
         // Essayer de détecter automatiquement les images avec des noms courants
         const commonPatterns = [
                       // Noms avec parenthèses (comme "image(1).png")

@@ -122,6 +122,13 @@ const IMAGES_CONFIG = {
     ],
     "Image30.png": [
         {
+            "name": "30Tapis.png",
+            "x": 10,
+            "y": 80,
+            "type": "image",
+            "rotation": 0
+        },
+        {
         "name": "Camion.png",
         "x": 0,
         "y": 25,
@@ -177,6 +184,7 @@ const IMAGES_CONFIG = {
             "type": "image",
             "rotation": 0
         }
+  
 
     ],
     "Image32.png": [

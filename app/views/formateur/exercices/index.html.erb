@@ -36,7 +36,7 @@
           { id: 32, nom: "Dépose Iso", description: "Niv 3 (id:32)" },
           { id: 33, nom: "Dépose Cable", description: "Niv 3 (id:33)" },
           { id: 34, nom: "Dépose ISO", description: "Niv 4  (id:34)" },
-          { id: 35, nom: "Dépose ISO", description: "Niv 4  (id:35)" }
+          { id: 35, nom: "Mise en place de shunt", description: "Niv 4  (id:35)" }
         ].map { |f| f.merge(image_url: image_path("exercices/ImageFond/fond#{f[:id]}.jpg"), link_url: formateur_exercices_dragdrop_path(fond: f[:id])) } %>
 
         <div class="cards-grid" id="cardsGrid" data-fonds='<%= raw(fonds.to_json) %>'>
