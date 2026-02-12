@@ -42,6 +42,18 @@
                    nil
                  end
                }.compact,
+               z2bis: [
+                 begin
+                   { key: "1bis", path: asset_path("exercices/ImagesZ2/image(1bis).png") }
+                 rescue
+                   nil
+                 end,
+                 begin
+                   { key: "2bis", path: asset_path("exercices/ImagesZ2/image(2bis).png") }
+                 rescue
+                   nil
+                 end
+               ].compact,
                z3: (1..9).map { |i| 
                  begin
                    { id: i, path: asset_path("exercices/ImagesZ3/image(#{i}).png") }

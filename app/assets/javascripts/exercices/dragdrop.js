@@ -51,13 +51,24 @@ function assetUrl(path) {
                 }
             }
         } else if (path.includes('ImagesZ2/image')) {
-            const match = path.match(/image\((\d+)\)/);
+            const match = path.match(/image\((\d+)(bis)?\)/);
             if (match) {
-                const id = parseInt(match[1]);
-                const found = assetPaths.z2.find(f => f.id === id);
-                if (found) {
-                    console.log('✅ Asset Z2 trouvé:', path, '->', found.path);
-                    return found.path;
+                const id = match[1];
+                const isBis = match[2] === 'bis';
+                if (isBis) {
+                    const key = `${id}bis`;
+                    const found = (assetPaths.z2bis || []).find(f => f.key === key);
+                    if (found) {
+                        console.log('✅ Asset Z2 bis trouvé:', path, '->', found.path);
+                        return found.path;
+                    }
+                } else {
+                    const numericId = parseInt(id);
+                    const found = assetPaths.z2.find(f => f.id === numericId);
+                    if (found) {
+                        console.log('✅ Asset Z2 trouvé:', path, '->', found.path);
+                        return found.path;
+                    }
                 }
             }
         } else if (path.includes('ImagesZ3/image')) {
@@ -222,12 +233,14 @@ class DragDropManager {
 
     async loadImagesFromFolder(folderName, zoneNumber, container) {
         const foundImages = [];
-        const colorliaison = [['image(1)',"#26ff4eff"], ['image(2)', '#dda610ff'], ['image(3)', '#0599efff'], ['image(4)', '#477a73ff'], ['image(5)', '#cc9f0aec'], ['image(6)', '#07b029ec']];
+        const colorliaison = [['image(1)',"#26ff4eff"], ['image(2)', '#ce9803ff'], ['image(3)', '#0599efff'], ['image(4)', '#477a73ff'], ['image(5)', '#cc9f0aec'], ['image(6)', '#07b029ec']];
         // Essayer de détecter automatiquement les images avec des noms courants
-        const commonPatterns = [
-                      // Noms avec parenthèses (comme "image(1).png")
-            'image(1)', 'image(2)', 'image(3)', 'image(4)', 'image(5)', 'image(6)', 'image(7)', 'image(8)','image(9)',
-        ];
+        const commonPatterns = folderName === 'ImagesZ2'
+            ? ['image(1)', 'image(2)', 'image(3)', 'image(4)', 'image(5)', 'image(6)', 'image(7)', 'image(8)', 'image(9)']
+            : [
+                // Noms avec parenthèses (comme "image(1).png")
+                'image(1)', 'image(2)', 'image(3)', 'image(4)', 'image(5)', 'image(6)', 'image(7)', 'image(8)', 'image(9)'
+            ];
         
         const extensions = ['png'];
         
@@ -302,6 +315,8 @@ class DragDropManager {
         img.alt = altText || `Image Zone ${zoneNumber}`;
         img.className = 'draggable-image';
         img.draggable = true;
+
+        img.dataset.sourcePath = src;
         
         // Stocker les informations de la zone d'origine
         img.dataset.originalZone = zoneNumber;
@@ -336,6 +351,7 @@ class DragDropManager {
         img.dataset.naturalHeight = originalImg.dataset.naturalHeight;
         img.dataset.isOriginal = 'false'; // Marquer comme copie
         img.dataset.connectorColor = originalImg.dataset.connectorColor || '#27ae60'; // Copier la couleur du connecteur
+        img.dataset.sourcePath = originalImg.dataset.sourcePath;
         
         // Ajouter à la liste et configurer les événements
         this.images.push(img);
@@ -537,20 +553,55 @@ class DragDropManager {
         
         if (isNewPlacement) {
             if (isFromZone2) {
-                // DUPLIQUER l'image pour la position du clic
-                const droppedImg = this.duplicateImage(this.draggedElement);
-                this.moveImageToBackground(droppedImg, finalX, finalY);
-                // DUPLIQUER une deuxième fois pour la position centrée en haut
-                const duplicatedImg = this.duplicateImage(this.draggedElement);
-                const bgRect = this.backgroundArea.getBoundingClientRect();
-                const xCopy = (bgRect.width / 2) - (duplicatedImg.offsetWidth / 2 || 50);
-                const yCopy = 70;
-                this.moveImageToBackground(duplicatedImg, xCopy, yCopy);
-                console.log('[VAT DROP]', {
-                    drop: {left: finalX, top: finalY, el: droppedImg},
-                    copie: {left: xCopy, top: yCopy, el: duplicatedImg}
-                });
-                this.createConnectorBetweenImages(droppedImg, duplicatedImg);
+                const sourcePath = this.draggedElement.dataset.sourcePath || '';
+                const match = sourcePath.match(/ImagesZ2\/image\((1|2)\)\.png$/);
+                if (match) {
+                    const id = match[1];
+
+                    // image(n) à l'endroit du drop
+                    const droppedImg = this.duplicateImage(this.draggedElement);
+                    this.moveImageToBackground(droppedImg, finalX, finalY);
+
+                    // image(nbis) centrée en haut
+                    const bisImg = document.createElement('img');
+                    bisImg.src = assetUrl(`ImagesZ2/image(${id}bis).png`);
+                    bisImg.alt = this.draggedElement.alt;
+                    bisImg.className = 'draggable-image';
+                    bisImg.draggable = true;
+                    bisImg.dataset.originalZone = this.draggedElement.dataset.originalZone;
+                    bisImg.dataset.imageId = `img_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+                    bisImg.dataset.isOriginal = 'false';
+                    bisImg.dataset.connectorColor = this.draggedElement.dataset.connectorColor || '#27ae60';
+                    bisImg.dataset.sourcePath = `ImagesZ2/image(${id}bis).png`;
+                    bisImg.dataset.naturalWidth = this.draggedElement.dataset.naturalWidth;
+                    bisImg.dataset.naturalHeight = this.draggedElement.dataset.naturalHeight;
+
+                    this.images.push(bisImg);
+                    this.setupImageEventListeners(bisImg);
+
+                    const bgRect = this.backgroundArea.getBoundingClientRect();
+                    const naturalWidthBis = parseFloat(bisImg.dataset.naturalWidth) || 100;
+                    const scaledWidthBis = naturalWidthBis * this.backgroundScale;
+                    const xCopy = (bgRect.width / 2) - (scaledWidthBis / 2);
+                    const yCopy = 70;
+                    this.moveImageToBackground(bisImg, xCopy, yCopy);
+
+                    console.log('[VAT DROP]', {
+                        drop: {left: finalX, top: finalY, el: droppedImg},
+                        copie: {left: xCopy, top: yCopy, el: bisImg}
+                    });
+                    this.createConnectorBetweenImages(droppedImg, bisImg);
+                } else {
+                    // fallback: comportement historique (2 duplications)
+                    const droppedImg = this.duplicateImage(this.draggedElement);
+                    this.moveImageToBackground(droppedImg, finalX, finalY);
+                    const duplicatedImg = this.duplicateImage(this.draggedElement);
+                    const bgRect = this.backgroundArea.getBoundingClientRect();
+                    const xCopy = (bgRect.width / 2) - (duplicatedImg.offsetWidth / 2 || 50);
+                    const yCopy = 70;
+                    this.moveImageToBackground(duplicatedImg, xCopy, yCopy);
+                    this.createConnectorBetweenImages(droppedImg, duplicatedImg);
+                }
             } else {
                 // Cas classique autres images (zones 1 et 3) :
                 // dupliquer l'image et placer la copie sur le fond

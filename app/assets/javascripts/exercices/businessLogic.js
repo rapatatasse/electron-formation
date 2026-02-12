@@ -44,13 +44,24 @@ function assetUrl(path) {
                 }
             }
         } else if (path.includes('ImagesZ2/image')) {
-            const match = path.match(/image\((\d+)\)/);
+            const match = path.match(/image\((\d+)(bis)?\)/);
             if (match) {
-                const id = parseInt(match[1]);
-                const found = assetPaths.z2.find(f => f.id === id);
-                if (found) {
-                    console.log('✅ Asset Z2 trouvé:', path, '->', found.path);
-                    return found.path;
+                const id = match[1];
+                const isBis = match[2] === 'bis';
+                if (isBis) {
+                    const key = `${id}bis`;
+                    const found = (assetPaths.z2bis || []).find(f => f.key === key);
+                    if (found) {
+                        console.log('✅ Asset Z2 bis trouvé:', path, '->', found.path);
+                        return found.path;
+                    }
+                } else {
+                    const numericId = parseInt(id);
+                    const found = assetPaths.z2.find(f => f.id === numericId);
+                    if (found) {
+                        console.log('✅ Asset Z2 trouvé:', path, '->', found.path);
+                        return found.path;
+                    }
                 }
             }
         } else if (path.includes('ImagesZ3/image')) {
