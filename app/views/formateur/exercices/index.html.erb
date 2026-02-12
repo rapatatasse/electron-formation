@@ -20,22 +20,21 @@
          { id: 7, nom: "Pose LEQ", description: "Niv 3" },
           { id: 8, nom: "Pose LEQ", description: "Niv 3" },
           { id: 9, nom: "Pose LEQ", description: "Niv 3" },
+           { id: 3, nom: "Risque mécanique reprise d’effort", description: "Niv 2 (id:3)" },  
+          { id: 6, nom: "Pose LEQ", description: "Niv 3 (id:6)" },
+           { id: 1, nom: "Pose LEQ", description: "Niv 1 (id:1)" },
         
         -->
         <% fonds = [
-          { id: 1, nom: "Pose LEQ", description: "Niv 1 (id:1)" },
-          
-          { id: 3, nom: "Risque mécanique reprise d’effort", description: "Niv 2 (id:3)" },
-          
-          { id: 6, nom: "Pose LEQ", description: "Niv 3 (id:6)" },
          
-          { id: 10, nom: "Pose Malt", description: "Niv 1 (id:10)" },
-          { id: 11, nom: "Pose Malt", description: "Niv 1 (id:11)" },
+
+          { id: 10, nom: "Gestion des Malt", description: "Niv 1 (id:10)" },
+          { id: 11, nom: "Gestion des Malt", description: "Niv 1 (id:11)" },
           { id: 31, nom: "Changement de touret", description: "Niv 2 (id:31)" },
           { id: 30, nom: "Changement de touret", description: "Niv 3 (id:30)" },
-          { id: 32, nom: "Dépose Iso", description: "Niv 3 (id:32)" },
-          { id: 33, nom: "Dépose Cable", description: "Niv 3 (id:33)" },
-          { id: 34, nom: "Dépose ISO", description: "Niv 4  (id:34)" },
+          { id: 32, nom: "Changement d armement", description: "Niv 3 (id:32)" },
+          { id: 33, nom: "Dépontage", description: "Niv 3 (id:33)" },
+          { id: 34, nom: "Dépose de conducteur", description: "Niv 4  (id:34)" },
           { id: 35, nom: "Mise en place de shunt", description: "Niv 4  (id:35)" }
         ].map { |f| f.merge(image_url: image_path("exercices/ImageFond/fond#{f[:id]}.jpg"), link_url: formateur_exercices_dragdrop_path(fond: f[:id])) } %>
 
@@ -48,19 +47,12 @@
             <a href="DAOE/DAOE1.pdf" class="card">
                     <%= image_tag "exercices/DAOE/daoe1.png", class: "card-image", alt: "pdf daoe" %>
                     <div class="card-content">
-                        <h3 class="card-title">DAOE1</h3>
+                        <h3 class="card-title">DAOE + Message Collationnés</h3>
                         <p class="card-description"></p>
                         
                     </div>
             </a>
-            <a href="DAOE/DAOE2.pdf" class="card">
-                    <%= image_tag "exercices/DAOE/daoe2.png", class: "card-image", alt: "pdf daoe" %>
-                    <div class="card-content">
-                        <h3 class="card-title">DAOE2</h3>
-                        <p class="card-description"></p>
-                        
-                    </div>
-            </a>
+
             <%= link_to formateur_exercices_elingage_path, class: "card" do %>
                     <%= image_tag "exercices/ImageElingage/3-4Brin.png", class: "card-image", alt: "pdf daoe" %>
                     <div class="card-content">
