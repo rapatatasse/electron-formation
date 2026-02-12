@@ -59,7 +59,7 @@ gem "devise", "~> 4.9"
 
 gem "kaminari", "~> 1.2"
 
-gem "roo", "~> 2.10"
+gem "roo", "~> 3.0"
 gem "rubyXL", "~> 3.4"
 
 gem "wicked_pdf", "~> 2.8.2"  
