@@ -8,6 +8,7 @@
   --primary-color: #253442;
   --primary-dark: #132c80;
   --secondary-color: #10b981;
+  --secondary-color-light: #8beaca;
   --danger-color: #ef4444;
   --warning-color: #f59e0b;
   --gray-50: #f9fafb;
@@ -43,6 +44,14 @@
 }
 .br-secondary {
   border-color: var(--secondary-color);
+}
+.btn-success {
+  background-color: var(--secondary-color);
+  color: white;
+}
+.btn-success:hover {
+  background-color: var(--secondary-color-light);
+  color: var(--primary-color);
 }
 
 .card-image {

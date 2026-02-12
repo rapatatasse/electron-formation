@@ -9,3 +9,16 @@
   flex-wrap: wrap;
   justify-content: flex-end;
 }
+
+.gantt-today {
+  background: rgba(16, 185, 129, 0.16);
+}
+
+.gantt_task_cell.gantt-today {
+  background: rgba(16, 185, 129, 0.12);
+}
+
+.gantt_scale_cell.gantt-today {
+  background: rgba(16, 185, 129, 0.22);
+  font-weight: 600;
+}

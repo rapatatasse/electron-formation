@@ -255,7 +255,108 @@
       return true;
     });
 
+    function addDays(d, days) {
+      var dd = new Date(d.getTime());
+      dd.setDate(dd.getDate() + days);
+      return dd;
+    }
+
+    function isSameDay(a, b) {
+      if (!a || !b) return false;
+      return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+    }
+
+    function getVisibleCenterDate() {
+      try {
+        if (typeof window.gantt.getState === 'function') {
+          var st = window.gantt.getState();
+          if (st && st.min_date && st.max_date) {
+            return new Date((st.min_date.getTime() + st.max_date.getTime()) / 2);
+          }
+        }
+      } catch (e) {}
+      return new Date();
+    }
+
+    function showDateSafe(d) {
+      try {
+        if (typeof window.gantt.showDate === 'function') {
+          window.gantt.showDate(d);
+          return;
+        }
+      } catch (e) {}
+
+      try {
+        if (typeof window.gantt.scrollTo === 'function') {
+          // 0 = keep vertical scroll, only shift horizontally
+          window.gantt.scrollTo(window.gantt.posFromDate(d), 0);
+        }
+      } catch (e) {}
+    }
+
+    function setupWeekNavigation() {
+      var prevBtn = document.getElementById('gantt-nav-prev-week');
+      var todayBtn = document.getElementById('gantt-nav-today');
+      var nextBtn = document.getElementById('gantt-nav-next-week');
+
+      // Persist the navigation date to avoid getting stuck when the visible range isn't updated as expected
+      var navDate = getVisibleCenterDate();
+
+      function syncNavDateFromScroll() {
+        try {
+          if (typeof window.gantt.getScrollState === 'function' && typeof window.gantt.dateFromPos === 'function') {
+            var s = window.gantt.getScrollState();
+            if (s && typeof s.x === 'number') {
+              navDate = window.gantt.dateFromPos(s.x + 1);
+            }
+          }
+        } catch (e) {}
+      }
+
+      try {
+        if (typeof window.gantt.attachEvent === 'function') {
+          window.gantt.attachEvent('onGanttScroll', function () {
+            syncNavDateFromScroll();
+          });
+        }
+      } catch (e) {}
+
+      if (prevBtn) {
+        prevBtn.addEventListener('click', function () {
+          navDate = addDays(navDate, -7);
+          showDateSafe(navDate);
+        });
+      }
+
+      if (todayBtn) {
+        todayBtn.addEventListener('click', function () {
+          navDate = new Date();
+          showDateSafe(navDate);
+        });
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener('click', function () {
+          navDate = addDays(navDate, 7);
+          showDateSafe(navDate);
+        });
+      }
+    }
+
+    var today = new Date();
+    window.gantt.templates.scale_cell_class = function (date) {
+      if (isSameDay(date, today)) return 'gantt-today';
+      return '';
+    };
+
+    window.gantt.templates.timeline_cell_class = function (task, date) {
+      if (isSameDay(date, today)) return 'gantt-today';
+      return '';
+    };
+
     window.gantt.init('gantt_here');
+
+    setupWeekNavigation();
 
     Promise.all([loadUsers(), loadData()]).then(function (res) {
       var data = res[1];

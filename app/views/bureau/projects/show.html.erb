@@ -24,7 +24,7 @@
       <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
         <%= link_to "Gantt", gantt_bureau_project_path(@project), class: "btn btn-sm #{(@view == 'gantt') ? 'btn-primary' : 'btn-outline'}" %>
         <%= link_to "Liste", list_bureau_project_path(@project), class: "btn btn-sm #{(@view == 'list') ? 'btn-primary' : 'btn-outline'}" %>
-        <%= link_to "To do", todo_bureau_project_path(@project), class: "btn btn-sm #{(@view == 'todo') ? 'btn-primary' : 'btn-outline'}" %>
+        <%= link_to "My To do", todo_bureau_project_path(@project), class: "btn btn-sm #{(@view == 'todo') ? 'btn-primary' : 'btn-outline'}" %>
       </div>
     </div>
   </div>
@@ -38,11 +38,14 @@
     <% end %>
 
     <div class="card">
-      <div class="card-header">
-        Vue Gantt
-      </div>
+
       <div class="card-body">
         <div class="gantt-actions">
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
+            <button type="button" class="btn btn-sm btn-outline" id="gantt-nav-prev-week">← Semaine</button>
+            <button type="button" class="btn btn-sm btn-outline" id="gantt-nav-today">Aujourd’hui</button>
+            <button type="button" class="btn btn-sm btn-outline" id="gantt-nav-next-week">Semaine →</button>
+          </div>
           <%= link_to "Nouvelle tâche", new_bureau_project_task_path(@project), class: "btn btn-sm btn-primary" %>
         </div>
         <div id="gantt_here" class="gantt-container" data-project-id="<%= @project.id %>"></div>
@@ -113,11 +116,9 @@
     </div>
   <% elsif @view == 'todo' %>
     <div class="card">
-      <div class="card-header">
-        To do
-      </div>
+
       <div class="card-body">
-        <% todo_tasks = @tasks.select { |t| t.progress.to_i < 100 } %>
+        <% todo_tasks = current_user.tasks.select { |t| t.progress.to_i < 100 } %>
         <% if todo_tasks.any? %>
           <table class="table">
             <thead>
@@ -153,8 +154,7 @@
   <% else %>
     <div class="card">
       <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
-        <span>Liste des tâches</span>
-        <%= link_to "Nouvelle tâche", new_bureau_project_task_path(@project), class: "btn btn-sm btn-primary" %>
+        <%= link_to "Nouvelle tâche", new_bureau_project_task_path(@project), class: "btn btn-sm btn-success" %>
       </div>
       <div class="card-body">
         <% if @tasks.any? %>

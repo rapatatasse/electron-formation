@@ -5,7 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, :trackable
 
   # Rôles disponibles
-  ROLES = %w[formateur bureau admin].freeze
+  ROLES = %w[apprenant formateur bureau admin].freeze
 
 
   has_many :user_activity_logs, dependent: :destroy
@@ -146,7 +146,7 @@ class User < ApplicationRecord
   private
 
   def set_default_role
-    self.role = [] if role.blank?
+    self.role = ['apprenant'] if role.blank?
   end
 
   def set_default_locale

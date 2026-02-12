@@ -7,6 +7,30 @@
     </div>
   </div>
 
+  <div class="card" style="margin-bottom: 1rem;">
+    <div class="card-body" style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
+      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+        <%= link_to "← Précédent", calendar_bureau_tasks_path(start: @prev_start.to_s, days: @days), class: "btn btn-outline" %>
+        <%= link_to "Aujourd’hui", calendar_bureau_tasks_path(start: Date.current.to_s, days: @days), class: "btn btn-outline" %>
+        <%= link_to "Suivant →", calendar_bureau_tasks_path(start: @next_start.to_s, days: @days), class: "btn btn-outline" %>
+      </div>
+
+      <div style="color: var(--gray-700);">
+        <strong><%= @start_date %></strong>
+        —
+        <strong><%= @end_date %></strong>
+        (<%= @days %> jours)
+      </div>
+
+      <form method="get" action="<%= calendar_bureau_tasks_path %>" style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+        <input type="hidden" name="days" value="<%= @days %>">
+        <label class="form-label" for="calendar_start" style="margin: 0;">Aller au</label>
+        <input class="form-control" style="width: 160px;" type="date" id="calendar_start" name="start" value="<%= @start_date %>">
+        <button class="btn btn-primary" type="submit">OK</button>
+      </form>
+    </div>
+  </div>
+
   <div class="card">
     <div class="card-body">
       <% if @tasks.any? %>

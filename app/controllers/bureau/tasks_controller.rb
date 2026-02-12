@@ -66,7 +66,24 @@ class Bureau::TasksController < ApplicationController
   end
 
   def calendar
-    @tasks = Task.includes(:project).where.not(start_date: nil).order(:start_date)
+    @days = params[:days].to_i
+    @days = 14 if @days <= 0
+
+    @start_date = begin
+      params[:start].present? ? Date.parse(params[:start]) : Date.current
+    rescue ArgumentError
+      Date.current
+    end
+
+    @end_date = @start_date + (@days - 1).days
+    @prev_start = @start_date - @days.days
+    @next_start = @start_date + @days.days
+
+    @tasks = Task
+      .includes(:project)
+      .where.not(start_date: nil)
+      .where("tasks.start_date <= ? AND (tasks.end_date IS NULL OR tasks.end_date >= ?)", @end_date, @start_date)
+      .order(:start_date)
   end
 
   def todo
@@ -94,7 +111,8 @@ class Bureau::TasksController < ApplicationController
   end
 
   def set_users
-    @users = User.order(:last_name, :first_name)
+    @users = User.bureau.order(:last_name, :first_name)
+    
   end
 
   def assign_users_from_params

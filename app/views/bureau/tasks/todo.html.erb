@@ -15,6 +15,7 @@
             <tr>
               <th>Projet</th>
               <th>Tâche</th>
+              <th>Salarie</th>
               <th>Fin</th>
               <th>Progress</th>
               <th></th>
@@ -25,6 +26,7 @@
               <tr>
                 <td><%= link_to task.project.name, bureau_project_path(task.project) %></td>
                 <td><%= link_to task.name, bureau_task_path(task) %></td>
+                <td><%= task.users.all.map(&:full_name).join(', ') %></td>
                 <td><%= task.end_date %></td>
                 <td><%= task.progress %>%</td>
                 <td><%= link_to "Modifier", edit_bureau_task_path(task), class: "btn btn-sm btn-outline" %></td>
