@@ -26,7 +26,7 @@
         
         <% if training.objective.present? %>
             <div class="top-sections">
-                <div class="section-box objectives">
+                <div class=" objectives">
                     <h2>LES OBJECTIFS</h2>
                     <div>
                         <%= simple_format(training.objective) %>
@@ -36,36 +36,36 @@
         <% end %>
 
         <table class="info-table" cellspacing="0" cellpadding="0">
-            <tr>
+            <tr >
                 <% if training.target_audience.present? %>
-                    <td class="grid-item">
+                    <td style="width: 40%;" class="grid-item bordergrid">
                         <div class="grid-title">Public</div>
-                        <div class="grid-content"><%= simple_format(training.target_audience) %></div>
+                        <div class="grid-content p-2"><%= simple_format(training.target_audience) %></div>
                     </td>
                 <% end %>
                 
                 <% if training.training_type.present? %>
-                    <td class="grid-item">
+                    <td style="width: 30%;" class="grid-item bordergrid">
                         <div class="grid-title">Modalité</div>
-                        <div class="grid-content"><%= training.training_type %></div>
+                        <div class="grid-content p-2"><%= training.training_type %></div>
+                    </td>
+                <% end %>
+                <% if training.prerequisites.present? %>
+                    <td style="width: 30%;" class="prerequis-section bordergrid">
+                        <div class="grid-title">Prérequis</div>
+                        <div class="grid-content p-2"><%= simple_format(training.prerequisites) %></div>
                     </td>
                 <% end %>
             </tr>
         </table>
 
-        <% if training.prerequisites.present? %>
-            <div class="prerequis-section">
-                <div class="grid-title">Prérequis</div>
-                <div class="grid-content"><%= simple_format(training.prerequisites) %></div>
-            </div>
-        <% end %>
 
-        <% if training.program.present? %>
-            <div class="deroulement-section">
-                <div class="grid-title">Programme</div>
-                <div class="deroulement-content"><%= simple_format(training.program) %></div>
+            <br>
+            <div class="">
+                <h2>PROGRAMME</h2>
+                <div class="deroulement-content"><%= training.program %></div>
             </div>
-        <% end %>
+        
     </main>
 
     <footer class="bottom-banner">

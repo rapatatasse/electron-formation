@@ -80,7 +80,7 @@ body {
     background: white;
 }
 
-.section-box h2 {
+h2 {
     font-size: 11pt;
     color: #005baa;
     margin: 0 0 5px 0;
@@ -103,18 +103,21 @@ body {
 
 .grid-item, .prerequis-section, .deroulement-section {
     text-align: left;
+    align-content: flex-start;
 }
 
 .grid-title {
-    background-color: #dbe4f5;
-    color: #333;
+    background-color: #3e71cecc;
+    color: #f5fcff;
     font-weight: bold;
-    padding: 2px 8px;
+    padding: 3px 8px;
     display: inline-block;
     margin-bottom: 5px;
     font-size: 10pt;
 }
-
+.bordergrid {
+    border: 0.5px solid #cbdff0a4;
+}
 .grid-content {
     font-size: 9pt;
 }
@@ -227,7 +230,7 @@ body {
         height: 100%;
     }
     .left-shape, .bottom-banner, .page-footer, .page-number, .grid-title {
-        background-color: #005baa !important; /* Force colors for printing */
+        background-color: #115c9e !important; /* Force colors for printing */
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
     }
@@ -248,8 +251,15 @@ body {
 }
 
 
-
-
+p {
+    margin: 0;
+}
+.p-2 {
+    padding: 5px;
+}
+.p-3 {
+    padding: 10px;
+}
 
 .print-button {
     position: fixed;
