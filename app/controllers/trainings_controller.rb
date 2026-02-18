@@ -4,9 +4,9 @@ class TrainingsController < ApplicationController
     
     # Recherche
     if params[:search].present?
-      search_term = "%#{params[:search]}%"
+      search_term = "%#{params[:search].to_s.downcase}%"
       @trainings = @trainings.where(
-        "title LIKE ? OR description LIKE ? OR training_type LIKE ?", 
+        "LOWER(title) LIKE ? OR LOWER(description) LIKE ? OR LOWER(training_type) LIKE ?",
         search_term, search_term, search_term
       )
     end
@@ -35,9 +35,9 @@ class TrainingsController < ApplicationController
     
     # Filtres
     if params[:search].present?
-      search_term = "%#{params[:search]}%"
+      search_term = "%#{params[:search].to_s.downcase}%"
       @trainings = @trainings.where(
-        "title LIKE ? OR description LIKE ? OR training_type LIKE ?", 
+        "LOWER(title) LIKE ? OR LOWER(description) LIKE ? OR LOWER(training_type) LIKE ?",
         search_term, search_term, search_term
       )
     end

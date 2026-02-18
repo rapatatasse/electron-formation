@@ -7,13 +7,18 @@ body {
     font-size: 10pt;
 }
 
+@page {
+    size: A4;
+    margin: 0;
+}
+
 /* Page Container */
 .formation {
     background-color: white;
     width: 210mm;
-    min-height: 297mm;
+    height: 295mm;
     margin: 20px auto;
-    padding: 15mm 15mm 10mm 25mm;
+    padding: 10mm 10mm 10mm 15mm;
     position: relative;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     page-break-after: always;
@@ -133,9 +138,9 @@ h2 {
     padding: 8mm 10mm;
     display: flex;
     gap: 1cm;
-    margin: 0 -15mm 0 -25mm; /* Extend to page edges */
+    margin: 0 0 0 -15mm; /* Extend to page edges */
     position: absolute;
-    bottom: 50mm;
+    bottom: 35mm;
 
 }
 
@@ -154,16 +159,15 @@ h2 {
 /* Page Footer */
 .page-footer {
     position: absolute;
-    bottom: 10mm;
+    bottom: 5mm;
     left: 25mm;
     right: 15mm;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    padding-top: 10px;
     background-color: #f2f2f2;
     margin: 0 -15mm 0 -25mm;
-    padding: 10mm 15mm 10mm 25mm;
+    padding: 5mm 10mm 5mm 25mm;
 }
 
 .price-container {
@@ -222,12 +226,14 @@ h2 {
 @media print {
     body {
         background-color: #fff;
+        margin: 0;
     }
     .formation {
         margin: 0;
         box-shadow: none;
-        width: 100%;
-        height: 100%;
+        width: 210mm;
+        height: 297mm;
+        overflow: hidden;
     }
     .left-shape, .bottom-banner, .page-footer, .page-number, .grid-title {
         background-color: #115c9e !important; /* Force colors for printing */
@@ -280,26 +286,63 @@ p {
     z-index: 1000;
     transition: background-color 0.3s ease;
 }
+.retour-button {
+    position: fixed;
+    top: 70px;
+    right: 40px;
+    background-color: #696865;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+}
+.retour-button:hover {
+    background-color: #dee0e2;
+}
 
 .print-button:hover {
-    background-color: #004080;
+    background-color: #f0ce70e1;
 }
 
 .print-button svg {
     flex-shrink: 0;
 }
+ul {
+    margin: 0;
+    margin-bottom: 5px;
+
+}
 
 @media print {
     body {
         background-color: white;
+        margin: 0;
     }
     
     .formation {
         margin: 0;
         box-shadow: none;
+        min-height: 297mm;
+        width: 210mm;
+        height: 297mm;
+        overflow: hidden;
     }
     
     .print-button {
+        display: none;
+    }
+
+    .retour-button {
         display: none;
     }
 }

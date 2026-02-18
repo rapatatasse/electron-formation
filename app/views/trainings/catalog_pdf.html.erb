@@ -13,6 +13,8 @@
     </svg>
     Imprimer / PDF
   </button>
+
+  <%= link_to 'Retour', trainings_path, class:"retour-button" %>
   
   <%= render 'cover_page' %>
   <%= render 'table_of_contents', trainings: @trainings %>
