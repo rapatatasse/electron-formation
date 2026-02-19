@@ -36,11 +36,13 @@
     <div class="form-group">
       <%= f.label :price_intra_ht, "Prix Intra HT (€)" %>
       <%= f.number_field :price_intra_ht, class: "form-control", step: 0.01, placeholder: "Ex: 1500.00" %>
+      <span>Si pas de prix marquera "Sur devis"</span>
     </div>
 
     <div class="form-group">
       <%= f.label :price_inter_ht, "Prix Inter HT / Stagiaire (€)" %>
       <%= f.number_field :price_inter_ht, class: "form-control", step: 0.01, placeholder: "Ex: 500.00" %>
+      <span>Si pas de prix marquera "Sur devis"</span>
     </div>
 
     <div class="form-group">
