@@ -5,7 +5,12 @@ Rails.application.routes.draw do
   end
   
   root to: "home#index"
+  
+  get "rgpd", to: "home#rgpd"
+  get "mentionslegales", to: "home#mentionslegales"
+  get "cgv", to: "home#cgv"
   get "dashboard", to: "home#dashboard"
+
   
 
   namespace :admin do

@@ -3,8 +3,10 @@ class HomeController < ApplicationController
     if user_signed_in?
       redirect_to dashboard_path
     end
-    @hide_nav = true
+   
   end
+
+
 
   def dashboard
     # Utiliser le rôle principal pour la redirection
