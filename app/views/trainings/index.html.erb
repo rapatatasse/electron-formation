@@ -144,5 +144,280 @@
       <p>5 Rue Saint-Prix Barou 07100 Annonay</p>
     </div>
   </section>
+
+  <%
+    # -----------------------------------------------------------------------
+    # Données issues de StasEvaluation.csv
+    # Colonnes : [Conformité, Temps, Adaptation contenu, Atteinte objectifs,
+    #             Qualité échanges, Ecoute, Clarté, Adaptation groupe, Echanges participants,
+    #             Locaux, Matériel, Durée,
+    #             Réponses formateur, Utilité pro, Utilité perso, Avis global]
+    # Catégories :
+    #   Contenu      : colonnes 0..3
+    #   Animation    : colonnes 4..8
+    #   Organisation : colonnes 9..11
+    #   Attentes     : colonnes 12..15
+    # -----------------------------------------------------------------------
+    eval_data = {
+      2021 => {
+        excellent:    [30,28,29,31,36,37,35,37,36,25,27,28,32,29,28,31],
+        bon:          [ 8,11,11, 8, 6, 8, 8, 8, 8,11,11,11, 8,10, 8,12],
+        satisfaisant: [ 7, 6, 5, 5, 4, 4, 4, 5, 7,10,10, 8, 4, 6, 8, 5],
+        moyen:        [ 0, 0, 1, 1, 0, 0, 0, 0, 0, 2, 1, 0, 0, 1, 1, 0],
+        mediocre:     [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+      },
+      2022 => {
+        excellent:    [27,24,25,27,30,29,28,26,27,21,20,21,27,26,26,26],
+        bon:          [ 9,14,13, 9, 8, 8, 9,11,11,17,18,15, 9,12,11,11],
+        satisfaisant: [11,11, 9, 9, 9,10,11, 9, 9,11,13,11,10,10, 9,10],
+        moyen:        [ 2, 2, 1, 1, 0, 0, 1, 0, 0, 2, 1, 1, 1, 1, 2, 1],
+        mediocre:     [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      2023 => {
+        excellent:    [51,52,51,55,57,55,59,53,58,45,43,43,59,58,59,58],
+        bon:          [22,19,21,18,15,17,13,20,15,18,23,24,14,14,13,17],
+        satisfaisant: [22,24,23,22,22,22,24,21,22,20,20,23,23,21,24,21],
+        moyen:        [ 2, 2, 2, 3, 1, 2, 1, 3, 2, 6, 4, 2, 1, 4, 2, 1],
+        mediocre:     [ 2, 2, 2, 1, 2, 1, 2, 1, 1, 4, 2, 3, 2, 1, 1, 2]
+      },
+      2024 => {
+        excellent:    [132,130,131,133,135,138,135,134,131,103,111,119,139,132,127,130],
+        bon:          [ 19, 24, 23, 21, 10, 11, 14, 13, 12, 33, 30, 25, 17, 21, 21, 22],
+        satisfaisant: [ 25, 24, 22, 23, 26, 26, 23, 26, 28, 23, 25, 26, 20, 22, 22, 21],
+        moyen:        [  3,  1,  2,  1,  5,  3,  6,  4,  3, 10,  7,  4,  2,  3,  3,  3],
+        mediocre:     [  1,  1,  1,  1,  1,  1,  1,  1,  1,  4,  3,  1,  1,  2,  2,  1]
+      },
+      2025 => {
+        excellent:    [673,654,669,680,696,691,673,662,661,579,584,610,701,688,670,668],
+        bon:          [ 94,102, 95, 88, 66, 72, 85, 91, 94,148,155,146, 87, 92,103,113],
+        satisfaisant: [ 79, 80, 81, 74, 95, 93, 93, 93, 96,102, 95, 84, 70, 71, 76, 66],
+        moyen:        [  6, 11,  7,  9,  5,  6,  6, 11,  6, 25, 22, 17,  6, 10, 13,  9],
+        mediocre:     [  7,  8,  7,  8,  6,  3,  6,  5,  6,  9,  8,  5,  5,  5,  5,  5]
+      },
+      2026 => {
+        excellent:    [237,235,240,239,243,238,235,234,227,200,208,213,252,251,238,240],
+        bon:          [ 32, 30, 23, 28, 23, 26, 32, 32, 32, 55, 51, 46, 25, 23, 34, 33],
+        satisfaisant: [ 25, 29, 28, 25, 31, 32, 29, 27, 34, 40, 34, 34, 21, 23, 21, 20],
+        moyen:        [  3,  3,  4,  4,  2,  5,  4,  4,  3,  7,  6,  4,  3,  2,  4,  2],
+        mediocre:     [  8,  9,  7,  7,  8,  6,  6,  6,  8,  5,  7,  8,  8,  8,  9,  8]
+      }
+    }
+
+    criteria_labels = [
+      "Conformité au programme", "Temps par sujet", "Adaptation du contenu", "Atteinte des objectifs",
+      "Qualité échanges formateur", "Écoute & réponses", "Clarté de l'exposé", "Adaptation au groupe", "Échanges entre participants",
+      "Locaux", "Matériel", "Durée",
+      "Réponses aux attentes", "Utilité professionnelle", "Utilité personnelle", "Avis global"
+    ]
+
+    category_ranges = {
+      "Contenu de formation"          => (0..3),
+      "Animation de la formation"     => (4..8),
+      "Organisation générale"         => (9..11),
+      "Attentes & utilité"            => (12..15)
+    }
+
+    category_icons = {
+      "Contenu de formation"          => "fas fa-book-open",
+      "Animation de la formation"     => "fas fa-chalkboard-teacher",
+      "Organisation générale"         => "fas fa-building",
+      "Attentes & utilité"            => "fas fa-bullseye"
+    }
+
+    col_total = ->(row, idx) {
+      row[:excellent][idx] + row[:bon][idx] + row[:satisfaisant][idx] + row[:moyen][idx] + row[:mediocre][idx]
+    }
+
+    col_score = ->(row, idx) {
+      t = col_total.(row, idx).to_f
+      t == 0 ? 0 : (row[:excellent][idx]*5 + row[:bon][idx]*4 + row[:satisfaisant][idx]*3 + row[:moyen][idx]*2 + row[:mediocre][idx]*1) / t
+    }
+
+    year_totals = ->(row) {
+      {
+        excellent:    row[:excellent].sum,
+        bon:          row[:bon].sum,
+        satisfaisant: row[:satisfaisant].sum,
+        moyen:        row[:moyen].sum,
+        mediocre:     row[:mediocre].sum
+      }
+    }
+
+    year_responses = ->(row) {
+      row[:excellent].sum + row[:bon].sum + row[:satisfaisant].sum + row[:moyen].sum + row[:mediocre].sum
+    }
+
+    category_satisfaction = ->(row, rng) {
+      e = row[:excellent][rng].sum
+      b = row[:bon][rng].sum
+      total = rng.map { |i| col_total.(row, i) }.sum.to_f
+      total == 0 ? 0 : ((e + b) / total * 100).round(1)
+    }
+
+    category_score = ->(row, rng) {
+      scores = rng.map { |i| col_score.(row, i) }
+      (scores.sum / scores.length).round(2)
+    }
+
+    best_criterion = ->(row, labels) {
+      scores = labels.each_with_index.map { |lbl, i| [col_score.(row, i), lbl] }
+      scores.max_by { |s, _| s }
+    }
+
+    worst_criterion = ->(row, labels) {
+      scores = labels.each_with_index.map { |lbl, i| [col_score.(row, i), lbl] }
+      scores.min_by { |s, _| s }
+    }
+
+    global_score = ->(row) {
+      scores = 16.times.map { |i| col_score.(row, i) }
+      (scores.sum / 16.0).round(2)
+    }
+
+    satisfaction_rate = ->(row) {
+      total_avg = year_responses.(row).to_f / 16
+      e_avg = row[:excellent].sum / 16.0
+      b_avg = row[:bon].sum / 16.0
+      total_avg == 0 ? 0 : ((e_avg + b_avg) / total_avg * 100).round(1)
+    }
+
+    years_sorted = eval_data.keys.sort.reverse
+  %>
+
+  <section class="info-section eval-stats-section">
+    <h3>Évaluations de satisfaction des stagiaires</h3>
+    <p>Résultats issus des questionnaires de satisfaction remplis par les stagiaires à l'issue de chaque formation. Chaque critère est noté de 1 (Médiocre) à 5 (Excellent).</p>
+
+    <% years_sorted.each do |year| %>
+      <% row = eval_data[year] %>
+      <% total_resp = year_responses.(row) / 16 %>
+      <% score = global_score.(row) %>
+      <% sat = satisfaction_rate.(row) %>
+      <% totals = year_totals.(row) %>
+      <% total_votes = (totals[:excellent] + totals[:bon] + totals[:satisfaisant] + totals[:moyen] + totals[:mediocre]).to_f %>
+      <% pct_exc  = (totals[:excellent]    / total_votes * 100).round(1) %>
+      <% pct_bon  = (totals[:bon]          / total_votes * 100).round(1) %>
+      <% pct_sat  = (totals[:satisfaisant] / total_votes * 100).round(1) %>
+      <% pct_moy  = (totals[:moyen]        / total_votes * 100).round(1) %>
+      <% pct_med  = (totals[:mediocre]     / total_votes * 100).round(1) %>
+      <% best  = best_criterion.(row, criteria_labels) %>
+      <% worst = worst_criterion.(row, criteria_labels) %>
+
+      <div class="eval-year-card">
+
+        <%# ── Header ── %>
+        <div class="eval-year-header">
+          <div class="eval-year-title">
+            <i class="fas fa-calendar-alt"></i>
+            Année <strong><%= year %></strong>
+          </div>
+          <div class="eval-year-meta">
+            <span class="eval-meta-pill eval-meta-responses">
+              <i class="fas fa-users"></i> <%= total_resp %> stagiaires
+            </span>
+            <% if year < 2026 %>
+              <span class="eval-meta-pill eval-meta-complete">
+                <i class="fas fa-check-circle"></i> Année complète
+              </span>
+            <% else %>
+              <span class="eval-meta-pill eval-meta-inprogress">
+                <i class="fas fa-clock"></i> En cours
+              </span>
+            <% end %>
+          </div>
+        </div>
+
+        <%# ── KPIs ── %>
+        <div class="eval-kpi-row">
+          <div class="eval-kpi-box eval-kpi-score">
+            <div class="eval-kpi-value"><%= score %><span class="eval-kpi-unit">/5</span></div>
+            <div class="eval-kpi-label">Note moyenne globale</div>
+          </div>
+          <div class="eval-kpi-box eval-kpi-sat">
+            <div class="eval-kpi-value"><%= sat %><span class="eval-kpi-unit">%</span></div>
+            <div class="eval-kpi-label">Taux de satisfaction<br><small>(Excellent + Bon)</small></div>
+          </div>
+          <div class="eval-kpi-box eval-kpi-resp">
+            <div class="eval-kpi-value"><%= total_resp %></div>
+            <div class="eval-kpi-label">Stagiaires évalués</div>
+          </div>
+          <div class="eval-kpi-box eval-kpi-crit">
+            <div class="eval-kpi-value"><%= (totals[:excellent] / total_votes * 100).round(0) %><span class="eval-kpi-unit">%</span></div>
+            <div class="eval-kpi-label">Notes « Excellent »</div>
+          </div>
+        </div>
+
+        <%# ── Répartition des notes ── %>
+        <div class="eval-subsection-title"><i class="fas fa-chart-bar"></i> Répartition des appréciations</div>
+        <div class="eval-repartition-row">
+          <div class="eval-rep-item eval-rep-excellent">
+            <span class="eval-rep-pct"><%= pct_exc %>%</span>
+            <div class="eval-rep-bar"><div class="eval-rep-fill" style="width:<%= pct_exc %>%"></div></div>
+            <span class="eval-rep-label">Excellent</span>
+          </div>
+          <div class="eval-rep-item eval-rep-bon">
+            <span class="eval-rep-pct"><%= pct_bon %>%</span>
+            <div class="eval-rep-bar"><div class="eval-rep-fill" style="width:<%= pct_bon %>%"></div></div>
+            <span class="eval-rep-label">Bon</span>
+          </div>
+          <div class="eval-rep-item eval-rep-satisfaisant">
+            <span class="eval-rep-pct"><%= pct_sat %>%</span>
+            <div class="eval-rep-bar"><div class="eval-rep-fill" style="width:<%= pct_sat %>%"></div></div>
+            <span class="eval-rep-label">Satisfaisant</span>
+          </div>
+          <div class="eval-rep-item eval-rep-moyen">
+            <span class="eval-rep-pct"><%= pct_moy %>%</span>
+            <div class="eval-rep-bar"><div class="eval-rep-fill" style="width:<%= pct_moy %>%"></div></div>
+            <span class="eval-rep-label">Moyen</span>
+          </div>
+          <div class="eval-rep-item eval-rep-mediocre">
+            <span class="eval-rep-pct"><%= pct_med %>%</span>
+            <div class="eval-rep-bar"><div class="eval-rep-fill" style="width:<%= pct_med %>%"></div></div>
+            <span class="eval-rep-label">Médiocre</span>
+          </div>
+        </div>
+
+        <%# ── Score par catégorie ── %>
+        <div class="eval-subsection-title"><i class="fas fa-layer-group"></i> Score par catégorie</div>
+        <div class="eval-categories-grid">
+          <% category_ranges.each do |cat_name, range| %>
+            <% cat_score = category_score.(row, range) %>
+            <% cat_sat   = category_satisfaction.(row, range) %>
+            <% icon      = category_icons[cat_name] %>
+            <div class="eval-cat-card">
+              <div class="eval-cat-icon"><i class="<%= icon %>"></i></div>
+              <div class="eval-cat-name"><%= cat_name %></div>
+              <div class="eval-cat-score"><%= cat_score %><span>/5</span></div>
+              <div class="eval-cat-sat-bar">
+                <div class="eval-cat-sat-fill" style="width:<%= cat_sat %>%"></div>
+              </div>
+              <div class="eval-cat-sat-label"><%= cat_sat %>% satisfaits</div>
+            </div>
+          <% end %>
+        </div>
+
+        <%# ── Meilleur / à améliorer ── %>
+        <div class="eval-highlights-row">
+          <div class="eval-highlight eval-highlight-best">
+            <i class="fas fa-star"></i>
+            <div>
+              <div class="eval-highlight-title">Point fort</div>
+              <div class="eval-highlight-criterion"><%= best[1] %></div>
+              <div class="eval-highlight-score"><%= best[0].round(2) %> / 5</div>
+            </div>
+          </div>
+          <div class="eval-highlight eval-highlight-improve">
+            <i class="fas fa-arrow-up"></i>
+            <div>
+              <div class="eval-highlight-title">Axe d'amélioration</div>
+              <div class="eval-highlight-criterion"><%= worst[1] %></div>
+              <div class="eval-highlight-score"><%= worst[0].round(2) %> / 5</div>
+            </div>
+          </div>
+        </div>
+
+      </div><%# /.eval-year-card %>
+    <% end %>
+  </section>
 </div>
 
