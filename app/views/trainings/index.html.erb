@@ -33,7 +33,7 @@
   <div class="training-filters">
     <%= link_to "Toutes les formations", trainings_path, class: "filter-btn #{params[:type].blank? ? 'active' : ''}" %>
     <%= link_to "Formation Initiale", trainings_path(type: 'initiale'), class: "filter-btn #{params[:type] == 'initiale' ? 'active' : ''}" %>
-    <%= link_to "Recyclage", trainings_path(type: 'recyclage'), class: "filter-btn #{params[:type] == 'recyclage' ? 'active' : ''}" %>
+    <%= link_to "Recyclage", trainings_path(type: 'recyclage'), class: " bg-recyclage filter-btn #{params[:type] == 'recyclage' ? 'active' : ''}" %>
    
   </div>
 
@@ -56,7 +56,8 @@
             
             <div class="training-card-badges">
               <% if training.training_type.present? %>
-                <span class="training-badge training-badge-primary"><%= training.training_type %></span>
+                <%  training.training_type == "Initiale" ? callbg = "" : callbg = "bg-recyclage"%>
+                <span class="training-badge training-badge-primary <%=callbg%>"><%= training.training_type %></span>
               <% end %>
               <span class="training-badge">⏱ <%= training.duration %></span>
             </div>

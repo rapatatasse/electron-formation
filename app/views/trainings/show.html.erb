@@ -20,7 +20,8 @@
 
       <div style="display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap;">
         <% if @training.training_type.present? %>
-          <span class="badge badge-info"><%= @training.training_type %></span>
+          <%  @training.training_type == "Initiale" ? callbg = "" : callbg = "bg-recyclage"%>
+          <span class="badge badge-info <%=callbg%>"><%= @training.training_type %></span>
         <% end %>
         <span class="badge badge-secondary"><i class="far fa-clock"></i> <%= @training.duration %></span>
       </div>

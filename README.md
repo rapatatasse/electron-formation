@@ -46,3 +46,9 @@ git commit --allow-empty -m "Force Heroku rebuild"
 heroku run rake assets:clobber --app electronformation  
 ```
 permet de recharger les assets
+
+
+Pour les images dans drag en drop exercice pour qu'elle soient prise en compte elle devrons etre mise ici :
+```
+app\views\formateur\exercices\dragdrop.html.erb
+```

@@ -108,6 +108,7 @@ class DragDropManager {
         this.resetBtn = document.getElementById('resetBtn');
         this.resetConnecteurBtn = document.getElementById('resetConnecteurBtn');
         this.flipModeBtn = document.getElementById('flipModeBtn');
+        this.flipModeBtnHautBas = document.getElementById('flipModeBtnHautBas');
         this.backgroundScale = 1; // Ratio d'échelle de l'image de fond
         
         // Système de connecteurs entre images
@@ -118,6 +119,9 @@ class DragDropManager {
         
         // Mode retournement horizontal
         this.flipMode = false;
+        
+        // Mode retournement vertical
+        this.flipModeHautBas = false;
         
         // Gestion des fonds d'écran
         this.currentBackgroundIndex = 1;
@@ -418,33 +422,57 @@ class DragDropManager {
             }
         });
         
-        // Bouton mode retournement horizontal
-        this.flipModeBtn.addEventListener('click', (e) => {
+        // Bouton mode retournement horizontal - souris ET tactile
+        const toggleFlipH = (e) => {
+            e.preventDefault();
             this.flipMode = !this.flipMode;
             if (this.flipMode) {
                 this.flipModeBtn.classList.add('active');
-                console.log('🔄 Mode retournement activé');
+                this.flipModeHautBas = false;
+                this.flipModeBtnHautBas.classList.remove('active');
             } else {
                 this.flipModeBtn.classList.remove('active');
-                console.log('🔄 Mode retournement désactivé');
             }
             e.stopPropagation();
-        });
+        };
+        this.flipModeBtn.addEventListener('click', toggleFlipH);
+        this.flipModeBtn.addEventListener('touchstart', toggleFlipH, { passive: false });
         
-        // Désactiver le mode retournement si on clique ailleurs que sur une image
-        document.addEventListener('click', (e) => {
-            if (!this.flipMode) return;
-            
-            // Vérifier si le clic est sur une image draggable ou sur le bouton flip
+        // Bouton mode retournement vertical - souris ET tactile
+        const toggleFlipV = (e) => {
+            e.preventDefault();
+            this.flipModeHautBas = !this.flipModeHautBas;
+            if (this.flipModeHautBas) {
+                this.flipModeBtnHautBas.classList.add('active');
+                this.flipMode = false;
+                this.flipModeBtn.classList.remove('active');
+            } else {
+                this.flipModeBtnHautBas.classList.remove('active');
+            }
+            e.stopPropagation();
+        };
+        this.flipModeBtnHautBas.addEventListener('click', toggleFlipV);
+        this.flipModeBtnHautBas.addEventListener('touchstart', toggleFlipV, { passive: false });
+        
+        // Désactiver les modes retournement si on clique/touche ailleurs que sur une image
+        const deactivateFlipModes = (e) => {
             const isImage = e.target.classList.contains('draggable-image');
-            const isFlipButton = e.target.id === 'flipModeBtn' || e.target.closest('#flipModeBtn');
-            
+            const isFlipButton = e.target.closest('#flipModeBtn') || e.target.closest('#flipModeBtnHautBas');
             if (!isImage && !isFlipButton) {
                 this.flipMode = false;
                 this.flipModeBtn.classList.remove('active');
-                console.log('🔄 Mode retournement désactivé (clic ailleurs)');
+                this.flipModeHautBas = false;
+                this.flipModeBtnHautBas.classList.remove('active');
             }
+        };
+        document.addEventListener('click', (e) => {
+            if (!this.flipMode && !this.flipModeHautBas) return;
+            deactivateFlipModes(e);
         });
+        document.addEventListener('touchstart', (e) => {
+            if (!this.flipMode && !this.flipModeHautBas) return;
+            deactivateFlipModes(e);
+        }, { passive: true });
         
 
         
@@ -634,12 +662,10 @@ class DragDropManager {
         this.moveImageToZone(this.draggedElement, zoneImages);
     }
 
-    // Gestion du drag à la souris (pour déplacer dans le fond uniquement)
+    // Gestion du clic/toucher sur une image pour retournement
     handleImageClick(e) {
-        // Vérifier si le mode retournement est activé
-        if (!this.flipMode) return;
+        if (!this.flipMode && !this.flipModeHautBas) return;
         
-        // Vérifier si l'image est de la zone 1 et est sur le fond de page
         const img = e.target;
         const isZone1 = img.dataset.originalZone === '1';
         const parent = img.parentNode;
@@ -648,27 +674,36 @@ class DragDropManager {
         
         if (!isZone1 || !isOnBackground) return;
         
-        // Récupérer l'état de retournement actuel
-        const currentFlip = img.dataset.flipped === 'true';
-        
-        // Basculer le retournement horizontal
-        if (currentFlip) {
-            img.style.transform = img.dataset.originalTransform || 'none';
-            img.dataset.flipped = 'false';
-            console.log('🔄 Image retournée à la normale:', img.src);
-        } else {
-            // Sauvegarder la transformation originale si elle existe
-            const originalTransform = img.style.transform || 'none';
-            img.dataset.originalTransform = originalTransform;
-            
-            // Appliquer le retournement horizontal
-            if (originalTransform === 'none' || originalTransform === '') {
-                img.style.transform = 'scaleX(-1)';
+        if (this.flipMode) {
+            const currentFlip = img.dataset.flipped === 'true';
+            if (currentFlip) {
+                img.style.transform = img.dataset.originalTransform || 'none';
+                img.dataset.flipped = 'false';
             } else {
-                img.style.transform = originalTransform + ' scaleX(-1)';
+                const originalTransform = img.style.transform || 'none';
+                img.dataset.originalTransform = originalTransform;
+                if (originalTransform === 'none' || originalTransform === '') {
+                    img.style.transform = 'scaleX(-1)';
+                } else {
+                    img.style.transform = originalTransform + ' scaleX(-1)';
+                }
+                img.dataset.flipped = 'true';
             }
-            img.dataset.flipped = 'true';
-            console.log('🔄 Image retournée horizontalement:', img.src);
+        } else if (this.flipModeHautBas) {
+            const currentFlipV = img.dataset.flippedV === 'true';
+            if (currentFlipV) {
+                img.style.transform = img.dataset.originalTransformV || 'none';
+                img.dataset.flippedV = 'false';
+            } else {
+                const originalTransform = img.style.transform || 'none';
+                img.dataset.originalTransformV = originalTransform;
+                if (originalTransform === 'none' || originalTransform === '') {
+                    img.style.transform = 'scaleY(-1)';
+                } else {
+                    img.style.transform = originalTransform + ' scaleY(-1)';
+                }
+                img.dataset.flippedV = 'true';
+            }
         }
         
         e.stopPropagation();
@@ -811,6 +846,8 @@ class DragDropManager {
     
     handleTouchStart(e) {
         const img = e.target;
+        const touch = e.touches[0];
+        this.touchStartPos = { x: touch.clientX, y: touch.clientY };
         
         // Si l'image est dans une zone, préparer pour le drag vers le fond
         if (img.parentNode.classList.contains('zone-images')) {
@@ -818,7 +855,6 @@ class DragDropManager {
             this.originalParent = img.parentNode;
             this.isTouchDragging = true;
             
-            const touch = e.touches[0];
             const rect = img.getBoundingClientRect();
             this.touchOffset = {
                 x: touch.clientX - rect.left,
@@ -892,6 +928,16 @@ class DragDropManager {
     }
     
     handleTouchEnd(e) {
+        // Détecter un tap pour le mode retournement
+        if (this.isTouchDragging && (this.flipMode || this.flipModeHautBas)) {
+            const touch = e.changedTouches[0];
+            const dx = Math.abs(touch.clientX - (this.touchStartPos?.x || 0));
+            const dy = Math.abs(touch.clientY - (this.touchStartPos?.y || 0));
+            if (dx < 10 && dy < 10) {
+                this.handleImageClick(e);
+            }
+        }
+        
         if (!this.isTouchDragging) return;
         
         this.isTouchDragging = false;

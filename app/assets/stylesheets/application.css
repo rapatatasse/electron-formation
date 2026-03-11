@@ -797,3 +797,7 @@ select.form-control {
 .footer-separator {
   color: #4a5568;
 }
+
+.modal-content {
+  max-width: 70vw !important;
+}

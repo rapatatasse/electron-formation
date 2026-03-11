@@ -182,4 +182,7 @@
     padding: 1.2rem;
     text-align: center;
   }
-
+.bg-recyclage {
+  color: #cf9102;
+  background-color : #ffbd24a8;
+}

@@ -7,6 +7,7 @@ class ModalSujetManager {
         this.corrigeDropdown = document.getElementById('corrigeDropdown');
         
         this.currentBackground = 'fond1.jpg';
+        this.assetPaths = this.loadAssetPaths();
         
         this.init();
     }
@@ -23,6 +24,17 @@ class ModalSujetManager {
         });
         
         this.detectCurrentBackground();
+    }
+    
+    loadAssetPaths() {
+        const area = document.getElementById('backgroundArea');
+        if (!area) return {};
+        try {
+            const data = JSON.parse(area.dataset.assetPaths);
+            return data.pourFond || {};
+        } catch(e) {
+            return {};
+        }
     }
     
     detectCurrentBackground() {
@@ -55,13 +67,13 @@ class ModalSujetManager {
     loadSujetData() {
         if (!SUJET_CORRIGE || !SUJET_CORRIGE[this.currentBackground]) {
             this.sujetText.textContent = 'Aucun sujet disponible pour ce fond.';
-            this.corrigeDropdown.innerHTML = '<p style="color: #95a5a6;">Aucun corrigé disponible.</p>';
+            this.corrigeDropdown.innerHTML = '<p style="color: #555e5fff;">Aucun corrigé disponible.</p>';
             return;
         }
         
         const data = SUJET_CORRIGE[this.currentBackground][0];
         
-        this.sujetText.textContent = data.Sujet || 'Sujet non défini';
+        this.sujetText.innerText = data.Sujet || 'Sujet non défini';
         
         this.corrigeDropdown.innerHTML = '';
         
@@ -95,19 +107,16 @@ class ModalSujetManager {
                 
                 const textElement = document.createElement('p');
                 textElement.className = 'corrige-text';
-                textElement.textContent = text;
+                textElement.innerText = text;
                 correctionSection.appendChild(textElement);
                 
                 if (imageName) {
                     const img = document.createElement('img');
                     img.className = 'corrige-image';
-                    img.src = `ImagesCorrige/${imageName}`;
+                    img.src = this.assetPaths[imageName] || `exercices/ImagesCorrige/${imageName}`;
                     img.alt = `${index + 1} Correction`;
                     img.onerror = () => {
-                        img.src = `ImagesPourFond/${imageName}`;
-                        img.onerror = () => {
-                            img.style.display = 'none';
-                        };
+                        img.style.display = 'none';
                     };
                     correctionSection.appendChild(img);
                 }
