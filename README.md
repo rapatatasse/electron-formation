@@ -30,11 +30,11 @@ rails db:seed
 
 
 si besoin de texte enrichie mettre Trix pour les champs Programme, Description, Objectif
-
+```bash
 git add .
 git commit -m "message"
 git push heroku main  
-
+```
 # migration sur heroku
 heroku run rails db:migrate --app electronformation
 
@@ -42,6 +42,9 @@ heroku run rails db:migrate --app electronformation
 Attention pour les images charger en JS :
 si non charger faire
 ```bash
+git add .
+git commit -m "mise a jour"
+git push origin main
 git commit --allow-empty -m "Force Heroku rebuild"      
 heroku run rake assets:clobber --app electronformation  
 ```

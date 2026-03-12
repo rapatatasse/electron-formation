@@ -22,8 +22,41 @@
     à créer, jour après jour.
   </p>
   
-  <div class="stats-container">
-    <div class="stats-badge">Taux de Réussite 2025 : 98%</div>
+  <% resultat = [["AIPR",[[2022, 85],[2023, 88.4],[2024, 92.6],[2025, 90.85]]],
+                 ["Pass HTB",[[2022, 100],[2023, 100],[2024, 100],[2025, 100]]],
+                 ["CQP",[[2024, 85.2],[2025, 100]]]
+                ] %>
+
+  <div class="results-stats-section">
+    <div class="results-stats-intro">
+      <h3 class="results-stats-title">Taux de réussite aux examens</h3>
+      <p class="results-stats-subtitle">Résultats obtenus par nos stagiaires aux tests officiels, par formation et par année.</p>
+    </div>
+    <div class="results-stats-grid">
+      <% resultat.each do |formation_name, years| %>
+        <% avg = (years.sum { |_, v| v } / years.size.to_f).round(1) %>
+        <div class="results-stat-card">
+          <div class="results-stat-header">
+            <span class="results-stat-name"><%= formation_name %></span>
+            <span class="results-stat-avg <%= avg >= 95 ? 'avg-excellent' : (avg >= 85 ? 'avg-good' : 'avg-ok') %>">
+              moy. <%= avg %>%
+            </span>
+          </div>
+          <div class="results-stat-bars">
+            <% years.each do |year, value| %>
+              <div class="results-bar-row">
+                <span class="results-bar-year"><%= year %></span>
+                <div class="results-bar-track">
+                  <div class="results-bar-fill <%= value >= 95 ? 'fill-excellent' : (value >= 85 ? 'fill-good' : 'fill-ok') %>"
+                       style="width: <%= value %>%"></div>
+                </div>
+                <span class="results-bar-value"><%= value %>%</span>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
   </div>
 
   <h2 class="section-title">Nos Formations</h2>
@@ -51,6 +84,26 @@
       <%= image_tag "illustration/homehtb.jpg", alt: "HTB", class: "feature-card-img" %>
       <h3 class="feature-title">Pass HTB</h3>
       <p>Formation Reconnue par RTE, EDF et ENEDIS</p>
+    </div>
+  </div>
+
+  <div class="qualiopi-section">
+    <div class="qualiopi-text">
+      <h3 class="qualiopi-title">Certification Qualiopi</h3>
+      <p class="qualiopi-desc">
+        ELECTRON FORMATION est certifié <strong>Qualiopi</strong>, la marque de certification qualité des prestataires de formation professionnelle, délivrée par l'organisme certificateur <strong>ICPF</strong>.
+      </p>
+      <p class="qualiopi-desc">
+        Cette certification atteste de la qualité de nos processus et de notre engagement envers l'amélioration continue. Elle vous garantit un accès aux financements publics et mutualisés (OPCO, CPF, France Travail…).
+      </p>
+      <ul class="qualiopi-points">
+        <li>Processus pédagogiques conformes aux exigences du Référentiel National Qualité</li>
+        <li>Accompagnement personnalisé de chaque stagiaire</li>
+        <li>Évaluation et amélioration continue de nos formations</li>
+      </ul>
+    </div>
+    <div class="qualiopi-logo-wrap">
+      <%= image_tag "Qualiopi.jpg", alt: "Certification Qualiopi ICPF", class: "qualiopi-logo" %>
     </div>
   </div>
 

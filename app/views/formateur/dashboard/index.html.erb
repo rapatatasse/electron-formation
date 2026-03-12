@@ -1,22 +1,29 @@
 <div class="container">
   <div class="page-header">
     <h1 class="page-title">Tableau de bord Formateur</h1>
-    
   </div>
-
-    <div class="card w-30">
+  <div class="d-flex gap-2">
+    <div class="card w-30 ">
       <%= image_tag "exercices/ImageFond/fond1.jpg", class:"card-image", alt: "Logo" %>
       <h3><%= link_to "Exercices tableau interactif", formateur_exercices_path, class: "btn btn-primary" %></h3>
     </div>
+    <div class="card w-30">
+      <h3>Liste Contact</h3>
+      <div>Service Formation (Jade): 09 81 37 57 81</div>
+      <div>Cécile ROCK : 06 43 12 65 97</div>
+      <div>Mickael COURT: 07 62 65 78 60</div>
+      <div>Mail: contact@electron-formation.fr</div>
+    </div>
+    <div class="card w-30">
+      <h3>Quiz</h3>
+      <%= link_to "Satisfactions stagiaires à chaud", "https://forms.gle/RihEkagWtZiiMDJv5", target: "_blank", class: "btn btn-primary" %>
+      <div >L’auto-évaluation formateur  dysfonctionnement/Amélioration.</div>
+        <%= link_to "Auto évaluation formateur ", "https://forms.gle/iGDVdxxgRjM4CduM9", target: "_blank", class: "btn btn-primary" %>
+    </div>
+  </div>
    
     <hr>
     <br>
-  <div class="dashboard-grid">
-    <!-- Card exercies avec phot-->
-    
-    
-    
-  </div>
 
   <div class="card">
     <div class="card-header">
@@ -75,6 +82,196 @@
           Vous n'avez pas encore créé de quiz.
         </p>
       <% end %>
+    </div>
+  </div>
+  <div class="card" id="procedureformateur">
+    <div class="card-header">
+      <h3 style="margin:0;">Procédure du formateur : Avant – Pendant – Après la formation</h3>
+    </div>
+    <div class="card-body">
+
+      <div class="proc-phase">
+        <h4 class="proc-phase-title">1️⃣ Avant la formation (Préparation)</h4>
+        <details class="proc-details">
+          <summary class="proc-summary">A. Vérification administrative</summary>
+          <ul class="proc-checklist">
+            <li><label><input type="checkbox"> Vérifier le programme de formation</label></li>
+            <li><label><input type="checkbox"> Vérifier les objectifs pédagogiques</label></li>
+            <li><label><input type="checkbox"> Consulter le profil des participants</label></li>
+            <li><label><input type="checkbox"> Vérifier les prérequis</label></li>
+            <li><label><input type="checkbox"> Lire les modalités d'évaluation prévues</label></li>
+            <li><label><input type="checkbox"> Feuille d'émargement</label></li>
+            <li><label><input type="checkbox"> Support pédagogique</label></li>
+            <li><label><input type="checkbox"> Évaluations (entrée / sortie)</label></li>
+            <li><label><input type="checkbox"> Questionnaire de satisfaction</label></li>
+          </ul>
+        </details>
+
+        <details class="proc-details">
+          <summary class="proc-summary">B. Prise d'information sur le lieu</summary>
+          <ul class="proc-checklist">
+            <li><label><input type="checkbox"> Adresse exacte</label></li>
+            <li><label><input type="checkbox"> Accès transport / parking</label></li>
+            <li><label><input type="checkbox"> Horaires d'ouverture</label></li>
+            <li><label><input type="checkbox"> Contact sur place</label></li>
+            <li><label><input type="checkbox"> Consignes de sécurité</label></li>
+          </ul>
+        </details>
+
+        <details class="proc-details">
+          <summary class="proc-summary">C. Vérification de la salle de formation</summary>
+          <ul class="proc-checklist">
+            <li class="proc-subgroup">Confort et accessibilité</li>
+            <li><label><input type="checkbox"> Taille de la salle adaptée au nombre de stagiaires</label></li>
+            <li><label><input type="checkbox"> Lumière suffisante</label></li>
+            <li><label><input type="checkbox"> Température correcte</label></li>
+            <li><label><input type="checkbox"> Aération / ventilation</label></li>
+            <li><label><input type="checkbox"> Accessibilité PMR si nécessaire</label></li>
+            <li><label><input type="checkbox"> Toilettes accessibles</label></li>
+            <li class="proc-subgroup">Disposition pédagogique</li>
+            <li><label><input type="checkbox"> Tables et chaises suffisantes</label></li>
+            <li><label><input type="checkbox"> Disposition adaptée (U, classe, îlots…)</label></li>
+            <li><label><input type="checkbox"> Visibilité de l'écran pour tous</label></li>
+            <li><label><input type="checkbox"> Tableau blanc / paperboard</label></li>
+            <li class="proc-subgroup">Équipements pédagogiques</li>
+            <li><label><input type="checkbox"> Vidéoprojecteur</label></li>
+            <li><label><input type="checkbox"> Écran</label></li>
+            <li><label><input type="checkbox"> Ordinateur</label></li>
+            <li><label><input type="checkbox"> Connexion internet / wifi</label></li>
+            <li><label><input type="checkbox"> Multiprises</label></li>
+            <li><label><input type="checkbox"> Paperboard + marqueurs</label></li>
+            <li><label><input type="checkbox"> Feuilles papier + stylos pour participants</label></li>
+          </ul>
+        </details>
+
+        <details class="proc-details">
+          <summary class="proc-summary">D. Préparation pédagogique</summary>
+          <ul class="proc-checklist">
+            <li><label><input type="checkbox"> Relire le support de formation</label></li>
+            <li><label><input type="checkbox"> Préparer les exercices</label></li>
+            <li><label><input type="checkbox"> Préparer les cas pratiques</label></li>
+            <li><label><input type="checkbox"> Prévoir la gestion du temps</label></li>
+            <li><label><input type="checkbox"> Préparer les évaluations</label></li>
+          </ul>
+        </details>
+
+        <details class="proc-details">
+          <summary class="proc-summary">E. Préparation des documents</summary>
+          <ul class="proc-checklist">
+            <li><label><input type="checkbox"> Feuille d'émargement</label></li>
+            <li><label><input type="checkbox"> Supports à distribuer</label></li>
+            <li><label><input type="checkbox"> Fiches d'évaluation</label></li>
+            <li><label><input type="checkbox"> Questionnaire satisfaction</label></li>
+            <li><label><input type="checkbox"> Attestation de formation</label></li>
+          </ul>
+        </details>
+
+
+      </div>
+
+      <div class="proc-phase">
+        <h4 class="proc-phase-title">2️⃣ Pendant la formation</h4>
+
+        <details class="proc-details">
+          <summary class="proc-summary">A. Accueil des participants</summary>
+          <ul class="proc-checklist">
+            <li><label><input type="checkbox"> Accueillir les stagiaires</label></li>
+            <li><label><input type="checkbox"> Vérifier la liste de présence</label></li>
+            <li><label><input type="checkbox"> Faire signer la feuille d'émargement</label></li>
+            <li><label><input type="checkbox"> Présenter le formateur</label></li>
+            <li><label><input type="checkbox"> Présenter les objectifs</label></li>
+            <li><label><input type="checkbox"> Présenter le programme</label></li>
+            <li><label><input type="checkbox"> Présenter les règles de fonctionnement</label></li>
+            <li><label><input type="checkbox"> <b>Vérification des prérequis des stagiaires : </b><br>
+            Le formateur vérifie en début de formation que les participants disposent des connaissances, de l’expérience ou des habilitations nécessaires pour suivre la formation dans de bonnes conditions. </label></li>
+          </ul>
+        </details>
+
+        <details class="proc-details">
+          <summary class="proc-summary">B. Animation pédagogique</summary>
+          <ul class="proc-checklist">
+            <li><label><input type="checkbox"> Respecter le programme</label></li>
+            <li><label><input type="checkbox"> Adapter le rythme</label></li>
+            <li><label><input type="checkbox"> Favoriser les échanges</label></li>
+            <li><label><input type="checkbox"> Exposé</label></li>
+            <li><label><input type="checkbox"> Exercices</label></li>
+            <li><label><input type="checkbox"> Études de cas</label></li>
+            <li><label><input type="checkbox"> Mises en situation</label></li>
+          </ul>
+        </details>
+
+        <details class="proc-details">
+          <summary class="proc-summary">C. Vérification de la compréhension</summary>
+          <ul class="proc-checklist">
+            <li><label><input type="checkbox"> Poser des questions</label></li>
+            <li><label><input type="checkbox"> Faire des exercices</label></li>
+            <li><label><input type="checkbox"> Faire des quiz</label></li>
+            <li><label><input type="checkbox"> Observer les participants</label></li>
+          </ul>
+        </details>
+
+        <details class="proc-details">
+          <summary class="proc-summary">D. Gestion du groupe</summary>
+          <ul class="proc-checklist">
+            <li><label><input type="checkbox"> Gérer les retards</label></li>
+            <li><label><input type="checkbox"> Gérer les difficultés</label></li>
+            <li><label><input type="checkbox"> Encourager la participation</label></li>
+            <li><label><input type="checkbox"> Maintenir la dynamique du groupe</label></li>
+          </ul>
+        </details>
+
+        <details class="proc-details">
+          <summary class="proc-summary">E. Évaluation</summary>
+          <ul class="proc-checklist">
+            <li><label><input type="checkbox"> Réaliser les évaluations prévues</label></li>
+            <li><label><input type="checkbox"> Vérifier l'atteinte des objectifs pédagogiques</label></li>
+          </ul>
+        </details>
+      </div>
+
+      <div class="proc-phase">
+        <h4 class="proc-phase-title">3️⃣ Après la formation</h4>
+
+        <details class="proc-details">
+          <summary class="proc-summary">A. Clôture avec les participants</summary>
+          <ul class="proc-checklist">
+            <li><label><input type="checkbox"> Faire un résumé des points clés</label></li>
+            <li><label><input type="checkbox"> Répondre aux questions</label></li>
+            <li><label><input type="checkbox"> Faire remplir le questionnaire de satisfaction</label></li>
+            <li><label><input type="checkbox"> Faire signer la feuille d'émargement finale</label></li>
+          </ul>
+        </details>
+
+        <details class="proc-details">
+          <summary class="proc-summary">B. Documents à transmettre</summary>
+          <ul class="proc-checklist">
+            <li><label><input type="checkbox"> Attestation de formation</label></li>
+            <li><label><input type="checkbox"> Supports pédagogiques</label></li>
+            <li><label><input type="checkbox"> Résultats des évaluations</label></li>
+          </ul>
+        </details>
+
+        <details class="proc-details">
+          <summary class="proc-summary">C. Bilan du formateur</summary>
+          <ul class="proc-checklist">
+            <li><label><input type="checkbox"> Analyser les évaluations</label></li>
+            <li><label><input type="checkbox"> Noter les améliorations possibles</label></li>
+            <li><label><input type="checkbox"> Faire un retour à l'organisme de formation</label></li>
+          </ul>
+        </details>
+
+        <details class="proc-details">
+          <summary class="proc-summary">D. Archivage (exigence Qualiopi)</summary>
+          <ul class="proc-checklist">
+            <li><label><input type="checkbox"> Feuilles d'émargement</label></li>
+            <li><label><input type="checkbox"> Évaluations</label></li>
+            <li><label><input type="checkbox"> Questionnaires de satisfaction</label></li>
+            <li><label><input type="checkbox"> Supports utilisés</label></li>
+            <li><label><input type="checkbox"> Programme de formation</label></li>
+          </ul>
+        </details>
+      </div>
+
     </div>
   </div>
 </div>

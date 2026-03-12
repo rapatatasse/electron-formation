@@ -75,6 +75,77 @@
   margin-bottom: 1rem;
 }
 
+/* ============================================================
+   SECTION QUALIOPI
+   ============================================================ */
+
+.qualiopi-section {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 3rem;
+  align-items: center;
+  background: #f8faff;
+  border: 1px solid rgba(85, 112, 180, 0.18);
+  border-left: 4px solid #5570B4;
+  padding: 2.5rem 2.5rem;
+  margin: 3rem 0;
+}
+
+.qualiopi-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #1e3a8a;
+  margin-bottom: 1rem;
+}
+
+.qualiopi-desc {
+  font-size: 1rem;
+  color: #4b5563;
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
+
+.qualiopi-points {
+  margin-top: 1rem;
+  padding-left: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.qualiopi-points li {
+  font-size: 0.95rem;
+  color: #374151;
+  line-height: 1.6;
+}
+
+.qualiopi-points li::marker {
+  color: #5570B4;
+}
+
+.qualiopi-logo-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.qualiopi-logo {
+  max-width: 220px;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+@media (max-width: 640px) {
+  .qualiopi-section {
+    grid-template-columns: 1fr;
+  }
+  .qualiopi-logo-wrap {
+    justify-content: flex-start;
+  }
+}
+
 .info-section {
   background: #f8f9fa;
   padding: 3rem 2rem;
@@ -189,6 +260,135 @@
 
 .stats-container {
   text-align: center;
+}
+
+/* ============================================================
+   TAUX DE RÉUSSITE PAR FORMATION
+   ============================================================ */
+
+.results-stats-section {
+  margin: 2rem 0 3rem;
+}
+
+.results-stats-intro {
+  text-align: center;
+  margin-bottom: 1.75rem;
+}
+
+.results-stats-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #1e3a8a;
+  margin-bottom: 0.4rem;
+}
+
+.results-stats-subtitle {
+  font-size: 0.95rem;
+  color: #64748b;
+}
+
+.results-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.results-stat-card {
+  background: white;
+  border: 1px solid rgba(85, 112, 180, 0.18);
+  border-top: 4px solid #5570B4;
+  padding: 1.5rem 1.75rem;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.results-stat-card:hover {
+  box-shadow: 0 6px 18px rgba(85, 112, 180, 0.15);
+  transform: translateY(-2px);
+}
+
+.results-stat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.results-stat-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1e3a8a;
+}
+
+.results-stat-avg {
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.25rem 0.7rem;
+  border-radius: 50px;
+}
+
+.avg-excellent {
+  background: #f0fdf4;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.avg-good {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+}
+
+.avg-ok {
+  background: #fffbeb;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+.results-stat-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.results-bar-row {
+  display: grid;
+  grid-template-columns: 44px 1fr 52px;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.results-bar-year {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #64748b;
+  text-align: right;
+}
+
+.results-bar-track {
+  height: 12px;
+  background: #f1f5f9;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.results-bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.5s ease;
+}
+
+.fill-excellent { background: linear-gradient(90deg, #10b981, #34d399); }
+.fill-good      { background: linear-gradient(90deg, #5570B4, #6d8cc9); }
+.fill-ok        { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+
+.results-bar-value {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #1e293b;
+  text-align: left;
 }
 
 .info-paragraph {

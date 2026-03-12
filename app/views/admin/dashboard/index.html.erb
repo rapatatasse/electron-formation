@@ -23,14 +23,37 @@
       </div>
       <br><hr>
 
-        <h3>Catalogue formation :</h3>
+      <h3>Catalogue formation :</h3>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
         <%= link_to admin_trainings_path, class: "btn btn-primary", style: "text-align: center;" do %>
           <div style="font-size: 2rem; margin-bottom: 0.5rem;">📚</div>
           <div>Gérer les formations</div>
         <% end %>
       </div>
-        <br><hr>
+      <h3>Liste des quiz et reponse quiz :</h3>
+      <li>
+        <%= link_to "Satisfactions stagiaires à chaud", "https://forms.gle/RihEkagWtZiiMDJv5", target: "_blank", class: "btn btn-primary" %>
+        <%= link_to "Satisfactions stagiaires Réponses", "https://docs.google.com/spreadsheets/d/1kn_syYaTPXdCKofRabbvf6Zco8nqVyaoyIn1cedmw2M/edit?gid=394763080#gid=394763080", target: "_blank", class: "btn btn-secondary" %>
+      </li>
+      <li>
+        <%= link_to "Satisfactions stagiaires à froid", "https://docs.google.com/forms/d/e/1FAIpQLSe0cNsdGhPh-R6GLzcR0y88dH1zudzKcY0TTSME2J8XQJ_jAw/viewform", target: "_blank", class: "btn btn-primary" %>
+        <%= link_to "Satisfactions stagiaires Réponses", "https://docs.google.com/spreadsheets/d/1kELx1bmIhnXG77OTtpnReESPpkklfKRB7LpdM0oiirE/edit?resourcekey=&gid=156488479#gid=156488479", target: "_blank", class: "btn btn-secondary" %>
+      </li>
+      <li>
+        <%= link_to "Satisfaction entreprise post formation", "https://forms.gle/VunkiQ2C8ef8FSD98", target: "_blank", class: "btn btn-primary" %>
+        <%= link_to "Satisfactions entreprise Réponses", "https://docs.google.com/spreadsheets/d/1P0l_EScBMM29BVq5Dj8_FRsK3S6u1HBLiYP-oyWlT4k/edit?resourcekey=&gid=496153726#gid=496153726", target: "_blank", class: "btn btn-secondary" %>
+      </li>
+      <li>
+        <div >L’auto-évaluation formateur est réalisée de manière ciblée lorsqu’un dysfonctionnement ou un retour d’insatisfaction est identifié. Cette démarche permet d’analyser la situation et de mettre en place des actions d’amélioration continue.</div>
+        <%= link_to "Auto évaluation formateur ", "https://forms.gle/iGDVdxxgRjM4CduM9", target: "_blank", class: "btn btn-primary" %>
+        <%= link_to "Auto évaluation formateur  Réponses", "https://docs.google.com/spreadsheets/d/1Mei-e1F1J3b9BZUR6Xf-ar4v035KmFgAWRZKZk7JVeI/edit?resourcekey=&gid=1678800810#gid=1678800810", target: "_blank", class: "btn btn-secondary" %>
+      </li>
+
+
+
+
+
+      <br><hr>
 
         <h3>Quiz :</h3>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
